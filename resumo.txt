@@ -1,0 +1,34 @@
+para a questão: 
+receber nome => calcular valor
+
+ACHARIA BOM: PEDIR NOME, SEMESTRE
+
+aconselhamento pedagógico:
+- é preciso ter os pre requisitos 
+- sem choque de horário
+- pelo menos uma disciplina
+
+max disciplina:
+- primeiro nome % 3
+- 10
+- 9 
+- 6
+
+tempo de curso desejado:
+- segundo nome % 3
+- menor 
+- maior 
+- medio
+
+enfase:
+- terceiro nome % 3
+- desejada
+- diminui tempo
+- nenhuma
+
+disciplina:
+- quarto nome % 3
+- nemos dias
+- msm turno 
+- todos os dias, max de tres disciplinas por dia
+
