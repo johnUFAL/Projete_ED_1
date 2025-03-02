@@ -4,6 +4,64 @@
 #include <ctype.h>
 #include <locale.h>
 
+struct Aluno {
+    char nome[50];
+    int periodo;
+};
+
+struct Disciplina {
+    char nome[50];
+    int carga;
+    int hora_inicio; //usar o horario militar (Ex: 1130 = 11:30)
+    int hora_final;
+    char pre_requisitos[100];
+    float dias;  //Ex: 2,4 => segunda e quarta
+};
+
+struct Eletiva {
+    char disciplina[50];
+    int carga;
+    int hora_inicio; //usar o horario militar (Ex: 1130 = 11:30)
+    int hora_final;
+    char pre_requisitos[100];
+    float dias;
+};
+
+void matricula(struct Aluno aluno) {
+    if (aluno.periodo == 1) {
+        struct Disciplina disciplinas[] = {
+            {"Programacao 1", 72, 1520, 1850, "", 6.0},
+            {"Matematica Discreta", 72, 1330, 1510, "", 3.5},
+            {"Calculo Diferencial e Integral", 144, 1520, 1850, "", 3.5},
+            {"Logica para Programacao", 72, 1520, 1700, "", 2.4},
+            {"Computacao, Sociedade e Etica", 72, 1710, 1850, "", 2.4},
+        };
+
+        puts("Sua grade é:");
+        for (int i = 0; i < 5; i++) {
+            printf("%s - Carga: %d, Horario: %d-%d, Pre-requisitos: %s, Dias: %.1f\n",
+                   disciplinas[i].nome, disciplinas[i].carga, disciplinas[i].hora_inicio,
+                   disciplinas[i].hora_final, disciplinas[i].pre_requisitos, disciplinas[i].dias);
+        }
+    }
+    if (aluno.periodo == 2) {
+        struct Disciplina disciplinas[] = {
+            {"Banco de dados", 72, 1330, 1520, "", 2.4},
+            {"Geometria Analitica", 72, 1520, 1710, "", 2.4},
+            {"Org. E arq. de Computadores", 72, 920, 1100, "", 3.5},
+            {"Estrutra de Dados", 72, 1110, 1250, "", 3.5},
+    };
+    
+    puts("Sua grade é:");
+        for (int i = 0; i < 4; i++) {
+            printf("%s - Carga: %d, Horario: %d-%d, Pre-requisitos: %s, Dias: %.1f\n",
+                    disciplinas[i].nome, disciplinas[i].carga, disciplinas[i].hora_inicio,
+                    disciplinas[i].hora_final, disciplinas[i].pre_requisitos, disciplinas[i].dias);
+        }
+    }
+}
+
+
 char validation_string(char arr[]) {
    for (int i = 0; arr[i] != '\0'; i++) {
        if (!isalpha(arr[i])) {  //validacao de tipo string
@@ -46,28 +104,40 @@ int value_string(char letra) {
    }
 }
 
-int name_sum(char *letra) {
-   if (*letra == '\0') return 0;
-   return value_string(tolower(*letra)) + (name_sum(letra + 1));
+int name_sum(char *nome) {
+   if (*nome == '\0') return 0;
+   return value_string(tolower(*nome)) + (name_sum(nome + 1));
 }
 
 int main() {
    setlocale(LC_ALL, "Portuguese");
 
+   struct Aluno aluno;
+
    puts("Digite seu nome completo aqui:");
-   char nome[100];
-   fgets(nome, 100, stdin);
-   if (validation_string(nome)) { 
-       validation(nome);
+   fgets(aluno.nome, sizeof(aluno.nome), stdin);
+   aluno.nome[strcspn(aluno.nome, "\n")] = '\0';
+
+   puts("Digite seu período aqui:");
+   scanf("%d", &aluno.periodo);
+   getchar();
+   
+   //validacao do nome 
+   if (validation_string(aluno.nome)) {
+       validation(aluno.nome);
    }
    puts(" ");
 
    //decomposicao do nome e soma de cada um
-   char *token = strtok(nome, " ");
+   puts("Decomposição do nome");
+   char *token = strtok(aluno.nome, " ");
    while (token !=  NULL) {
-       int sum = name_sum(token);
-       printf("%s  => %d\n", token, sum);
+       printf("%s => %d\n", token, name_sum(token));
        token = strtok(NULL, " ");
    }
+   puts(" ");
+
+   matricula(aluno);
+
    return 0;
 }
