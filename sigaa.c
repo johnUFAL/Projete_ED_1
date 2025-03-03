@@ -19,7 +19,7 @@ struct Disciplina {
 };
 
 struct Eletiva {
-    char disciplina[50];
+    char disciplina[60];
     int carga;
     int hora_inicio; //usar o horario militar (Ex: 1130 = 11:30)
     int hora_final;
@@ -30,33 +30,98 @@ struct Eletiva {
 void matricula(struct Aluno aluno) {
     if (aluno.periodo == 1) {
         struct Disciplina disciplinas[] = {
-            {"Programacao 1", 72, 1520, 1850, "", 6.0},
-            {"Matematica Discreta", 72, 1330, 1510, "", 3.5},
-            {"Calculo Diferencial e Integral", 144, 1520, 1850, "", 3.5},
-            {"Logica para Programacao", 72, 1520, 1700, "", 2.4},
-            {"Computacao, Sociedade e Etica", 72, 1710, 1850, "", 2.4},
+            {"Programacao 1", 72, 1520, 1850, "Nenhum", 6.0},
+            {"Matematica Discreta", 72, 1330, 1510, "Nenhum", 3.5},
+            {"Calculo Diferencial e Integral", 144, 1520, 1850, "Nenhum", 3.5},
+            {"Logica para Programacao", 72, 1520, 1700, "Nenhum", 2.4},
+            {"Computacao, Sociedade e Etica", 72, 1710, 1850, "Nenhum", 2.4},
         };
 
-        puts("Sua grade é:");
+        puts("Sua grade eh:");
         for (int i = 0; i < 5; i++) {
-            printf("%s - Carga: %d, Horario: %d-%d, Pre-requisitos: %s, Dias: %.1f\n",
+            printf("%s - Carga: %d\n, Horario: %d-%d\n, Pre-requisitos: %s\n, Dias: %.1f\n",
                    disciplinas[i].nome, disciplinas[i].carga, disciplinas[i].hora_inicio,
                    disciplinas[i].hora_final, disciplinas[i].pre_requisitos, disciplinas[i].dias);
         }
-    }
-    if (aluno.periodo == 2) {
+    } else if (aluno.periodo == 2) {
         struct Disciplina disciplinas[] = {
-            {"Banco de dados", 72, 1330, 1520, "", 2.4},
-            {"Geometria Analitica", 72, 1520, 1710, "", 2.4},
-            {"Org. E arq. de Computadores", 72, 920, 1100, "", 3.5},
-            {"Estrutra de Dados", 72, 1110, 1250, "", 3.5},
+            {"Banco de dados", 72, 1330, 1520, "Nenhum", 2.4},
+            {"Geometria Analitica", 72, 1520, 1710, "Nenhum", 2.4},
+            {"Org. E arq. de Computadores", 72, 920, 1100, "Nenhum", 3.5},
+            {"Estrutra de Dados", 72, 1110, 1250, "Programacao 1", 3.5},
     };
     
-    puts("Sua grade é:");
+        puts("Sua grade eh:");
         for (int i = 0; i < 4; i++) {
-            printf("%s - Carga: %d, Horario: %d-%d, Pre-requisitos: %s, Dias: %.1f\n",
-                    disciplinas[i].nome, disciplinas[i].carga, disciplinas[i].hora_inicio,
-                    disciplinas[i].hora_final, disciplinas[i].pre_requisitos, disciplinas[i].dias);
+            printf("%s - Carga: %d\n, Horario: %d-%d\n, Pre-requisitos: %s\n, Dias: %.1f\n",
+                disciplinas[i].nome, disciplinas[i].carga, disciplinas[i].hora_inicio,
+                disciplinas[i].hora_final, disciplinas[i].pre_requisitos, disciplinas[i].dias);
+        }
+    } else if (aluno.periodo == 3) {
+        struct Disciplina disciplinas[] = {
+            {"Redes de Computadores", 72, 1520, 1700, "Programacao 1", 2.5},
+            {"Teoria dos Grafos", 72, 1330, 1510, "Estrutra de Dados e Matematica Discreta", 2.5},
+            {"Probabilidade e Estastistica", 72, 1110, 1250, "Calculo Diferencial e Integral", 2.4},
+            {"Algebra Linear", 72, 920, 1100, "Geometria Analitica", 2.4},
+    };
+    
+        puts("Sua grade eh:");
+        for (int i = 0; i < 4; i++) {
+            printf("%s - Carga: %d\n, Horario: %d-%d\n, Pre-requisitos: %s\n, Dias: %.1f\n",
+                disciplinas[i].nome, disciplinas[i].carga, disciplinas[i].hora_inicio,
+                disciplinas[i].hora_final, disciplinas[i].pre_requisitos, disciplinas[i].dias);
+        }
+    } else if (aluno.periodo == 4) {
+        struct Disciplina disciplinas[] = {
+            {"Programacao 2", 72, 1520, 1700, "Estrutura de Dados, Banco de dados e Redes de Computadores", 4.0},
+            {"Programacao 3", 72, 1520, 1700, "Estrutura de Dados, Banco de dados e Redes de Computadores", 3.5},
+            {"Projeto de Analise de Algoritmos", 72, 1710, 1850, "Estrutura de Dados e Teoria dos Grafos", 2.5},
+            {"Teoria da Computacao", 72, 1330, 1510, "Nenhum", 2.4},
+    };
+    
+        puts("Sua grade eh:");
+        for (int i = 0; i < 4; i++) {
+            printf("%s - Carga: %d\n, Horario: %d-%d\n, Pre-requisitos: %s\n, Dias: %.1f\n",
+                disciplinas[i].nome, disciplinas[i].carga, disciplinas[i].hora_inicio,
+                disciplinas[i].hora_final, disciplinas[i].pre_requisitos, disciplinas[i].dias);
+        }
+    } else if (aluno.periodo == 5) {
+        struct Disciplina disciplinas[] = {
+            {"Sietemas Operacionais", 72, 1330, 1520, "Org. E arq. de Computadores", 2.4},
+            {"Compiladores", 72, 1520, 1700, "Estrutura de Dados e Logica para Computacao", 2.4},
+            {"Inteligencia Artificial", 72, 1520, 1700, "Estrutura de Dados e Logica para Computacao", 3.5},
+            {"Computacao Grafica", 72, 1710, 1850, "Nenhum", 3.5},
+    };
+    
+        puts("Sua grade eh:");
+        for (int i = 0; i < 4; i++) {
+            printf("%s - Carga: %d\n, Horario: %d-%d\n, Pre-requisitos: %s\n, Dias: %.1f\n",
+                disciplinas[i].nome, disciplinas[i].carga, disciplinas[i].hora_inicio,
+                disciplinas[i].hora_final, disciplinas[i].pre_requisitos, disciplinas[i].dias);
+        }
+    } else if (aluno.periodo == 6) {
+        struct Disciplina disciplinas[] = {
+            {"Projeto e Desenvolvimento de Sistemas", 288, 920, 1510, "Todas as diciplinas de 1º ao 5º semestre", 2.405},
+    };
+    
+        puts("Sua grade eh:");
+        for (int i = 0; i < 1; i++) {
+            printf("%s - Carga: %d\n, Horario: %d-%d\n, Pre-requisitos: %s\n, Dias: %.1f\n",
+                disciplinas[i].nome, disciplinas[i].carga, disciplinas[i].hora_inicio,
+                disciplinas[i].hora_final, disciplinas[i].pre_requisitos, disciplinas[i].dias);
+        }
+    } else if (aluno.periodo == 7) {
+        struct Disciplina disciplinas[] = {
+            {"Metodologias de Pesquisa e Trabalhos Individual", 72, 1330, 1510, "Nenhum", 3.5},
+            {"Nocoes de Direito", 72, 1520, 1850, "Nenhum", 3.0},
+
+    };
+    
+        puts("Sua grade eh:");
+        for (int i = 0; i < 2; i++) {
+            printf("%s - Carga: %d\n, Horario: %d-%d\n, Pre-requisitos: %s\n, Dias: %.1f\n",
+                disciplinas[i].nome, disciplinas[i].carga, disciplinas[i].hora_inicio,
+                disciplinas[i].hora_final, disciplinas[i].pre_requisitos, disciplinas[i].dias);
         }
     }
 }
@@ -86,7 +151,7 @@ char validation(char arr[]){
    return 0;
 }
 
-int value_string(char letra) {
+int value_string(char letra) { //revisar melhor forma de usar palavras com acentos!!!!!!!!!!!!!!!!!!!!!!!!
    switch (letra) {
        case 'q': return 1; case 'w': return 6; case 'e': return 7;
        case 'r': return 6; case 't': return 5; case 'y': return 2;
@@ -109,6 +174,27 @@ int name_sum(char *nome) {
    return value_string(tolower(*nome)) + (name_sum(nome + 1));
 }
 
+//ignora essas palavras 
+int ignorate(const char *primeiro_char) { //aponta para a primeeira letra 
+    return (strcmp(primeiro_char, "da") == 0 || strcmp(primeiro_char, "de") == 0 || strcmp(primeiro_char, "do") == 0 ||
+            strcmp(primeiro_char, "das") == 0 || strcmp(primeiro_char, "dos") == 0); //modifica os enderecos para 0
+}
+void name_process(char *nome) {
+    char temp[50]; //copia da original antes de usar
+    strcpy(temp, nome);  //não modificar o original
+
+    char *token = strtok(temp, " ");
+    
+    puts("Resultado da divisao por 3 (resto):");
+    while (token != NULL) {
+        if (!ignorate(token)) {
+            int soma = name_sum(token);
+            printf("%s => Soma: %d, Resto da divisao por 3: %d\n", token, soma, (soma % 3));
+        }
+        token = strtok(NULL, " ");
+    }
+}
+
 int main() {
    setlocale(LC_ALL, "Portuguese");
 
@@ -118,7 +204,7 @@ int main() {
    fgets(aluno.nome, sizeof(aluno.nome), stdin);
    aluno.nome[strcspn(aluno.nome, "\n")] = '\0';
 
-   puts("Digite seu período aqui:");
+   puts("Digite seu periodo aqui:");
    scanf("%d", &aluno.periodo);
    getchar();
    
@@ -129,14 +215,12 @@ int main() {
    puts(" ");
 
    //decomposicao do nome e soma de cada um
-   puts("Decomposição do nome");
-   char *token = strtok(aluno.nome, " ");
-   while (token !=  NULL) {
-       printf("%s => %d\n", token, name_sum(token));
-       token = strtok(NULL, " ");
-   }
+   puts("Decomposicao do nome, some e resto");
+   name_process(aluno.nome);
+
    puts(" ");
 
+   //matricula do aluno e grade curricular
    matricula(aluno);
 
    return 0;
