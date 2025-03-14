@@ -34,6 +34,27 @@ typedef struct {
 } Eletiva;
 
 
+void escolha_eletiva(Aluno aluno) {
+    Eletiva eletivas[] = {
+        {"Calculo 3", 72, "Calculo Diferencial e Integral", {}},
+        {"Conceitos de Linguagem de Programação", 72, "Nenhum", {}},
+        {"Apredizagem de Máquina", 72, "Calculo 3", {}},
+        {"Sisitemas Digitais", 72, "Calculo 3", {}},
+        {"Sistemas Distribuidos", 72, "Nenhum", {}},
+        {"redes Neurais e Aprendizado Profundo", 72, "Nenhum", {}},
+        {"FPGA", 72, "Nenhum", {}},
+        {"Interacao Homem-Maquina", 72, "Programcao 3", {}},
+        {"Processamento Digital de Imagem", 72, "Computaçao Grafica", {}},
+        {"Computcao Evolucionaria", 72, "Nenhum", {}},
+        {"Sistemas Embarcados", 72, "Nenhum", {}},
+        {"Gerencia de Projeto", 72, "Projeto e Desenvolvimento de Sistemas", {}},
+        {"Visao Computacional", 72, "Nenhum", {}},
+        {"Ciencia de Dados", 72, "Probabilidade e Estatistica", {}},
+        {"Microcontroladores e Aplicacoes", 72, "Nenhum", {}},
+        {"Seguranca de Sistemas Computacionais", 72, "Redes de Computadores", {}}
+    };
+}
+
 void matricula(Aluno aluno) {
     if (aluno.periodo == 1) {
         Disciplina disciplinas[] = {
@@ -217,7 +238,7 @@ void name_process(char *nome) {
 }
 
 int main() {
-   setlocale(LC_ALL, "");
+   setlocale(LC_ALL, "pt_BR.utf8");
 
    Aluno aluno;
 
