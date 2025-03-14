@@ -4,125 +4,146 @@
 #include <ctype.h>
 #include <locale.h>
 
-struct Aluno {
+typedef struct {
     char nome[50];
     int periodo;
-};
+    int max_dscilina;
+    int tempo_curso;
+    int enfase;
+    int modo_disciplina;
+} Aluno;
 
-struct Disciplina {
-    char nome[50];
+typedef struct {
+    char hora_inicial[6];//usar o horario militar (Ex: 1130 = 11:30)
+    char hora_final[6];
+    char dias[20];
+} Horario;
+
+typedef struct {
+    char nome[60];
     int carga;
-    int hora_inicio; //usar o horario militar (Ex: 1130 = 11:30)
-    int hora_final;
     char pre_requisitos[100];
-    float dias;  //Ex: 2,4 => segunda e quarta
-};
+    Horario horario;
+} Disciplina;
 
-struct Eletiva {
-    char disciplina[60];
+typedef struct {
+    char nome[60];
     int carga;
-    int hora_inicio; //usar o horario militar (Ex: 1130 = 11:30)
-    int hora_final;
     char pre_requisitos[100];
-    float dias;
-};
+    Horario horario;
+} Eletiva;
 
-void matricula(struct Aluno aluno) {
+
+void matricula(Aluno aluno) {
     if (aluno.periodo == 1) {
-        struct Disciplina disciplinas[] = {
-            {"Programacao 1", 72, 1520, 1850, "Nenhum", 6.0},
-            {"Matematica Discreta", 72, 1330, 1510, "Nenhum", 3.5},
-            {"Calculo Diferencial e Integral", 144, 1520, 1850, "Nenhum", 3.5},
-            {"Logica para Programacao", 72, 1520, 1700, "Nenhum", 2.4},
-            {"Computacao, Sociedade e Etica", 72, 1710, 1850, "Nenhum", 2.4},
+        Disciplina disciplinas[] = {
+            {"Programacao 1", 72, "Nenhum", {"15:20", "18:50", "Sex"}},
+            {"Matematica Discreta", 72, "Nenhum", {"13:30", "15:10", "Ter, Qui"}},
+            {"Calculo Diferencial e Integral", 144, "Nenhum", {"15:20", "18:50", "Ter, Qui"}},
+            {"Logica para Programacao", 72, "Nenhum", {"14:20", "17:00", "Seg, Qua"}},
+            {"Computacao, Sociedade e Etica", 72, "Nenhum", {"17:10", "18:50", "Seg, Qua"}}
         };
 
         puts("Sua grade eh:");
         for (int i = 0; i < 5; i++) {
-            printf("%s - Carga: %d\n, Horario: %d-%d\n, Pre-requisitos: %s\n, Dias: %.1f\n",
-                   disciplinas[i].nome, disciplinas[i].carga, disciplinas[i].hora_inicio,
-                   disciplinas[i].hora_final, disciplinas[i].pre_requisitos, disciplinas[i].dias);
+            printf("%s - Carga: %d, Horario: %s - %s, Pre-requisitos: %s, Dias: %s\n",
+                   disciplinas[i].nome, disciplinas[i].carga, 
+                   disciplinas[i].horario.hora_inicial, disciplinas[i].horario.hora_final, 
+                   disciplinas[i].pre_requisitos, disciplinas[i].horario.dias);
         }
+        printf("\n");
     } else if (aluno.periodo == 2) {
-        struct Disciplina disciplinas[] = {
-            {"Banco de dados", 72, 1330, 1520, "Nenhum", 2.4},
-            {"Geometria Analitica", 72, 1520, 1710, "Nenhum", 2.4},
-            {"Org. E arq. de Computadores", 72, 920, 1100, "Nenhum", 3.5},
-            {"Estrutra de Dados", 72, 1110, 1250, "Programacao 1", 3.5},
+        Disciplina disciplinas[] = {
+            {"Banco de dados", 72, "Nenhum", {"13:30", "15:20", "Seg, Qua"}},
+            {"Geometria Analitica", 72, "Nenhum", {"15:20", "17:10", "Seg, Qua"}},
+            {"Org. E arq. de Computadores", 72, "Nenhum", {"9:20", "11:00", "Ter, Qui"}},
+            {"Estrutra de Dados", 72, "Programacao 1", {"11:10", "12:50", "Ter, Qui"}},
     };
     
-        puts("Sua grade eh:");
+        puts("Sua grade é:");
         for (int i = 0; i < 4; i++) {
-            printf("%s - Carga: %d\n, Horario: %d-%d\n, Pre-requisitos: %s\n, Dias: %.1f\n",
-                disciplinas[i].nome, disciplinas[i].carga, disciplinas[i].hora_inicio,
-                disciplinas[i].hora_final, disciplinas[i].pre_requisitos, disciplinas[i].dias);
+            printf("%s - Carga: %d, Horario: %s - %s, Pre-requisitos: %s, Dias: %s\n",
+                    disciplinas[i].nome, disciplinas[i].carga, 
+                    disciplinas[i].horario.hora_inicial, disciplinas[i].horario.hora_final, 
+                    disciplinas[i].pre_requisitos, disciplinas[i].horario.dias);
         }
+        printf("\n");
     } else if (aluno.periodo == 3) {
-        struct Disciplina disciplinas[] = {
-            {"Redes de Computadores", 72, 1520, 1700, "Programacao 1", 2.5},
-            {"Teoria dos Grafos", 72, 1330, 1510, "Estrutra de Dados e Matematica Discreta", 2.5},
-            {"Probabilidade e Estastistica", 72, 1110, 1250, "Calculo Diferencial e Integral", 2.4},
-            {"Algebra Linear", 72, 920, 1100, "Geometria Analitica", 2.4},
+        Disciplina disciplinas[] = {
+            {"Redes de Computadores", 72, "Programacao 1", {"15:20", "17:00", "Seg, Qui"}},
+            {"Teoria dos Grafos", 72,  "Estrutra de Dados e Matematica Discreta", {"13:30", "15:10","Seg, Qui"}},
+            {"Probabilidade e Estastistica", 72, "Calculo Diferencial e Integral", {"11:10", "12:50", "Seg, Qua"}},
+            {"Algebra Linear", 72, "Geometria Analitica", {"9:20", "11:00", "Seg, Qua"}},
     };
     
         puts("Sua grade eh:");
         for (int i = 0; i < 4; i++) {
-            printf("%s - Carga: %d\n, Horario: %d-%d\n, Pre-requisitos: %s\n, Dias: %.1f\n",
-                disciplinas[i].nome, disciplinas[i].carga, disciplinas[i].hora_inicio,
-                disciplinas[i].hora_final, disciplinas[i].pre_requisitos, disciplinas[i].dias);
+            printf("%s - Carga: %d, Horario: %s - %s, Pre-requisitos: %s, Dias: %s\n",
+                disciplinas[i].nome, disciplinas[i].carga, 
+                disciplinas[i].horario.hora_inicial, disciplinas[i].horario.hora_final, 
+                disciplinas[i].pre_requisitos, disciplinas[i].horario.dias);
         }
+        printf("\n");
     } else if (aluno.periodo == 4) {
-        struct Disciplina disciplinas[] = {
-            {"Programacao 2", 72, 1520, 1700, "Estrutura de Dados, Banco de dados e Redes de Computadores", 4.0},
-            {"Programacao 3", 72, 1520, 1700, "Estrutura de Dados, Banco de dados e Redes de Computadores", 3.5},
-            {"Projeto de Analise de Algoritmos", 72, 1710, 1850, "Estrutura de Dados e Teoria dos Grafos", 2.5},
-            {"Teoria da Computacao", 72, 1330, 1510, "Nenhum", 2.4},
+        Disciplina disciplinas[] = {
+            {"Programacao 2", 72, "Estrutura de Dados, Banco de dados e Redes de Computadores", {"15:20", "17:00", "Qua"}},
+            {"Programacao 3", 72, "Estrutura de Dados, Banco de dados e Redes de Computadores", {"15:20", "17:00", "Ter, QUi"}},
+            {"Projeto de Analise de Algoritmos", 72, "Estrutura de Dados e Teoria dos Grafos", {"17:10", "18:50", "Seg, Qui"}},
+            {"Teoria da Computacao", 72, "Nenhum", {"13:30", "15:10", "Seg, Qua"}},
     };
     
         puts("Sua grade eh:");
         for (int i = 0; i < 4; i++) {
-            printf("%s - Carga: %d\n, Horario: %d-%d\n, Pre-requisitos: %s\n, Dias: %.1f\n",
-                disciplinas[i].nome, disciplinas[i].carga, disciplinas[i].hora_inicio,
-                disciplinas[i].hora_final, disciplinas[i].pre_requisitos, disciplinas[i].dias);
+            printf("%s - Carga: %d, Horario: %s - %s, Pre-requisitos: %s, Dias: %s\n",
+                disciplinas[i].nome, disciplinas[i].carga, 
+                disciplinas[i].horario.hora_inicial, disciplinas[i].horario.hora_final, 
+                disciplinas[i].pre_requisitos, disciplinas[i].horario.dias);
         }
+        printf("\n");
     } else if (aluno.periodo == 5) {
-        struct Disciplina disciplinas[] = {
-            {"Sietemas Operacionais", 72, 1330, 1520, "Org. E arq. de Computadores", 2.4},
-            {"Compiladores", 72, 1520, 1700, "Estrutura de Dados e Logica para Computacao", 2.4},
-            {"Inteligencia Artificial", 72, 1520, 1700, "Estrutura de Dados e Logica para Computacao", 3.5},
-            {"Computacao Grafica", 72, 1710, 1850, "Nenhum", 3.5},
+        Disciplina disciplinas[] = {
+            {"Sietemas Operacionais", 72, "Org. E arq. de Computadores", {"13:30", "15:20", "Seg, Qua"}},
+            {"Compiladores", 72,  "Estrutura de Dados e Logica para Computacao", {"15:20", "17:00", "Seg, Qua"}},
+            {"Inteligencia Artificial", 72, "Estrutura de Dados e Logica para Computacao", {"15:20", "17:00", "Ter, Qui"}},
+            {"Computacao Grafica", 72, "Nenhum", {"17:10", "18:50", "Ter, Qui"}},
     };
     
         puts("Sua grade eh:");
         for (int i = 0; i < 4; i++) {
-            printf("%s - Carga: %d\n, Horario: %d-%d\n, Pre-requisitos: %s\n, Dias: %.1f\n",
-                disciplinas[i].nome, disciplinas[i].carga, disciplinas[i].hora_inicio,
-                disciplinas[i].hora_final, disciplinas[i].pre_requisitos, disciplinas[i].dias);
+            printf("%s - Carga: %d, Horario: %s - %s, Pre-requisitos: %s, Dias: %s\n",
+                disciplinas[i].nome, disciplinas[i].carga, 
+                disciplinas[i].horario.hora_inicial, disciplinas[i].horario.hora_final, 
+                disciplinas[i].pre_requisitos, disciplinas[i].horario.dias);
         }
+        printf("\n");
     } else if (aluno.periodo == 6) {
-        struct Disciplina disciplinas[] = {
-            {"Projeto e Desenvolvimento de Sistemas", 288, 920, 1510, "Todas as diciplinas de 1º ao 5º semestre", 2.405},
+        Disciplina disciplinas[] = {
+            {"Projeto e Desenvolvimento de Sistemas", 288, "Todas as diciplinas de 1º ao 5º semestre", {"9:20", "15:10", "Seg, Qua, Qui"}},
     };
     
         puts("Sua grade eh:");
         for (int i = 0; i < 1; i++) {
-            printf("%s - Carga: %d\n, Horario: %d-%d\n, Pre-requisitos: %s\n, Dias: %.1f\n",
-                disciplinas[i].nome, disciplinas[i].carga, disciplinas[i].hora_inicio,
-                disciplinas[i].hora_final, disciplinas[i].pre_requisitos, disciplinas[i].dias);
+            printf("%s - Carga: %d, Horario: %s - %s, Pre-requisitos: %s, Dias: %s\n",
+                disciplinas[i].nome, disciplinas[i].carga, 
+                disciplinas[i].horario.hora_inicial, disciplinas[i].horario.hora_final, 
+                disciplinas[i].pre_requisitos, disciplinas[i].horario.dias);
         }
+        printf("\n");
     } else if (aluno.periodo == 7) {
-        struct Disciplina disciplinas[] = {
-            {"Metodologias de Pesquisa e Trabalhos Individual", 72, 1330, 1510, "Nenhum", 3.5},
-            {"Nocoes de Direito", 72, 1520, 1850, "Nenhum", 3.0},
+        Disciplina disciplinas[] = {
+            {"Metodologias de Pesquisa e Trabalhos Individual", 72, "Nenhum", {"13:30", "15:10", "Ter, Qui"}},
+            {"Nocoes de Direito", 72, "Nenhum", {"15:20", "18:50", "Ter"}},
 
     };
     
         puts("Sua grade eh:");
         for (int i = 0; i < 2; i++) {
-            printf("%s - Carga: %d\n, Horario: %d-%d\n, Pre-requisitos: %s\n, Dias: %.1f\n",
-                disciplinas[i].nome, disciplinas[i].carga, disciplinas[i].hora_inicio,
-                disciplinas[i].hora_final, disciplinas[i].pre_requisitos, disciplinas[i].dias);
+            printf("%s - Carga: %d, Horario: %s - %s, Pre-requisitos: %s, Dias: %s\n",
+                disciplinas[i].nome, disciplinas[i].carga, 
+                disciplinas[i].horario.hora_inicial, disciplinas[i].horario.hora_final, 
+                disciplinas[i].pre_requisitos, disciplinas[i].horario.dias);
         }
+        printf("\n");
     }
 }
 
@@ -196,9 +217,9 @@ void name_process(char *nome) {
 }
 
 int main() {
-   setlocale(LC_ALL, "Portuguese");
+   setlocale(LC_ALL, "");
 
-   struct Aluno aluno;
+   Aluno aluno;
 
    puts("Digite seu nome completo aqui:");
    fgets(aluno.nome, sizeof(aluno.nome), stdin);
@@ -218,7 +239,7 @@ int main() {
    puts("Decomposicao do nome, some e resto");
    name_process(aluno.nome);
 
-   puts(" ");
+   printf("\n");
 
    //matricula do aluno e grade curricular
    matricula(aluno);
