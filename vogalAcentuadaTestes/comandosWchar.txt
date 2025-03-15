@@ -5,6 +5,7 @@ strcpy(dest, src)	                wcscpy(dest, src)	                Cópia de st
 strcmp(s1, s2)	                    wcscmp(s1, s2)	                    Comparação de strings
 printf("%s", str)	                wprintf(L"%ls", str)	            Impressão de string
 scanf("%s", str)	                wscanf(L"%ls", str)	                Entrada de string
+getchar()                           getwchar()                          Entrada de caractere
 strcspn(* str, * str)               wcschr(* str, * str)                Primeira ocorrência de qualquer caractere 
 strrchr(str, ch)                    wcsrchr(str, ch)	                Retorna um ponteiro para a última ocorrência de ch
 fgets(* str, tam, entrada)          fgetws(* str, tam, entrada)         Entrada de string
@@ -14,7 +15,8 @@ isalpha(ch)                         iswalpha(ch)	                    Verifica se
 isdigit(ch)                         iswdigit(ch)	                    Verifica se é um dígito (0-9)
 isspace(ch)                         iswspace(ch)	                    Verifica se é um espaço em branco
 ispunct(ch)                         iswpunct(ch)	                    Verifica se é um caractere de pontuação
-
+putc(caractere, stdout)             putwc(caractere, stdout)            Imprimi apenas um caractere
+strtok(* str, * delim)              wcstok(* str, * delim)              Dividi uma string em substrings
 
 Biblioteca (char)                   Equivalente (wcahr_t)
 

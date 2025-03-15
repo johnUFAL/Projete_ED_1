@@ -4,12 +4,13 @@
 #include <ctype.h>
 #include <locale.h>
 #include <wchar.h>
+#include <wctype.h>
  
 //nome completo: Erivaldo Jose Da Silva Santos Junior
 //nome teste: erivaldo jose silva santos
 
 typedef struct {
-    char nome[50];
+    wchar_t nome[50];
     int periodo;
     int max_disciplina;
     int tempo_curso;
@@ -173,24 +174,16 @@ void matricula(Aluno aluno) {
 }
 
 //função para checar se todos os valores digitados na string são letras
-int validation_string(char arr[]) {
-   for (int i = 0; arr[i] != '\0'; i++) {
-       if (!isalpha(arr[i])) {  //validacao de tipo string
-           return 0;
-       }
-   }
-   return 1;
-}
+int validation_string(Aluno aluno) {
+    for (int i = 0; aluno.nome != L'\0'; ++i)
+    {
+        if (!iswapha(aluno.nome[i])) //validacao de tipo string
+        {
+            return 0;
+        }
+    }
 
-int validation(char arr[]){
-   int len = strlen(arr); //tamanho da string
-   
-   if (islower(arr[0]) || isspace(arr[0])) { //validacao de espaço e tipo de letra 
-       printf("Nome não válido\n");
-       return 0;
-   }
-   printf("Nome valido\n");
-   return 0;
+   return 1;
 }
 
 int value_string(char letra) { //revisar melhor forma de usar palavras com acentos!!!!!!!!!!!!!!!!!!!!!!!!
@@ -221,11 +214,14 @@ int ignorate(const char *primeiro_char) { //aponta para a primeeira letra
     return (strcmp(primeiro_char, "da") == 0 || strcmp(primeiro_char, "de") == 0 || strcmp(primeiro_char, "do") == 0 ||
             strcmp(primeiro_char, "das") == 0 || strcmp(primeiro_char, "dos") == 0); //modifica os enderecos para 0
 }
-void name_process(char *nome) {
-    char temp[50]; //copia da original antes de usar
-    strcpy(temp, nome);  //não modificar o original
 
-    char *token = strtok(temp, " ");
+//função para separação do nome em partes para fazer a divisão
+void name_process(Aluno aluno, int resto[]) {
+
+    wchar_t * ultimaParada; //ponteiro que guarda a posição de onde a função wcstok parou
+    wchar_t * delimitadores = " "; //delimitador = espaço
+    wchar_t * token = wcstok(aluno.nome, delimitadores, &ultimaParada); //como a struct foi copiada para a função não é necessário fazer uma cópia da string
+
     
     puts("Resultado da divisao por 3 (resto):");
     while (token != NULL) {
@@ -241,28 +237,31 @@ int main() {
    setlocale(LC_ALL, "pt_BR.utf8");
 
    Aluno aluno;
+   int resto[4]; //guardará o resto das divisões das particões do nome
 
-   puts("Digite seu nome completo aqui: ");
-   fgets(aluno.nome, sizeof(aluno.nome) / sizeof(char), stdin);
-   aluno.nome[strcspn(aluno.nome, "\n")] = '\0';
+   wprintf(L"Digite seu nome completo aqui: ");
+   fgetws(aluno.nome, sizeof(aluno.nome) / sizeof(wchar_t), stdin);
 
-   puts("Digite seu periodo aqui: ");
-   scanf("%d", &aluno.periodo);
-   getchar();
+   wchar_t * ptr = wcschr(aluno.nome, L'\n'); //ponteiro wchar_t para a 1° aparição do '\n'
+
+   if (ptr)
+   {
+        *ptr = L'\0'; //substituindo o '\n' por '\0'
+   }
+
+   wprintf("Digite seu período aqui: ");
+   wscanf("%d", &aluno.periodo);
+   getwchar();
    
    //validacao do nome 
-   if (validation_string(aluno.nome)) {
-       validation(aluno.nome);
+   if (!validation_string(aluno)) {
+       wprintf("Há caracteres não alfabéticos no seu nome!\n");
+       return 1;
    }
-   else{
-        puts("Há caracteres não alfabéticos no seu nome!\n");
-        return 1;
-   }
-   puts(" ");
 
    //decomposicao do nome e soma de cada um
-   puts("Decomposicao do nome, some e resto");
-   name_process(aluno.nome);
+   wprintf("Decomposição do nome, soma e resto");
+   name_process(aluno, resto);
 
    printf("\n");
 
