@@ -186,33 +186,33 @@ int validation_string(Aluno aluno) {
    return 1;
 }
 
-int value_string(char letra) { //revisar melhor forma de usar palavras com acentos!!!!!!!!!!!!!!!!!!!!!!!!
+int value_string(wchar_t letra) { //revisar melhor forma de usar palavras com acentos!!!!!!!!!!!!!!!!!!!!!!!!
    switch (letra) {
-       case 'q': return 1; case 'w': return 6; case 'e': return 7;
-       case 'r': return 6; case 't': return 5; case 'y': return 2;
-       case 'u': return 3; case 'i': return 8; case 'o': return 9;
-       case 'p': return 4; case 'á': return 3; case 'ã': return 4;
-       case 'a': return 2; case 's': return 5; case 'd': return 8;
-       case 'f': return 7; case 'g': return 4; case 'h': return 1;
-       case 'j': return 4; case 'k': return 7; case 'l': return 8;
-       case 'ç': return 5; case 'é': return 2; case 'í': return 3;
-       case 'z': return 3; case 'x': return 4; case 'c': return 9;
-       case 'v': return 8; case 'b': return 3; case 'n': return 2;
-       case 'm': return 5; case 'ó': return 6; case 'õ': return 7;
-       case 'ô': return 6; case 'â': return 1; case 'ê': return 2;
+       case L'q': return 1; case L'w': return 6; case L'e': return 7;
+       case L'r': return 6; case L't': return 5; case L'y': return 2;
+       case L'u': return 3; case L'i': return 8; case L'o': return 9;
+       case L'p': return 4; case L'á': return 3; case L'ã': return 4;
+       case L'a': return 2; case L's': return 5; case L'd': return 8;
+       case L'f': return 7; case L'g': return 4; case L'h': return 1;
+       case L'j': return 4; case L'k': return 7; case L'l': return 8;
+       case L'ç': return 5; case L'é': return 2; case L'í': return 3;
+       case L'z': return 3; case L'x': return 4; case L'c': return 9;
+       case L'v': return 8; case L'b': return 3; case L'n': return 2;
+       case L'm': return 5; case L'ó': return 6; case L'õ': return 7;
+       case L'ô': return 6; case L'â': return 1; case L'ê': return 2;
        default: return 0;
    }
 }
 
-int name_sum(char *nome) {
-   if (*nome == '\0') return 0;
-   return value_string(tolower(*nome)) + (name_sum(nome + 1));
-}
+int name_sum(wchar_t *nome) {
+   int soma = 0;
 
-//ignora essas palavras 
-int ignorate(const char *primeiro_char) { //aponta para a primeeira letra 
-    return (strcmp(primeiro_char, "da") == 0 || strcmp(primeiro_char, "de") == 0 || strcmp(primeiro_char, "do") == 0 ||
-            strcmp(primeiro_char, "das") == 0 || strcmp(primeiro_char, "dos") == 0); //modifica os enderecos para 0
+   for (int i = 0; nome[i] != L'\0'; ++i)
+   {
+        soma += value_string(towlower(nome[i]));
+   }
+   
+   return soma;
 }
 
 //função para separação do nome em partes para fazer a divisão
@@ -222,15 +222,23 @@ void name_process(Aluno aluno, int resto[]) {
     wchar_t * delimitadores = " "; //delimitador = espaço
     wchar_t * token = wcstok(aluno.nome, delimitadores, &ultimaParada); //como a struct foi copiada para a função não é necessário fazer uma cópia da string
 
-    
-    puts("Resultado da divisao por 3 (resto):");
-    while (token != NULL) {
-        if (!ignorate(token)) {
-            int soma = name_sum(token);
-            printf("%s => Soma: %d, Resto da divisao por 3: %d\n", token, soma, (soma % 3));
+    int j = 0; //indice para o array inteiro de restos
+
+    wprintf(L"Resultado da divisão por 3 (resto):");
+    while (token != NULL) 
+    {
+        
+        if (wcslen(token) > 3)
+        {
+            wprintf(L"%d palavra: %ls\n", j + 1, token);
+            resto[j] = (name_sum(token) % 3);
+            j++;
         }
-        token = strtok(NULL, " ");
+
+        token = wcstok(NULL, delimitadores, &ultimaParada);
     }
+
+    return;
 }
 
 int main() {

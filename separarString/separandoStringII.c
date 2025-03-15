@@ -43,20 +43,5 @@ int main ()
         token = wcstok(NULL, delimitadores, &ultimaParada); //Continuar com a próxima chamada
     }
 
-    wchar_t frase02[101];
-    wchar_t fraseCopia02[101];
-
-    fgetws(frase02, sizeof(frase02) / sizeof(wchar_t), stdin);
-
-    wcscpy(fraseCopia02, frase02);
-
-    wchar_t * tokien = wcstok(fraseCopia02, delimitadores, &ultimaParada);
-
-    while (tokien != NULL)
-    {
-        wprintf(L"Token: %ls\n", tokien);
-        tokien = wcstok(NULL, delimitadores, &ultimaParada);
-    }
-
     return 0;
 }
