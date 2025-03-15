@@ -3,9 +3,10 @@
 #include <string.h>
 #include <ctype.h>
 #include <locale.h>
+#include <wchar.h>
  
 //nome completo: Erivaldo Jose Da Silva Santos Junior
-//nome teste: erivaldo jose silva junior
+//nome teste: erivaldo jose silva santos
 
 typedef struct {
     char nome[50];
@@ -171,8 +172,8 @@ void matricula(Aluno aluno) {
     }
 }
 
-
-char validation_string(char arr[]) {
+//função para checar se todos os valores digitados na string são letras
+int validation_string(char arr[]) {
    for (int i = 0; arr[i] != '\0'; i++) {
        if (!isalpha(arr[i])) {  //validacao de tipo string
            return 0;
@@ -181,15 +182,11 @@ char validation_string(char arr[]) {
    return 1;
 }
 
-char validation(char arr[]){
-   int len = strlen(arr);
+int validation(char arr[]){
+   int len = strlen(arr); //tamanho da string
    
-   if (arr[len - 1] == '\n') { //validacao de quebra de linha
-       arr[len - 1] = '\0';
-   }
-
    if (islower(arr[0]) || isspace(arr[0])) { //validacao de espaço e tipo de letra 
-       printf("Nome nao valido\n");
+       printf("Nome não válido\n");
        return 0;
    }
    printf("Nome valido\n");
@@ -245,17 +242,21 @@ int main() {
 
    Aluno aluno;
 
-   puts("Digite seu nome completo aqui:");
-   fgets(aluno.nome, sizeof(aluno.nome), stdin);
+   puts("Digite seu nome completo aqui: ");
+   fgets(aluno.nome, sizeof(aluno.nome) / sizeof(char), stdin);
    aluno.nome[strcspn(aluno.nome, "\n")] = '\0';
 
-   puts("Digite seu periodo aqui:");
+   puts("Digite seu periodo aqui: ");
    scanf("%d", &aluno.periodo);
    getchar();
    
    //validacao do nome 
    if (validation_string(aluno.nome)) {
        validation(aluno.nome);
+   }
+   else{
+        puts("Há caracteres não alfabéticos no seu nome!\n");
+        return 1;
    }
    puts(" ");
 
