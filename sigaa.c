@@ -3,11 +3,14 @@
 #include <string.h>
 #include <ctype.h>
 #include <locale.h>
+ 
+//nome completo: Erivaldo Jose Da Silva Santos Junior
+//nome teste: erivaldo jose silva junior
 
 typedef struct {
     char nome[50];
     int periodo;
-    int max_dscilina;
+    int max_disciplina;
     int tempo_curso;
     int enfase;
     int modo_disciplina;
