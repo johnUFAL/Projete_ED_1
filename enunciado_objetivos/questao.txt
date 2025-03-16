@@ -41,7 +41,7 @@ A escolha das disciplina deve seguir a seguinte orientação:
     Some todos os números do seu próximo nome e divida o resultado por 3, se o valor do resto for:
 
 0 = as disciplinas deve ocupar o menor números de dias possíveis
-1 = as disciplinas devem pertencer a um mesmo turno
+1 = as disciplinas devem pertencer num mesmo turno
 2 = o aluno não deve extrapola o limite de 3 disciplinas no máximo por dia, mais deve ir todos os dias a 
 ufal
 

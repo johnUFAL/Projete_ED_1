@@ -13,6 +13,8 @@
 
 typedef struct {
     wchar_t nome[50];
+    int materias_pagas[29]; //matérias já realizadas, ou pagas, pelo aluno
+    int horas_pagas; //com as possíveis matérias já pagas, logo o aluno também cumpriu com suas horas obrigatórias
     int periodo; //periodo em que se encontra o aluno
     int max_disciplina; //max de disciplinas que ele irá pagar por semestre
     int tempo_curso; //tempo de curso
@@ -28,6 +30,7 @@ typedef struct {
 
 typedef struct {
     char nome[60];
+    int id;
     int carga;
     char pre_requisitos[100];
     Horario horario;
@@ -63,116 +66,119 @@ void escolha_eletiva(Aluno aluno) {
 }
 
 void matricula(Aluno aluno) {
+    wprintf(L"%d\n", aluno.periodo);
     if (aluno.periodo == 1) {
         Disciplina disciplinas[] = {
-            {"Programacao 1", 72, "Nenhum", {"15:20", "18:50", "Sex"}},
-            {"Matematica Discreta", 72, "Nenhum", {"13:30", "15:10", "Ter, Qui"}},
-            {"Calculo Diferencial e Integral", 144, "Nenhum", {"15:20", "18:50", "Ter, Qui"}},
-            {"Logica para Programacao", 72, "Nenhum", {"14:20", "17:00", "Seg, Qua"}},
-            {"Computacao, Sociedade e Etica", 72, "Nenhum", {"17:10", "18:50", "Seg, Qua"}}
+            {"Programacao 1", 359, 72, "Nenhum", {"15:20", "18:50", "Sex"}},
+            {"Matematica Discreta", 362, 72, "Nenhum", {"13:30", "15:10", "Ter, Qui"}},
+            {"Calculo Diferencial e Integral", 363, 144, "Nenhum", {"15:20", "18:50", "Ter, Qui"}},
+            {"Logica para Programacao", 360, 72, "Nenhum", {"14:20", "17:00", "Seg, Qua"}},
+            {"Computacao, Sociedade e Etica", 361, 72, "Nenhum", {"17:10", "18:50", "Seg, Qua"}}
         };
 
-        puts("Sua grade eh:");
+        wprintf(L"Sua grade eh:\n");
         for (int i = 0; i < 5; i++) {
-            printf("%s - Carga: %d, Horario: %s - %s, Pre-requisitos: %s, Dias: %s\n",
+            wprintf(L"-> %s - Carga: %d, Horario: %s - %s, Pre-requisitos: %s, Dias: %s\n",
                    disciplinas[i].nome, disciplinas[i].carga, 
                    disciplinas[i].horario.hora_inicial, disciplinas[i].horario.hora_final, 
                    disciplinas[i].pre_requisitos, disciplinas[i].horario.dias);
         }
-        printf("\n");
+        wprintf(L"\n");
     } else if (aluno.periodo == 2) {
         Disciplina disciplinas[] = {
-            {"Banco de dados", 72, "Nenhum", {"13:30", "15:20", "Seg, Qua"}},
-            {"Geometria Analitica", 72, "Nenhum", {"15:20", "17:10", "Seg, Qua"}},
-            {"Org. E arq. de Computadores", 72, "Nenhum", {"9:20", "11:00", "Ter, Qui"}},
-            {"Estrutra de Dados", 72, "Programacao 1", {"11:10", "12:50", "Ter, Qui"}},
+            {"Banco de dados", 365, 72, "Nenhum", {"13:30", "15:20", "Seg, Qua"}},
+            {"Geometria Analitica", 367, 72, "Nenhum", {"15:20", "17:10", "Seg, Qua"}},
+            {"Org. E arq. de Computadores", 366, 72, "Nenhum", {"9:20", "11:00", "Ter, Qui"}},
+            {"Estrutra de Dados", 364, 72, "Programacao 1", {"11:10", "12:50", "Ter, Qui"}},
     };
     
-        puts("Sua grade é:");
+        wprintf(L"Sua grade eh:\n");
         for (int i = 0; i < 4; i++) {
-            printf("%s - Carga: %d, Horario: %s - %s, Pre-requisitos: %s, Dias: %s\n",
+            wprintf(L"-> %s - Carga: %d, Horario: %s - %s, Pre-requisitos: %s, Dias: %s\n",
                     disciplinas[i].nome, disciplinas[i].carga, 
                     disciplinas[i].horario.hora_inicial, disciplinas[i].horario.hora_final, 
                     disciplinas[i].pre_requisitos, disciplinas[i].horario.dias);
         }
-        printf("\n");
+        wprintf(L"\n");
     } else if (aluno.periodo == 3) {
         Disciplina disciplinas[] = {
-            {"Redes de Computadores", 72, "Programacao 1", {"15:20", "17:00", "Seg, Qui"}},
-            {"Teoria dos Grafos", 72,  "Estrutra de Dados e Matematica Discreta", {"13:30", "15:10","Seg, Qui"}},
-            {"Probabilidade e Estastistica", 72, "Calculo Diferencial e Integral", {"11:10", "12:50", "Seg, Qua"}},
-            {"Algebra Linear", 72, "Geometria Analitica", {"9:20", "11:00", "Seg, Qua"}},
+            {"Redes de Computadores", 368, 72, "Programacao 1", {"15:20", "17:00", "Seg, Qui"}},
+            {"Teoria dos Grafos", 369, 72,  "Estrutra de Dados e Matematica Discreta", {"13:30", "15:10","Seg, Qui"}},
+            {"Probabilidade e Estastistica", 370, 72, "Calculo Diferencial e Integral", {"11:10", "12:50", "Seg, Qua"}},
+            {"Algebra Linear", 371, 72, "Geometria Analitica", {"9:20", "11:00", "Seg, Qua"}},
     };
     
-        puts("Sua grade eh:");
+        wprintf(L"Sua grade eh:\n");
         for (int i = 0; i < 4; i++) {
-            printf("%s - Carga: %d, Horario: %s - %s, Pre-requisitos: %s, Dias: %s\n",
+            wprintf(L"-> %s - Carga: %d, Horario: %s - %s, Pre-requisitos: %s, Dias: %s\n",
                 disciplinas[i].nome, disciplinas[i].carga, 
                 disciplinas[i].horario.hora_inicial, disciplinas[i].horario.hora_final, 
                 disciplinas[i].pre_requisitos, disciplinas[i].horario.dias);
         }
-        printf("\n");
+        wprintf(L"\n");
     } else if (aluno.periodo == 4) {
         Disciplina disciplinas[] = {
-            {"Programacao 2", 72, "Estrutura de Dados, Banco de dados e Redes de Computadores", {"15:20", "17:00", "Qua"}},
-            {"Programacao 3", 72, "Estrutura de Dados, Banco de dados e Redes de Computadores", {"15:20", "17:00", "Ter, QUi"}},
-            {"Projeto de Analise de Algoritmos", 72, "Estrutura de Dados e Teoria dos Grafos", {"17:10", "18:50", "Seg, Qui"}},
-            {"Teoria da Computacao", 72, "Nenhum", {"13:30", "15:10", "Seg, Qua"}},
+            {"Programacao 2", 372, 72, "Estrutura de Dados, Banco de dados e Redes de Computadores", {"15:20", "17:00", "Qua"}},
+            {"Programacao 3", 373, 72, "Estrutura de Dados, Banco de dados e Redes de Computadores", {"15:20", "17:00", "Ter, QUi"}},
+            {"Projeto de Analise de Algoritmos", 374, 72, "Estrutura de Dados e Teoria dos Grafos", {"17:10", "18:50", "Seg, Qui"}},
+            {"Teoria da Computacao", 376, 72, "Nenhum", {"13:30", "15:10", "Seg, Qua"}},
     };
     
-        puts("Sua grade eh:");
+        wprintf(L"Sua grade eh:\n");
         for (int i = 0; i < 4; i++) {
-            printf("%s - Carga: %d, Horario: %s - %s, Pre-requisitos: %s, Dias: %s\n",
+            wprintf(L"-> %s - Carga: %d, Horario: %s - %s, Pre-requisitos: %s, Dias: %s\n",
                 disciplinas[i].nome, disciplinas[i].carga, 
                 disciplinas[i].horario.hora_inicial, disciplinas[i].horario.hora_final, 
                 disciplinas[i].pre_requisitos, disciplinas[i].horario.dias);
         }
-        printf("\n");
+        wprintf(L"\n");
     } else if (aluno.periodo == 5) {
         Disciplina disciplinas[] = {
-            {"Sietemas Operacionais", 72, "Org. E arq. de Computadores", {"13:30", "15:20", "Seg, Qua"}},
-            {"Compiladores", 72,  "Estrutura de Dados e Logica para Computacao", {"15:20", "17:00", "Seg, Qua"}},
-            {"Inteligencia Artificial", 72, "Estrutura de Dados e Logica para Computacao", {"15:20", "17:00", "Ter, Qui"}},
-            {"Computacao Grafica", 72, "Nenhum", {"17:10", "18:50", "Ter, Qui"}},
+            {"Sistemas Operacionais", 378, 72, "Org. E arq. de Computadores", {"13:30", "15:20", "Seg, Qua"}},
+            {"Compiladores", 379, 72,  "Estrutura de Dados e Logica para Computacao", {"15:20", "17:00", "Seg, Qua"}},
+            {"Inteligencia Artificial", 380, 72, "Estrutura de Dados e Logica para Computacao", {"15:20", "17:00", "Ter, Qui"}},
+            {"Computacao Grafica", 381, 72, "Nenhum", {"17:10", "18:50", "Ter, Qui"}},
     };
     
-        puts("Sua grade eh:");
+        wprintf(L"Sua grade eh:\n");
         for (int i = 0; i < 4; i++) {
-            printf("%s - Carga: %d, Horario: %s - %s, Pre-requisitos: %s, Dias: %s\n",
+            wprintf(L"-> %s - Carga: %d, Horario: %s - %s, Pre-requisitos: %s, Dias: %s\n",
                 disciplinas[i].nome, disciplinas[i].carga, 
                 disciplinas[i].horario.hora_inicial, disciplinas[i].horario.hora_final, 
                 disciplinas[i].pre_requisitos, disciplinas[i].horario.dias);
         }
-        printf("\n");
+        wprintf(L"\n");
     } else if (aluno.periodo == 6) {
         Disciplina disciplinas[] = {
-            {"Projeto e Desenvolvimento de Sistemas", 288, "Todas as diciplinas de 1º ao 5º semestre", {"9:20", "15:10", "Seg, Qua, Qui"}},
+            {"Projeto e Desenvolvimento de Sistemas", 382, 288, "Todas as diciplinas de 1º ao 5º semestre", {"9:20", "15:10", "Seg, Qua, Qui"}},
     };
     
-        puts("Sua grade eh:");
+        wprintf(L"Sua grade eh:\n");
         for (int i = 0; i < 1; i++) {
-            printf("%s - Carga: %d, Horario: %s - %s, Pre-requisitos: %s, Dias: %s\n",
+            wprintf(L"-> %s - Carga: %d, Horario: %s - %s, Pre-requisitos: %s, Dias: %s\n",
                 disciplinas[i].nome, disciplinas[i].carga, 
                 disciplinas[i].horario.hora_inicial, disciplinas[i].horario.hora_final, 
                 disciplinas[i].pre_requisitos, disciplinas[i].horario.dias);
         }
-        printf("\n");
+        wprintf(L"\n");
     } else if (aluno.periodo == 7) {
         Disciplina disciplinas[] = {
-            {"Metodologias de Pesquisa e Trabalhos Individual", 72, "Nenhum", {"13:30", "15:10", "Ter, Qui"}},
-            {"Nocoes de Direito", 72, "Nenhum", {"15:20", "18:50", "Ter"}},
+            {"Metodologias de Pesquisa e Trabalhos Individual", 386, 72, "Nenhum", {"13:30", "15:10", "Ter, Qui"}},
+            {"Nocoes de Direito", 387, 72, "Nenhum", {"15:20", "18:50", "Ter"}},
 
     };
     
-        puts("Sua grade eh:");
+        wprintf(L"Sua grade eh:\n");
         for (int i = 0; i < 2; i++) {
-            printf("%s - Carga: %d, Horario: %s - %s, Pre-requisitos: %s, Dias: %s\n",
+            wprintf(L"-> %s - Carga: %d, Horario: %s - %s, Pre-requisitos: %s, Dias: %s\n",
                 disciplinas[i].nome, disciplinas[i].carga, 
                 disciplinas[i].horario.hora_inicial, disciplinas[i].horario.hora_final, 
                 disciplinas[i].pre_requisitos, disciplinas[i].horario.dias);
         }
-        printf("\n");
+        wprintf(L"\n");
     }
+
+    return;
 }
 
 void suaSituacao (int resto[]) //essa função descreve os critérios estabelecidos pela professora
@@ -375,25 +381,44 @@ int main() {
    Aluno aluno;
    int resto[MAXR]; //guardará o resto das divisões das particões do nome
 
-   wprintf(L"Digite seu nome completo aqui: ");
-   fgetws(aluno.nome, sizeof(aluno.nome) / sizeof(wchar_t), stdin);
-
-   wchar_t * ptr = wcschr(aluno.nome, L'\n'); //ponteiro wchar_t para a 1° aparição do '\n'
-
-   if (ptr)
+   while (1) //loop para dar mais uma chance do usuário consertar seu erro
    {
-        *ptr = L'\0'; //substituindo o '\n' por '\0'
+       wprintf(L"Digite seu nome completo aqui: ");
+       fgetws(aluno.nome, sizeof(aluno.nome) / sizeof(wchar_t), stdin);
+    
+       wchar_t * ptr = wcschr(aluno.nome, L'\n'); //ponteiro wchar_t para a 1° aparição do '\n'
+    
+       if (ptr)
+       {
+            *ptr = L'\0'; //substituindo o '\n' por '\0'
+       }
+    
+       //validacao do nome 
+       if (!validation_string(aluno)) {
+           wprintf(L"Existe caracteres não alfabéticos no seu nome! Vamos recomeçar!\n");
+       }
+       else{
+            break;
+       }
    }
 
-   wprintf(L"Digite seu período aqui: ");
-   wscanf(L"%d", &aluno.periodo);
-   getwchar();
-   
-   //validacao do nome 
-   if (!validation_string(aluno)) {
-       wprintf(L"Existe caracteres não alfabéticos no seu nome!\n");
-       return 1;
-   }
+   while (1) //loop para dar mais uma chance do usuário consertar seu erro
+   {
+       wprintf(L"Digite seu período aqui: ");
+       wscanf(L"%d", &aluno.periodo);
+       getwchar();
+    
+       if (aluno.periodo < 1 || aluno.periodo > 8)
+       {
+            wprintf(L"Uepa! Valor inserido fora do intervalo! Vamos recomeçar!\n");
+       }
+       else{
+            break;
+       }
+    
+    }
+    
+    wprintf(L"%d\n", aluno.periodo);
 
    //decomposicao do nome, soma e divisão para obtenção do seu resto
    wprintf(L"Decomposição do nome, soma e resto\n");
