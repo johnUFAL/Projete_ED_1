@@ -218,24 +218,57 @@ int name_sum(wchar_t *nome) {
 //função para separação do nome em partes para fazer a divisão
 void name_process(Aluno aluno, int resto[]) {
 
+    wchar_t copiaNome[50];
     wchar_t * ultimaParada; //ponteiro que guarda a posição de onde a função wcstok parou
     wchar_t * delimitadores = " "; //delimitador = espaço
-    wchar_t * token = wcstok(aluno.nome, delimitadores, &ultimaParada); //como a struct foi copiada para a função não é necessário fazer uma cópia da string
 
-    int j = 0; //indice para o array inteiro de restos
+    wcscpy(copiaNome, aluno.nome); //apesar de aluno.nome ser uma cópia iremos criar mais uma cópia por prevenção
 
-    wprintf(L"Resultado da divisão por 3 (resto):");
-    while (token != NULL) 
+    wchar_t * token = wcstok(aluno.nome, delimitadores, &ultimaParada); //como aluno.nome é uma cópia iremos utiliza-la
+
+    int j = 0; //indice para o array de inteiros
+
+    while (token != NULL) //vai separar e ler cada partição, ou palavra, do nome
     {
-        
-        if (wcslen(token) > 3)
+        if (j > 3) //para caso o nome da pessoa seja muito extenso
         {
-            wprintf(L"%d palavra: %ls\n", j + 1, token);
+            break;
+        }
+
+        if (wcslen(token) > 3) //caso o tamanho da palavra for <= 3 a condição irá ignorar essa palavra e vai pular para a próxima
+        {
+            wprintf(L"%d° palavra do nome: %ls, tem %ld letras\n", j + 1, token, wcslen(token));
             resto[j] = (name_sum(token) % 3);
             j++;
         }
 
         token = wcstok(NULL, delimitadores, &ultimaParada);
+    }
+
+    if (j < 3) //caso o nome não seja grande o suficiente iremos refazer o processo de particionamento
+    {
+        //resetando os ponteiros
+        token = NULL;
+        ultimaParada = NULL;
+        
+        token = wcstok(copiaNome, delimitadores, &ultimaParada); //é aqui onde iremos utilizar nossa cópia de segurança
+
+        while (token != NULL)
+        {
+            if (j > 3) //para caso o nome já tenha ultrapassado o necessário
+            {
+                break;
+            }
+
+            if (wcslen(token) > 3) //caso o tamanho da palavra for <= 3 a condição irá ignorar essa palavra e vai pular para a próxima
+            {
+                wprintf(L"%d° palavra do nome: %ls, tem %ld letras\n", j + 1, token, wcslen(token));
+                resto[j] = (name_sum(token) % 3);
+                j++;
+            }
+
+            token = wcstok(NULL, delimitadores, &ultimaParada);
+        }
     }
 
     return;
@@ -267,7 +300,7 @@ int main() {
        return 1;
    }
 
-   //decomposicao do nome e soma de cada um
+   //decomposicao do nome, soma e divisão para obtenção do seu resto
    wprintf("Decomposição do nome, soma e resto");
    name_process(aluno, resto);
 
