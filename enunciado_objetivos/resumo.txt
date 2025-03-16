@@ -1,0 +1,34 @@
+para a questão: 
+receber nome => calcular valor
+
+ACHARIA BOM: PEDIR NOME, SEMESTRE
+
+aconselhamento pedagógico:
+- é preciso ter os pre requisitos 
+- sem choque de horário
+- pelo menos uma disciplina
+
+max disciplina:
+-> primeiro nome % 3
+0 = máximo 10
+1 = máximo 8
+2 = máximo 6
+
+tempo de curso desejado:
+-> segundo nome % 3
+0 = no menor tempo possível
+1 = no maior tempo possível
+2 = tempo médio possível
+
+enfase:
+-> terceiro nome % 3
+0 = ênfase desejada pelo aluno
+1 = ênfase que diminui o tempo de conclusão do curso pelo aluno
+2 = nenhuma ênfase
+
+escolha das disciplina:
+-> quarto nome % 3
+0 = as disciplinas deve ocupar o menor números de dias possíveis
+1 = as disciplinas devem pertencer a um mesmo turno
+2 = o aluno não deve extrapola o limite de 3 disciplinas no máximo por dia, mais deve ir todos os dias a 
+ufal

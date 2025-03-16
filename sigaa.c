@@ -3,11 +3,18 @@
 #include <string.h>
 #include <ctype.h>
 #include <locale.h>
+#include <wchar.h>
+#include <wctype.h>
+
+#define MAXR 4 //n° max de restos
+ 
+//nome completo: Erivaldo Jose Da Silva Santos Junior
+//nome teste: erivaldo jose silva santos
 
 typedef struct {
-    char nome[50];
+    wchar_t nome[50];
     int periodo;
-    int max_dscilina;
+    int max_disciplina;
     int tempo_curso;
     int enfase;
     int modo_disciplina;
@@ -168,102 +175,241 @@ void matricula(Aluno aluno) {
     }
 }
 
+void suaSituacao (int resto[]) //essa função descreve os critérios estabelecidos pela professora
+{
+    wprintf(L"=============================CRITÉRIOS=============================\n");
+    
+    wprintf(L"-> Seu máximo de disciplinas nesse semestre será de ");
+    
+    switch (resto[0])
+    {
+        case 0:
+            wprintf(L"10 disciplinas\n");
+            break;
 
-char validation_string(char arr[]) {
-   for (int i = 0; arr[i] != '\0'; i++) {
-       if (!isalpha(arr[i])) {  //validacao de tipo string
-           return 0;
-       }
-   }
+        case 1:
+            wprintf(L"8 disciplinas\n");    
+            break;
+
+        case 2:
+            wprintf(L"6 disciplinas\n");
+            break;
+
+        default:
+            wprintf(L"#\nERRO! Valor fora do intervalo esperado!\n");
+    }
+
+    wprintf(L"-> Você terminará o curso ");
+
+    switch (resto[1])
+    {
+        case 0:
+            wprintf(L"no menor tempo possível\n");
+            break;
+
+        case 1:
+            wprintf(L"no maior tempo possível\n");    
+            break;
+
+        case 2:
+            wprintf(L"no tempo médio possível\n");
+            break;
+
+        default:
+            wprintf(L"#\nERRO! Valor fora do intervalo esperado!\n");
+    }
+
+    wprintf(L"-> O critério de escolha de suas ênfases será ");
+
+    switch (resto[2])
+    {
+        case 0:
+            wprintf(L"a de sua escolha\n");
+            break;
+
+        case 1:
+            wprintf(L"a que diminui o tempo de conclusão do curso\n");    
+            break;
+
+        case 2:
+            wprintf(L"nenhuma. Você não irá pegar nenhuma ênfase\n");
+            break;
+
+        default:
+            wprintf(L"#\nERRO! Valor fora do intervalo esperado!\n");
+    }
+
+    wprintf(L"-> A escolha das disciplinas se dará ");
+
+    switch (resto[3])
+    { 
+        case 0:
+            wprintf(L"por aquelas que ocuparem o menor número de dias possíveis\n");
+            break;
+
+        case 1:
+            wprintf(L"por pertencerem ao mesmo turno\n");    
+            break;
+
+        case 2:
+            wprintf(L"por um limite de 3 disciplinas no máximo por dia, e que o aluno deva ir todos os dias a ufal\n");
+            break;
+
+        default:
+            wprintf(L"#\nERRO! Valor fora do intervalo esperado!\n");
+    }
+
+        return;
+}
+
+//função para checar se todos os valores digitados na string são letras
+int validation_string(Aluno aluno) {
+    for (int i = 0; aluno.nome[i] != L'\0'; ++i)
+    {
+        if (!(iswalpha(aluno.nome[i]) || iswspace(aluno.nome[i]))) //validacao de tipo string
+        {
+            return 0;
+        }
+    }
+
    return 1;
 }
 
-char validation(char arr[]){
-   int len = strlen(arr);
-   
-   if (arr[len - 1] == '\n') { //validacao de quebra de linha
-       arr[len - 1] = '\0';
-   }
-
-   if (islower(arr[0]) || isspace(arr[0])) { //validacao de espaço e tipo de letra 
-       printf("Nome nao valido\n");
-       return 0;
-   }
-   printf("Nome valido\n");
-   return 0;
-}
-
-int value_string(char letra) { //revisar melhor forma de usar palavras com acentos!!!!!!!!!!!!!!!!!!!!!!!!
+int value_string(wchar_t letra) { 
    switch (letra) {
-       case 'q': return 1; case 'w': return 6; case 'e': return 7;
-       case 'r': return 6; case 't': return 5; case 'y': return 2;
-       case 'u': return 3; case 'i': return 8; case 'o': return 9;
-       case 'p': return 4; case 'á': return 3; case 'ã': return 4;
-       case 'a': return 2; case 's': return 5; case 'd': return 8;
-       case 'f': return 7; case 'g': return 4; case 'h': return 1;
-       case 'j': return 4; case 'k': return 7; case 'l': return 8;
-       case 'ç': return 5; case 'é': return 2; case 'í': return 3;
-       case 'z': return 3; case 'x': return 4; case 'c': return 9;
-       case 'v': return 8; case 'b': return 3; case 'n': return 2;
-       case 'm': return 5; case 'ó': return 6; case 'õ': return 7;
-       case 'ô': return 6; case 'â': return 1; case 'ê': return 2;
+       case L'q': return 1; case L'w': return 6; case L'e': return 7;
+       case L'r': return 6; case L't': return 5; case L'y': return 2;
+       case L'u': return 3; case L'i': return 8; case L'o': return 9;
+       case L'p': return 4; case L'á': return 3; case L'ã': return 4;
+       case L'a': return 2; case L's': return 5; case L'd': return 8;
+       case L'f': return 7; case L'g': return 4; case L'h': return 1;
+       case L'j': return 4; case L'k': return 7; case L'l': return 8;
+       case L'ç': return 5; case L'é': return 2; case L'í': return 3;
+       case L'z': return 3; case L'x': return 4; case L'c': return 9;
+       case L'v': return 8; case L'b': return 3; case L'n': return 2;
+       case L'm': return 5; case L'ó': return 6; case L'õ': return 7;
+       case L'ô': return 6; case L'â': return 1; case L'ê': return 2;
        default: return 0;
    }
 }
 
-int name_sum(char *nome) {
-   if (*nome == '\0') return 0;
-   return value_string(tolower(*nome)) + (name_sum(nome + 1));
+int name_sum(wchar_t *nome) {
+   int soma = 0;
+
+   for (int i = 0; nome[i] != L'\0'; ++i)
+   {
+        soma += value_string(towlower(nome[i]));
+   }
+   
+   return soma;
 }
 
-//ignora essas palavras 
-int ignorate(const char *primeiro_char) { //aponta para a primeeira letra 
-    return (strcmp(primeiro_char, "da") == 0 || strcmp(primeiro_char, "de") == 0 || strcmp(primeiro_char, "do") == 0 ||
-            strcmp(primeiro_char, "das") == 0 || strcmp(primeiro_char, "dos") == 0); //modifica os enderecos para 0
-}
-void name_process(char *nome) {
-    char temp[50]; //copia da original antes de usar
-    strcpy(temp, nome);  //não modificar o original
+//função para separação do nome em partes para fazer a divisão
+void name_process(Aluno aluno, int resto[]) {
 
-    char *token = strtok(temp, " ");
-    
-    puts("Resultado da divisao por 3 (resto):");
-    while (token != NULL) {
-        if (!ignorate(token)) {
-            int soma = name_sum(token);
-            printf("%s => Soma: %d, Resto da divisao por 3: %d\n", token, soma, (soma % 3));
+    wchar_t copiaNome[50];
+    wchar_t * ultimaParada; //ponteiro que guarda a posição de onde a função wcstok parou
+    wchar_t * delimitadores = L" "; //delimitador = espaço
+
+    wcscpy(copiaNome, aluno.nome); //apesar de aluno.nome ser uma cópia iremos criar mais uma cópia por prevenção
+
+    wchar_t * token = wcstok(aluno.nome, delimitadores, &ultimaParada); //como aluno.nome é uma cópia iremos utiliza-la
+
+    int j = 0; //indice para o array de inteiros
+    int soma = 0; //guardará a soma das letras 
+
+    while (token != NULL) //vai separar e ler cada partição, ou palavra, do nome
+    {
+        if (j > 3) //para caso o nome da pessoa seja muito extenso
+        {
+            break;
         }
-        token = strtok(NULL, " ");
+
+        if (wcslen(token) > 3) //caso o tamanho da palavra for <= 3 a condição irá ignorar essa palavra e vai pular para a próxima
+        {
+            soma = name_sum(token);
+            resto[j] = (soma % 3);
+            j++;
+            wprintf(L"%d° palavra do nome: %ls, tem %ld letras e a soma das suas letras eh: %d\n", j + 1, token, wcslen(token), soma);
+            
+        }
+
+        token = wcstok(NULL, delimitadores, &ultimaParada);
     }
+
+    if (j < 3) //caso o nome não seja grande o suficiente iremos refazer o processo de particionamento
+    {
+        //resetando os ponteiros
+        token = NULL;
+        ultimaParada = NULL;
+        
+        token = wcstok(copiaNome, delimitadores, &ultimaParada); //é aqui onde iremos utilizar nossa cópia de segurança
+
+        while (token != NULL)
+        {
+            if (j > 3) //para caso o nome já tenha ultrapassado o necessário
+            {
+                break;
+            }
+
+            if (wcslen(token) > 3) //caso o tamanho da palavra for <= 3 a condição irá ignorar essa palavra e vai pular para a próxima
+            {
+                soma = name_sum(token);
+                resto[j] = (soma % 3);
+                j++;
+                wprintf(L"%d° palavra do nome: %ls, tem %ld letras e a soma das suas letras eh: %d\n", j + 1, token, wcslen(token), soma);
+            }
+
+            token = wcstok(NULL, delimitadores, &ultimaParada);
+        }
+    }
+
+    return;
 }
 
 int main() {
-   setlocale(LC_ALL, "pt_BR.utf8");
+   setlocale(LC_ALL, "");
+
+   fwide(stdout, 1); //força stdout a operar no modo wide-character, reduzindo problemas com wprintf
 
    Aluno aluno;
+   int resto[MAXR]; //guardará o resto das divisões das particões do nome
 
-   puts("Digite seu nome completo aqui:");
-   fgets(aluno.nome, sizeof(aluno.nome), stdin);
-   aluno.nome[strcspn(aluno.nome, "\n")] = '\0';
+   wprintf(L"Digite seu nome completo aqui: ");
+   fgetws(aluno.nome, sizeof(aluno.nome) / sizeof(wchar_t), stdin);
 
-   puts("Digite seu periodo aqui:");
-   scanf("%d", &aluno.periodo);
-   getchar();
+   wchar_t * ptr = wcschr(aluno.nome, L'\n'); //ponteiro wchar_t para a 1° aparição do '\n'
+
+   if (ptr)
+   {
+        *ptr = L'\0'; //substituindo o '\n' por '\0'
+   }
+
+   wprintf(L"Digite seu período aqui: ");
+   wscanf(L"%d", &aluno.periodo);
+   getwchar();
    
    //validacao do nome 
-   if (validation_string(aluno.nome)) {
-       validation(aluno.nome);
+   if (!validation_string(aluno)) {
+       wprintf(L"Existe caracteres não alfabéticos no seu nome!\n");
+       return 1;
    }
-   puts(" ");
 
-   //decomposicao do nome e soma de cada um
-   puts("Decomposicao do nome, some e resto");
-   name_process(aluno.nome);
+   //decomposicao do nome, soma e divisão para obtenção do seu resto
+   wprintf(L"Decomposição do nome, soma e resto\n");
+   name_process(aluno, resto);
 
-   printf("\n");
+   wprintf(L"Restos:\n");
+   
+   for (int i = 0; i < 4; ++i)
+   {
+        wprintf(L"resto[%d] = %d\n", i + 1, resto[i]);
+   }
+
+   suaSituacao(resto);
 
    //matricula do aluno e grade curricular
-   matricula(aluno);
+   //matricula(aluno);
 
    return 0;
 }
