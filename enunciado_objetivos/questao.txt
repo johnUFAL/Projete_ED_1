@@ -38,7 +38,7 @@ A escolha da ênfase deve seguir a seguinte orientação:
 2 = nenhuma ênfase
 
 
-A escolha da das disciplina deve seguir a seguinte orientação: 
+A escolha das disciplina deve seguir a seguinte orientação: 
     Some todos os números do seu próximo nome e divida o resultado por 3, se o valor do resto for:
 
 0 = as disciplinas deve ocupar o menor números de dias possíveis
