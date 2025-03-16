@@ -237,7 +237,7 @@ void name_process(Aluno aluno, int resto[]) {
 
         if (wcslen(token) > 3) //caso o tamanho da palavra for <= 3 a condição irá ignorar essa palavra e vai pular para a próxima
         {
-            wprintf(L"%d palavra do nome: %ls, tem %ld letras\n", j + 1, token, wcslen(token));
+            wprintf(L"%d° palavra do nome: %ls, tem %ld letras\n", j + 1, token, wcslen(token));
             resto[j] = (name_sum(token) % 3);
             j++;
         }
@@ -262,7 +262,7 @@ void name_process(Aluno aluno, int resto[]) {
 
             if (wcslen(token) > 3) //caso o tamanho da palavra for <= 3 a condição irá ignorar essa palavra e vai pular para a próxima
             {
-                wprintf(L"%d palavra do nome: %ls, tem %ld letras\n", j + 1, token, wcslen(token));
+                wprintf(L"%d° palavra do nome: %ls, tem %ld letras\n", j + 1, token, wcslen(token));
                 resto[j] = (name_sum(token) % 3);
                 j++;
             }
@@ -275,7 +275,9 @@ void name_process(Aluno aluno, int resto[]) {
 }
 
 int main() {
-   setlocale(LC_ALL, "pt_BR.utf8");
+   setlocale(LC_ALL, "");
+
+   fwide(stdout, 1); //força stdout a operar no modo wide-character, reduzindo problemas com wprintf
 
    Aluno aluno;
    int resto[4]; //guardará o resto das divisões das particões do nome
@@ -290,18 +292,18 @@ int main() {
         *ptr = L'\0'; //substituindo o '\n' por '\0'
    }
 
-   wprintf(L"Digite seu periodo aqui: ");
+   wprintf(L"Digite seu período aqui: ");
    wscanf(L"%d", &aluno.periodo);
    getwchar();
    
    //validacao do nome 
    if (!validation_string(aluno)) {
-       wprintf(L"Existe caracteres nao alfabeticos no seu nome!\n");
+       wprintf(L"Existe caracteres não alfabéticos no seu nome!\n");
        return 1;
    }
 
    //decomposicao do nome, soma e divisão para obtenção do seu resto
-   wprintf(L"Decomposicao do nome, soma e resto\n");
+   wprintf(L"Decomposição do nome, soma e resto\n");
    name_process(aluno, resto);
 
    wprintf(L"Restos:\n");
