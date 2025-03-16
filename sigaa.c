@@ -175,9 +175,9 @@ void matricula(Aluno aluno) {
 
 //função para checar se todos os valores digitados na string são letras
 int validation_string(Aluno aluno) {
-    for (int i = 0; aluno.nome != L'\0'; ++i)
+    for (int i = 0; aluno.nome[i] != L'\0'; ++i)
     {
-        if (!iswapha(aluno.nome[i])) //validacao de tipo string
+        if (!(iswalpha(aluno.nome[i]) || iswspace(aluno.nome[i]))) //validacao de tipo string
         {
             return 0;
         }
@@ -186,7 +186,7 @@ int validation_string(Aluno aluno) {
    return 1;
 }
 
-int value_string(wchar_t letra) { //revisar melhor forma de usar palavras com acentos!!!!!!!!!!!!!!!!!!!!!!!!
+int value_string(wchar_t letra) { 
    switch (letra) {
        case L'q': return 1; case L'w': return 6; case L'e': return 7;
        case L'r': return 6; case L't': return 5; case L'y': return 2;
@@ -220,7 +220,7 @@ void name_process(Aluno aluno, int resto[]) {
 
     wchar_t copiaNome[50];
     wchar_t * ultimaParada; //ponteiro que guarda a posição de onde a função wcstok parou
-    wchar_t * delimitadores = " "; //delimitador = espaço
+    wchar_t * delimitadores = L" "; //delimitador = espaço
 
     wcscpy(copiaNome, aluno.nome); //apesar de aluno.nome ser uma cópia iremos criar mais uma cópia por prevenção
 
@@ -237,7 +237,7 @@ void name_process(Aluno aluno, int resto[]) {
 
         if (wcslen(token) > 3) //caso o tamanho da palavra for <= 3 a condição irá ignorar essa palavra e vai pular para a próxima
         {
-            wprintf(L"%d° palavra do nome: %ls, tem %ld letras\n", j + 1, token, wcslen(token));
+            wprintf(L"%d palavra do nome: %ls, tem %ld letras\n", j + 1, token, wcslen(token));
             resto[j] = (name_sum(token) % 3);
             j++;
         }
@@ -262,7 +262,7 @@ void name_process(Aluno aluno, int resto[]) {
 
             if (wcslen(token) > 3) //caso o tamanho da palavra for <= 3 a condição irá ignorar essa palavra e vai pular para a próxima
             {
-                wprintf(L"%d° palavra do nome: %ls, tem %ld letras\n", j + 1, token, wcslen(token));
+                wprintf(L"%d palavra do nome: %ls, tem %ld letras\n", j + 1, token, wcslen(token));
                 resto[j] = (name_sum(token) % 3);
                 j++;
             }
@@ -290,24 +290,31 @@ int main() {
         *ptr = L'\0'; //substituindo o '\n' por '\0'
    }
 
-   wprintf("Digite seu período aqui: ");
-   wscanf("%d", &aluno.periodo);
+   wprintf(L"Digite seu periodo aqui: ");
+   wscanf(L"%d", &aluno.periodo);
    getwchar();
    
    //validacao do nome 
    if (!validation_string(aluno)) {
-       wprintf("Há caracteres não alfabéticos no seu nome!\n");
+       wprintf(L"Existe caracteres nao alfabeticos no seu nome!\n");
        return 1;
    }
 
    //decomposicao do nome, soma e divisão para obtenção do seu resto
-   wprintf("Decomposição do nome, soma e resto");
+   wprintf(L"Decomposicao do nome, soma e resto\n");
    name_process(aluno, resto);
+
+   wprintf(L"Restos:\n");
+   
+   for (int i = 0; i < 4; ++i)
+   {
+        wprintf(L"resto[%d] = %d\n", i + 1, resto[i]);
+   }
 
    printf("\n");
 
    //matricula do aluno e grade curricular
-   matricula(aluno);
+   //matricula(aluno);
 
    return 0;
 }
