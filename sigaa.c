@@ -13,15 +13,15 @@
 
 typedef struct {
     wchar_t nome[50];
-    int periodo;
-    int max_disciplina;
-    int tempo_curso;
-    int enfase;
-    int modo_disciplina;
+    int periodo; //periodo em que se encontra o aluno
+    int max_disciplina; //max de disciplinas que ele irá pagar por semestre
+    int tempo_curso; //tempo de curso
+    int enfase; //enfase escolhida
+    int turno_disciplina; //turno em que pagará as disciplinas
 } Aluno;
 
 typedef struct {
-    char hora_inicial[6];//usar o horario militar (Ex: 1130 = 11:30)
+    char hora_inicial[6]; //usar o horário militar (Ex: 1130 = 11:30)
     char hora_final[6];
     char dias[20];
 } Horario;
@@ -409,7 +409,7 @@ int main() {
    suaSituacao(resto);
 
    //matricula do aluno e grade curricular
-   //matricula(aluno);
+   matricula(aluno);
 
    return 0;
 }

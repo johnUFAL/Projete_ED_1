@@ -1,0 +1,72 @@
+TEMPO DE CURSO
+Mínima: 08 semestres (04 anos); 
+Máxima: 12 semestres (06 anos).
+
+
+CARGA HORÁRIA
+-> 24 disciplinas obrigatórias(2.016horas) da formação básica 
+-> 05 disciplinas obrigatórias em cada ênfase(360horas)
+-> mínimo de 576horas em disciplinas eletivas (esperado 08 disciplinas eletivas)
+-> Atividades Complementares devem ter no mínimo 240 horas
+-> TCC 180horas
+-> Atividades de Extensão devem ter no mínimo 375 horas
+
+
+DISCIPLINAS OBRIGATÓRIAS 
+
+-> 1° período
+
+Id      Nome                                            Duração
+359     Programação                                     72 
+360     Lógica para Computação                          72 
+361     Computação, Sociedade e Ética                   72 
+362     Matemática Discreta                             72 
+363     Cálculo Diferencial e Integral                  144 
+
+-> 2° período
+
+Id      Nome                                            Duração
+364     Estrutura de Dados                              72 
+365     Banco de Dados                                  72 
+366     Organização e Arquitetura de Computadores       72 
+367     Geometria Analítica                             72 
+
+-> 3° período
+
+Id      Nome                                            Duração
+368     Redes de Computadores                           72 
+369     Teoria dos Grafos                               72 
+370     Probabilidade e Estatística                     72 
+371     Álgebra Linear                                  72
+
+-> 4° período
+
+Id      Nome                                            Duração
+372 Programação                                         72 
+373 Programação                                         72 
+374 Projeto e Análise de Algoritmos                     72 
+376 Teoria da Computação                                72
+
+-> 5° período
+
+Id      Nome                                            Duração
+378     Sistemas Operacionais                           72 
+379     Compiladores                                    72 
+380     Inteligência Artificial                         72 
+381     Computação Gráfica                              72 
+
+-> 6° período
+
+Id      Nome                                            Duração
+382     Projeto e Desenvolvimento de Sistemas           288
+
+-> 7° período
+
+Id      Nome                                            Duração
+386     Metodologia de Pesquisa e Trabalho Individual   72 
+387     Noções de Direito                               72 
+
+-> 8° período
+
+Id      Nome                                            Duração
+--      Eletivas                                        -------                                             
