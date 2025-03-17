@@ -17,7 +17,7 @@ typedef struct {
     int horas_pagas; //com as possíveis matérias já pagas, logo o aluno também cumpriu com suas horas obrigatórias
     int periodo; //periodo em que se encontra o aluno
     int max_disciplina; //max de disciplinas que ele irá pagar por semestre
-    int tempo_curso; //tempo de curso
+    int tempo_curso; //tempo de curso (semestres)
     int enfase; //enfase escolhida
     int turno_disciplina; //turno em que pagará as disciplinas
 } Aluno;
@@ -111,7 +111,7 @@ void inicializarObrigatorias(Disciplina obrigatorias[], int max, FILE * arquivo)
     return;
 }
 
-void suaSituacao (int resto[]) //essa função descreve os critérios estabelecidos pela professora
+void suaSituacao (int resto[], Aluno * ptr) //essa função descreve os critérios estabelecidos pela professora
 {
     wprintf(L"=============================CRITÉRIOS=============================\n");
     
@@ -121,14 +121,17 @@ void suaSituacao (int resto[]) //essa função descreve os critérios estabeleci
     {
         case 0:
             wprintf(L"10 disciplinas\n");
+            ptr->max_disciplina = 10;
             break;
 
         case 1:
-            wprintf(L"8 disciplinas\n");    
+            wprintf(L"8 disciplinas\n");  
+            ptr->max_disciplina = 8;  
             break;
 
         case 2:
             wprintf(L"6 disciplinas\n");
+            ptr->max_disciplina = 6;
             break;
 
         default:
@@ -141,14 +144,17 @@ void suaSituacao (int resto[]) //essa função descreve os critérios estabeleci
     {
         case 0:
             wprintf(L"no menor tempo possível\n");
+            ptr->tempo_curso = 8;
             break;
 
         case 1:
-            wprintf(L"no maior tempo possível\n");    
+            wprintf(L"no maior tempo possível\n"); 
+            ptr->tempo_curso = 12;   
             break;
 
         case 2:
             wprintf(L"no tempo médio possível\n");
+            ptr->tempo_curso = 10;
             break;
 
         default:
@@ -196,6 +202,26 @@ void suaSituacao (int resto[]) //essa função descreve os critérios estabeleci
     }
 
         return;
+}
+
+int disciplinasPagas(Aluno * ptr, Disciplina obrigatorias[])
+{
+    int i = 0;
+
+    while (1)
+    {
+        if (obrigatorias[i].periodo >= ptr->periodo)
+        {
+            break;
+        }
+
+        ptr->horas_pagas += obrigatorias[i].carga;
+        ptr->materias_pagas[i] = obrigatorias[i].id;
+
+        ++i;
+    }
+
+    return i;
 }
 
 //função para checar se todos os valores digitados na string são letras
@@ -324,6 +350,7 @@ int main() {
    Aluno aluno = {.materias_pagas = {0}, .horas_pagas = 0}; //inicializando algumas variáveis
    Disciplina obrigatorias[MAX_OBRIG]; //array de structs que irá conter as matérias obrigatórias, 24 obrigatórias fora as da ênfases
    int resto[MAXR]; //guardará o resto das divisões das particões do nome
+   int materiasPagas = 0; //guardará um indide de controle sobre as disciplinas pagas
 
    FILE * disciplinasObrigatorias;
 
@@ -372,6 +399,20 @@ int main() {
             break;
        }
     }
+
+    if (aluno.periodo > 1)
+    {
+        materiasPagas = disciplinasPagas(&aluno, obrigatorias); //essa função irá preencher as variáveis carga horária e disciplinas pagas da struct Aluno
+
+        wprintf(L"Horas pagas: %d, Disciplinas Pagas: ", aluno.horas_pagas);
+
+        for (int i = 0; i < materiasPagas; ++i)
+        {
+            wprintf(L"%d ", aluno.materias_pagas[i]);
+        }
+
+        wprintf(L"\n");
+    }
     
     wprintf(L"%d\n", aluno.periodo);
 
@@ -386,7 +427,7 @@ int main() {
         wprintf(L"resto[%d] = %d\n", i + 1, resto[i]);
    }
 
-   suaSituacao(resto);
+   suaSituacao(resto, &aluno); //será passado o endereço da variável aluno para que seu valor seja integralmente alterado
    
    fclose(disciplinasObrigatorias);
 
