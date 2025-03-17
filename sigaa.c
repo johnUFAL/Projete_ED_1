@@ -23,7 +23,14 @@ typedef struct {
 } Aluno;
 
 typedef struct {
-    char hora_inicial[6]; //usar o horário militar (Ex: 1130 = 11:30)
+    char hora_inicial[6]; //usar o horário militar (Ex: 1130 = 11:30) 
+    //OBS.: seria interessante mudar para o estilo de horário do sigaa que eh: 35T56 (
+    //os dois primeiros números dizem os dias
+    //  2 = segunda, 3 = terça, 4 = quarta, e 5 = quinta
+    //      a letra do meio é o turno
+    //          T = tarde, M = manhã
+    //              e os dois últimos dígitos as aulas
+    //                  1 = 1° aula, 2 = 2° aula, ..., 6 = 6° aula
     char hora_final[6];
     char dias[20];
 } Horario;
@@ -66,7 +73,15 @@ void escolha_eletiva(Aluno aluno) {
 }
 
 void matricula(Aluno aluno) {
-    wprintf(L"%d\n", aluno.periodo);
+    wprintf(L"Seu periodo: %d\n", aluno.periodo);
+
+    if (aluno.periodo != 1) //se o aluno não está no 1° período, logo eles já pagou algumas matérias e já cumpriu certa quantidade de horas
+    {
+        for (int i = 0; i < aluno.periodo; ++i)
+        {
+            //aluno.materias_pagas += disciplinas
+        }
+    }
     if (aluno.periodo == 1) {
         Disciplina disciplinas[] = {
             {"Programacao 1", 359, 72, "Nenhum", {"15:20", "18:50", "Sex"}},
@@ -373,12 +388,23 @@ void name_process(Aluno aluno, int resto[]) {
     return;
 }
 
+/*
+ wchar_t nome[50];
+    int materias_pagas[29]; //matérias já realizadas, ou pagas, pelo aluno
+    int horas_pagas; //com as possíveis matérias já pagas, logo o aluno também cumpriu com suas horas obrigatórias
+    int periodo; //periodo em que se encontra o aluno
+    int max_disciplina; //max de disciplinas que ele irá pagar por semestre
+    int tempo_curso; //tempo de curso
+    int enfase; //enfase escolhida
+    int turno_disciplina; //turno em que pagará as disciplinas
+    */
+
 int main() {
    setlocale(LC_ALL, "");
 
    fwide(stdout, 1); //força stdout a operar no modo wide-character, reduzindo problemas com wprintf
 
-   Aluno aluno;
+   Aluno aluno = {.materias_pagas = {0}, .horas_pagas = 0}; //inicializando algumas variáveis
    int resto[MAXR]; //guardará o resto das divisões das particões do nome
 
    while (1) //loop para dar mais uma chance do usuário consertar seu erro
@@ -415,7 +441,6 @@ int main() {
        else{
             break;
        }
-    
     }
     
     wprintf(L"%d\n", aluno.periodo);
