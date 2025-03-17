@@ -17,6 +17,11 @@ isspace(ch)                         iswspace(ch)	                    Verifica se
 ispunct(ch)                         iswpunct(ch)	                    Verifica se é um caractere de pontuação
 putc(caractere, stdout)             putwc(caractere, stdout)            Imprimi apenas um caractere
 strtok(* str, * delim)              wcstok(* str, * delim)              Dividi uma string em substrings
+fscanf(FILE * ptr, "%s", str)       fwscanf(FILE * ptr, L"%ls", str)    Lê as informações de um arquivo externo
+fprintf(FILE * ptr, "%d", int)      fprintf(FILE * ptr, L"%d", int)     Imprime as informações no arquivo externo
+fopen("arquivo.txt", "r")           _wfopen(L"arquivo.txt", L"r")       Retorna o endereçamento do arquivo externo para o ponteiro
+fclose(FILE * ptr)                  fclose(FILE * ptr)                  'Fecha' o arquivo o arquivo externo
+
 
 Biblioteca (char)                   Equivalente (wcahr_t)
 
