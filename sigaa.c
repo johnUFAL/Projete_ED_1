@@ -73,7 +73,7 @@ void escolha_eletiva(Aluno aluno) {
     };
 }
 
-void matricula(Aluno aluno) {
+/*void matricula(Aluno aluno) {
     wprintf(L"Seu periodo: %d\n", aluno.periodo);
 
     if (aluno.periodo != 1) //se o aluno não está no 1° período, logo eles já pagou algumas matérias e já cumpriu certa quantidade de horas
@@ -195,7 +195,7 @@ void matricula(Aluno aluno) {
     }
 
     return;
-}
+}*/
 
 /*
 
@@ -214,14 +214,14 @@ typedef struct {
 } Disciplina;
 */
 
-void inicializarObrigatorias(Disciplina obrigatorias[], int max, FILE * ptr)
+void inicializarObrigatorias(Disciplina obrigatorias[], int max, FILE * arquivo)
 {
     int i = 0;
     
-    //Nome: Programacao 1, Id: 359, CH: 72, Requisito: Nenhum, Inicio: 1520, Fim: 1850, Dia(s): Sex
-    while (fscanf(ptr, "Nome: %59[^,], Id: %d, CH: %d, Requisito: %99[^,],  Inicio: %5[^,], Fim: %5[^,], Dia(s): %19[\n]\n", obrigatorias[i].nome, &obrigatorias[i].id, &obrigatorias[i].carga, obrigatorias[i].pre_requisitos, obrigatorias[i].horario.hora_inicial, obrigatorias[i].horario.hora_final, obrigatorias[i].horario.dias) != EOF)
+    //Periodo: 1, Nome: Programacao 1, Id: 359, CH: 72, Requisito: Nenhum, Inicio: 1520, Fim: 1850, Dia(s): Sex
+    while (fscanf(arquivo, "Periodo: %d, Nome: %59[^,], Id: %d, CH: %d, Requisito: %99[^,], Inicio: %5[^,], Fim: %5[^,], Dia(s): %19[\n]\n", &obrigatorias[i].periodo, obrigatorias[i].nome, &obrigatorias[i].id, &obrigatorias[i].carga, obrigatorias[i].pre_requisitos, obrigatorias[i].horario.hora_inicial, obrigatorias[i].horario.hora_final, obrigatorias[i].horario.dias) != EOF)
     {
-        wprintf(L"Nome: %s, Id: %d, CH: %d, Requisito: %s,  Inicio: %s, Fim: %s, Dia(s): %s\n", obrigatorias[i].nome, &obrigatorias[i].id, &obrigatorias[i].carga, obrigatorias[i].pre_requisitos, obrigatorias[i].horario.hora_inicial, obrigatorias[i].horario.hora_final, obrigatorias[i].horario.dias);
+        wprintf(L"Periodo: %d, Nome: %s, Id: %d, CH: %d, Requisito: %s,  Inicio: %s, Fim: %s, Dia(s): %s\n", obrigatorias[i].periodo, obrigatorias[i].nome, obrigatorias[i].id, obrigatorias[i].carga, obrigatorias[i].pre_requisitos, obrigatorias[i].horario.hora_inicial, obrigatorias[i].horario.hora_final, obrigatorias[i].horario.dias);
         
         ++i;
         
@@ -438,13 +438,15 @@ void name_process(Aluno aluno, int resto[]) {
     int turno_disciplina; //turno em que pagará as disciplinas
     */
 
+#define MAX_OBRIG 24
+
 int main() {
    setlocale(LC_ALL, "");
 
    fwide(stdout, 1); //força stdout a operar no modo wide-character, reduzindo problemas com wprintf
 
    Aluno aluno = {.materias_pagas = {0}, .horas_pagas = 0}; //inicializando algumas variáveis
-   Disciplina obrigatorias[7]; //array de structs que irá conter as matérias obrigatórias
+   Disciplina obrigatorias[MAX_OBRIG]; //array de structs que irá conter as matérias obrigatórias, 24 obrigatórias fora as da ênfases
    int resto[MAXR]; //guardará o resto das divisões das particões do nome
 
    FILE * disciplinasObrigatorias;
@@ -457,7 +459,7 @@ int main() {
         return 1;
    }
 
-   inicializarObrigatorias(obrigatorias, 7, disciplinasObrigatorias); //irá inserir as disciplinas obrigatórias do arquivo externo para a struct
+   inicializarObrigatorias(obrigatorias, MAX_OBRIG, disciplinasObrigatorias); //irá inserir as disciplinas obrigatórias do arquivo externo para a struct
 
    while (1) //loop para dar mais uma chance do usuário consertar seu erro
    {
@@ -511,7 +513,7 @@ int main() {
    suaSituacao(resto);
 
    //matricula do aluno e grade curricular
-   matricula(aluno);
+   //matricula(aluno);
 
    return 0;
 }
