@@ -213,13 +213,13 @@ typedef struct {
 } Eletiva;
 */
 
-void inicializarObrigatorias(Disciplina obrigatorias[], int max, FILE * ptr)
+/*void inicializarObrigatorias(Disciplina obrigatorias[], int max, FILE * ptr)
 {
     while (fscanf(ptr, "", ) != EOF)
     {
-        
+
     }
-}
+}*/
 
 void suaSituacao (int resto[]) //essa função descreve os critérios estabelecidos pela professora
 {
@@ -443,7 +443,7 @@ int main() {
         return 1;
    }
 
-   inicializarObrigatorias(obrigatorias, 7, disciplinasObrigatorias); //irá inserir as disciplinas obrigatórias do arquivo externo para a struct
+   //inicializarObrigatorias(obrigatorias, 7, disciplinasObrigatorias); //irá inserir as disciplinas obrigatórias do arquivo externo para a struct
 
    while (1) //loop para dar mais uma chance do usuário consertar seu erro
    {
