@@ -1,0 +1,24 @@
+Nome: Programacao 1, Id: 359, CH: 72, Requisito: Nenhum, Inicio: 1520, Fim: 1850, Dia(s): Sex
+Nome: Matematica Discreta, Id: 362, CH: 72, Requisito: Nenhum, Inicio: 1330, Fim: 1510, Dia(s): Ter-Qui
+Nome: Calculo Diferenciale Integral, Id: 363, CH: 144, Requisito: Nenhum, Inicio: 1520, Fim: 1850, Dia(s): Ter-Qui
+Nome: Logica para Programacao, Id: 360, CH: 72, Requisito: Nenhum, Inicio: 1420, Fim: 1700, Dia(s): Seg-Qua
+Nome: Computacao, Sociedae e Etica, Id: 361, CH: 72, Requisito: Nenhum, Inicio: 1710, Fim: 1850, Dia(s): Seg-Qua
+Nome: Banco de dados, Id: 365, CH: 72, Requisito: Nenhum, Inicio: 1330, Fim: 1520, Dia(s): Seg-Qua
+Nome: Geometria Analitica, Id: 367, CH: 72, Requisito: Nenhum, Inicio: 1520, Fim: 1710, Dia(s): Seg-Qua
+Nome: Org. E arq. de Computadores, Id: 366, CH: 72, Requisito: Nenhum, Inicio: 0920, Fim: 1100, Dia(s): Ter-Qui
+Nome: Estrutra de Dados, Id: 364, CH: 72, Requisito: Programacao 1, Inicio: 1330, Fim: 1510, Dia(s): Ter-Qui
+Nome: Redes de Computadores, Id: 368, CH: 72, Requisito: Programacao 1, Inicio: 1520, Fim: 1700, Dia(s): Seg-Qui
+Nome: Teoria dos Grafos, Id: 369, CH: 72, Requisito: Estrutra de Dados e Matematica Discreta, Inicio: 1330, Fim: 1510, Dia(s): Seg-Qui
+Nome: Probabilidade e Estastistica, Id: 370, CH: 72, Requisito: Calculo Diferencial e Integral, Inicio: 1110, Fim: 1250, Dia(s): Seg-Qua
+Nome: Algebra Linear, Id: 371, CH: 72, Requisito: Geometria Analitica, Inicio: 0920, Fim: 1100, Dia(s): Seg-Qua
+Nome: Programacao 2, Id: 372, CH: 72, Requisito: Estrutura de Dados e Banco de dados e Redes de Computadores, Inicio: 1520, Fim: 1700, Dia(s): Qua
+Nome: Programacao 3, Id: 373, CH: 72, Requisito: Estrutura de Dados, Banco de dados e Redes de Computadores, Inicio: 1520, Fim: 1700, Dia(s): Ter-Qui
+Nome: Projeto de Analise de Algoritmos, Id: 374, CH: 72, Requisito: Estrutura de Dados e Teoria dos Grafos, Inicio: 1710, Fim: 1850, Dia(s): Seg-Qui
+Nome: Teoria da Computacao, Id: 376, CH: 72, Requisito: Nenhum, Inicio: 1330, Fim: 1510, Dia(s): Seg-Qua
+Nome: Sistemas Operacionais, Id: 378, CH: 72, Requisito: Org. e arq. de Computadores, Inicio: 1330, Fim: 1520, Dia(s): Seg-Qua
+Nome: Compiladores, Id: 379, CH: 72, Requisito: Estrutura de Dados e Logica para Computacao, Inicio: 1520, Fim: 1700, Dia(s): Seg-Qua
+Nome: Inteligencia Artificial, Id: 380, CH: 72, Requisito: Estrutura de Dados e Logica para Computacao, Inicio: 1520, Fim: 1700, Dia(s): Ter-Qui
+Nome: Computacao Grafica, Id: 381, CH: 72, Requisito: Nenhum, Inicio: 1710, Fim: 1850, Dia(s): Ter-Qui
+Nome: Projeto e Desenvolvimento de Sistemas, Id: 382, CH: 288, Requisito: Todas as diciplinas de 1º ao 5º semestre, Inicio: 0920, Fim: 1510, Dia(s): Seg-Qua-Qui
+Nome: Metodologias de Pesquisa e Trabalhos Individual, Id: 386, CH: 72, Requisito: Nenhum, Inicio: 1330, Fim: 1510, Dia(s): Ter-Qui
+Nome: Nocoes de Direito, Id: 387, CH: 72, Requisito: Nenhum, Inicio: 1520, Fim: 1850, Dia(s): Ter

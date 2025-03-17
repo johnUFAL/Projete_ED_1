@@ -196,6 +196,31 @@ void matricula(Aluno aluno) {
     return;
 }
 
+/*
+typedef struct {
+    char nome[60];
+    int id;
+    int carga;
+    char pre_requisitos[100];
+    Horario horario;
+} Disciplina;
+
+typedef struct {
+    char nome[60];
+    int carga;
+    char pre_requisitos[100];
+    Horario horario;
+} Eletiva;
+*/
+
+void inicializarObrigatorias(Disciplina obrigatorias[], int max, FILE * ptr)
+{
+    while (fscanf(ptr, "", ) != EOF)
+    {
+        
+    }
+}
+
 void suaSituacao (int resto[]) //essa função descreve os critérios estabelecidos pela professora
 {
     wprintf(L"=============================CRITÉRIOS=============================\n");
@@ -405,7 +430,20 @@ int main() {
    fwide(stdout, 1); //força stdout a operar no modo wide-character, reduzindo problemas com wprintf
 
    Aluno aluno = {.materias_pagas = {0}, .horas_pagas = 0}; //inicializando algumas variáveis
+   Disciplina obrigatorias[7]; //array de structs que irá conter as matérias obrigatórias
    int resto[MAXR]; //guardará o resto das divisões das particões do nome
+
+   FILE * disciplinasObrigatorias;
+
+   disciplinasObrigatorias = fopen("obrigatorias.txt", "r");
+
+   if (disciplinasObrigatorias == NULL)
+   {
+        perror("Erro ao abrir o arquivo externo!\n"); //mostra o erro ao sistema
+        return 1;
+   }
+
+   inicializarObrigatorias(obrigatorias, 7, disciplinasObrigatorias); //irá inserir as disciplinas obrigatórias do arquivo externo para a struct
 
    while (1) //loop para dar mais uma chance do usuário consertar seu erro
    {
