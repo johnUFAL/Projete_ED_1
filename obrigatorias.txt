@@ -12,7 +12,7 @@ Periodo: 3, Nome: Teoria dos Grafos, Id: 369, CH: 72, Requisito: Estrutra de Dad
 Periodo: 3, Nome: Probabilidade e Estastistica, Id: 370, CH: 72, Requisito: Calculo Diferencial e Integral, Inicio: 1110, Fim: 1250, Dia(s): Seg-Qua
 Periodo: 3, Nome: Algebra Linear, Id: 371, CH: 72, Requisito: Geometria Analitica, Inicio: 0920, Fim: 1100, Dia(s): Seg-Qua
 Periodo: 4, Nome: Programacao 2, Id: 372, CH: 72, Requisito: Estrutura de Dados e Banco de dados e Redes de Computadores, Inicio: 1520, Fim: 1700, Dia(s): Qua
-Periodo: 4, Nome: Programacao 3, Id: 373, CH: 72, Requisito: Estrutura de Dados, Banco de dados e Redes de Computadores, Inicio: 1520, Fim: 1700, Dia(s): Ter-Qui
+Periodo: 4, Nome: Programacao 3, Id: 373, CH: 72, Requisito: Estrutura de Dados e Banco de dados e Redes de Computadores, Inicio: 1520, Fim: 1700, Dia(s): Ter-Qui
 Periodo: 4, Nome: Projeto de Analise de Algoritmos, Id: 374, CH: 72, Requisito: Estrutura de Dados e Teoria dos Grafos, Inicio: 1710, Fim: 1850, Dia(s): Seg-Qui
 Periodo: 4, Nome: Teoria da Computacao, Id: 376, CH: 72, Requisito: Nenhum, Inicio: 1330, Fim: 1510, Dia(s): Seg-Qua
 Periodo: 5, Nome: Sistemas Operacionais, Id: 378, CH: 72, Requisito: Org. e arq. de Computadores, Inicio: 1330, Fim: 1520, Dia(s): Seg-Qua
