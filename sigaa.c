@@ -219,9 +219,9 @@ void inicializarObrigatorias(Disciplina obrigatorias[], int max, FILE * arquivo)
     int i = 0;
     
     //Periodo: 1, Nome: Programacao 1, Id: 359, CH: 72, Requisito: Nenhum, Inicio: 1520, Fim: 1850, Dia(s): Sex
-    while (fscanf(arquivo, "Periodo: %d, Nome: %59[^,], Id: %d, CH: %d, Requisito: %99[^,], Inicio: %5[^,], Fim: %5[^,], Dia(s): %19[\n]\n", &obrigatorias[i].periodo, obrigatorias[i].nome, &obrigatorias[i].id, &obrigatorias[i].carga, obrigatorias[i].pre_requisitos, obrigatorias[i].horario.hora_inicial, obrigatorias[i].horario.hora_final, obrigatorias[i].horario.dias) != EOF)
+    while (fwscanf(arquivo, L"Periodo: %d, Nome: %59[^,], Id: %d, CH: %d, Requisito: %99[^,], Inicio: %5[^,], Fim: %5[^,], Dia(s): %19[\n]\n", &obrigatorias[i].periodo, obrigatorias[i].nome, &obrigatorias[i].id, &obrigatorias[i].carga, obrigatorias[i].pre_requisitos, obrigatorias[i].horario.hora_inicial, obrigatorias[i].horario.hora_final, obrigatorias[i].horario.dias) != EOF)
     {
-        wprintf(L"Periodo: %d, Nome: %s, Id: %d, CH: %d, Requisito: %s, Inicio: %s, Fim: %s, Dia(s): %s\n", obrigatorias[i].periodo, obrigatorias[i].nome, obrigatorias[i].id, obrigatorias[i].carga, obrigatorias[i].pre_requisitos, obrigatorias[i].horario.hora_inicial, obrigatorias[i].horario.hora_final, obrigatorias[i].horario.dias);
+        wprintf(L"Periodo: %d, Nome: %ls, Id: %d, CH: %d, Requisito: %ls, Inicio: %ls, Fim: %ls, Dia(s): %ls\n", obrigatorias[i].periodo, obrigatorias[i].nome, obrigatorias[i].id, obrigatorias[i].carga, obrigatorias[i].pre_requisitos, obrigatorias[i].horario.hora_inicial, obrigatorias[i].horario.hora_final, obrigatorias[i].horario.dias);
         
         ++i;
         
@@ -451,11 +451,11 @@ int main() {
 
    FILE * disciplinasObrigatorias;
 
-   disciplinasObrigatorias = fopen("obrigatorias.txt", "r");
+   disciplinasObrigatorias = wfopen(L"obrigatorias.txt", L"r");
 
    if (disciplinasObrigatorias == NULL)
    {
-        perror("Erro ao abrir o arquivo externo!\n"); //mostra o erro ao sistema
+        wprintf(L"Erro ao abrir o arquivo externo!\n"); //mostra o erro ao sistema
         return 1;
    }
 
