@@ -22,7 +22,7 @@ typedef struct {
     int turno_disciplina; //turno em que pagará as disciplinas
 } Aluno;
 
-typedef struct {
+/*typedef struct {
     char hora_inicial[6]; //usar o horário militar (Ex: 1130 = 11:30) 
     //OBS.: seria interessante mudar para o estilo de horário do sigaa que eh: 35T56 (
     //os dois primeiros números dizem os dias
@@ -33,7 +33,7 @@ typedef struct {
     //                  1 = 1° aula, 2 = 2° aula, ..., 6 = 6° aula
     char hora_final[6];
     char dias[20];
-} Horario;
+} Horario; */
 
 typedef struct {
     char nome[60];
@@ -41,18 +41,18 @@ typedef struct {
     int carga;
     int periodo;
     char pre_requisitos[100];
-    Horario horario;
+    char horario_disc[7];
 } Disciplina;
 
 typedef struct {
     char nome[60];
     int carga;
     char pre_requisitos[100];
-    Horario horario;
+    char horario_ele[7];
 } Eletiva;
 
 
-void escolha_eletiva(Aluno aluno) {
+/*void escolha_eletiva(Aluno aluno) {
     Eletiva eletivas[] = {
         {"Calculo 3", 72, "Calculo Diferencial e Integral", {}},
         {"Conceitos de Linguagem de Programação", 72, "Nenhum", {}},
@@ -73,7 +73,7 @@ void escolha_eletiva(Aluno aluno) {
     };
 }
 
-/*void matricula(Aluno aluno) {
+void matricula(Aluno aluno) {
     wprintf(L"Seu periodo: %d\n", aluno.periodo);
 
     if (aluno.periodo != 1) //se o aluno não está no 1° período, logo eles já pagou algumas matérias e já cumpriu certa quantidade de horas
@@ -218,10 +218,10 @@ void inicializarObrigatorias(Disciplina obrigatorias[], int max, FILE * arquivo)
 {
     int i = 0;
     
-    //Periodo: 1, Nome: Programacao 1, Id: 359, CH: 72, Requisito: Nenhum, Inicio: 1520, Fim: 1850, Dia(s): Sex
-    while (fwscanf(arquivo, L"Periodo: %d, Nome: %59[^,], Id: %d, CH: %d, Requisito: %99[^,], Inicio: %5[^,], Fim: %5[^,], Dia(s): %19[\n]\n", &obrigatorias[i].periodo, obrigatorias[i].nome, &obrigatorias[i].id, &obrigatorias[i].carga, obrigatorias[i].pre_requisitos, obrigatorias[i].horario.hora_inicial, obrigatorias[i].horario.hora_final, obrigatorias[i].horario.dias) != EOF)
+    //Periodo: 1, Nome: Programacao 1, Id: 359, CH: 72, Requisito: Nenhum, Horario: M = manha, T = Tarde, antes da letra sao os dias da semana e depois as aulas
+    while (fwscanf(arquivo, L"Periodo: %d, Nome: %59[^,], Id: %d, CH: %d, Requisito: %99[^,], Horario: %7[^,]\n", &obrigatorias[i].periodo, obrigatorias[i].nome, &obrigatorias[i].id, &obrigatorias[i].carga, obrigatorias[i].pre_requisitos, obrigatorias[i].horario_disc != EOF))
     {
-        wprintf(L"Periodo: %d, Nome: %ls, Id: %d, CH: %d, Requisito: %ls, Inicio: %ls, Fim: %ls, Dia(s): %ls\n", obrigatorias[i].periodo, obrigatorias[i].nome, obrigatorias[i].id, obrigatorias[i].carga, obrigatorias[i].pre_requisitos, obrigatorias[i].horario.hora_inicial, obrigatorias[i].horario.hora_final, obrigatorias[i].horario.dias);
+        wprintf(L"Periodo: %d, Nome: %ls, Id: %d, CH: %d, Requisito: %ls, Horario: %ls\n", obrigatorias[i].periodo, obrigatorias[i].nome, obrigatorias[i].id, obrigatorias[i].carga, obrigatorias[i].pre_requisitos, obrigatorias[i].horario_disc);
         
         ++i;
         

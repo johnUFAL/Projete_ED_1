@@ -1,0 +1,18 @@
+Nome: Calculo 3, Id: 404, CH: 72, Requisito: Calculo Diferencial e Integral, Horario: 36M12
+Nome: Conceitos de Linguagem de Programação, Id: 389, CH: 72, Requisito: Nenhum, Horario: 35T34
+Nome: Apredizagem de Máquina, Id: 390, CH: 72, Requisito: Calculo 3, Horario: 24T56
+Nome: Sisitemas Digitais, Id: 391, CH: 72, Requisito: Calculo 3, Horario: 7M1234
+Nome: Sistemas Distribuidos, Id: 392, CH: 72, Requisito:  Nenhum, Horario: 6T1234
+Nome: Redes Neurais e Aprendizado Profundo, Id: 393, CH: 72, Requisito: Nenhum, Horario: 35T34
+Nome: Interacao Homem-Maquina, Id: 395, CH: 72, Requisito: Programcao 3, Horario: 24T34
+Nome: Processamento Digital de Imagem, Id: 396, CH: 72, Requisito: Computaçao Grafica, Horario: 35T12
+Nome: Computcao Evolucionaria, Id: 397, CH: 72, Requisito: Nenhum, Horario: 24T12
+Nome: Sistemas Embarcados, Id: 398, CH: 72, Requisito: Nenhum, Horario: 35t56
+Nome: Gerencia de Projeto, Id: 399, CH: 72, Requisito: Projeto e Desenvolvimento de Sistemas, Horario: 35T56
+Nome: Ciencia de Dados, Id: 401, CH: 72, Requisito: Probabilidade e Estatistica, Horario: 24M34
+Nome: Microcontroladores e Aplicacoes, Id: 402, CH: 72, Requisito: Nenhum, Horario: 24M56
+Nome: Seguranca de Sistemas Computacionais, Id: 403, CH: 72, Requisito: Redes de Computadores, Horario: 46M34
+
+//indisponiveis
+Nome: Visao Computacional, Id: 400, CH: 72, Requisito: Nenhum, Horario: NULL
+Nome: FPGA, Id: 394, CH: 72, Requisito: Nenhum, Horario: NULL
