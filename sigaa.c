@@ -6,11 +6,6 @@
 #include <wchar.h>
 #include <wctype.h>
 
-#define MAXR 4 //n° max de restos
- 
-//nome completo: Erivaldo Jose Da Silva Santos Junior
-//nome teste: erivaldo jose silva santos
-
 typedef struct {
     wchar_t nome[50];
     int materias_pagas[29]; //matérias já realizadas, ou pagas, pelo aluno
@@ -22,35 +17,28 @@ typedef struct {
     int turno_disciplina; //turno em que pagará as disciplinas
 } Aluno;
 
-/*typedef struct {
-    char hora_inicial[6]; //usar o horário militar (Ex: 1130 = 11:30) 
-    //OBS.: seria interessante mudar para o estilo de horário do sigaa que eh: 35T56 (
-    //os dois primeiros números dizem os dias
-    //  2 = segunda, 3 = terça, 4 = quarta, e 5 = quinta
-    //      a letra do meio é o turno
-    //          T = tarde, M = manhã
-    //              e os dois últimos dígitos as aulas
-    //                  1 = 1° aula, 2 = 2° aula, ..., 6 = 6° aula
-    char hora_final[6];
-    char dias[20];
-} Horario; */
-
 typedef struct {
-    wchar_t nome[60];
     int id;
     int carga;
     int periodo;
-    wchar_t pre_requisitos[100];
+    wchar_t nome[60];
     wchar_t horario_disc[7];
+    //OBS.: estilo de horário do sigaa: 35T56
+    //os digítos antes da letra são os dias da semana que haverá aula
+    //  2 = segunda, 3 = terça, 4 = quarta ...
+    //      a letra representa o turno
+    //          T = tarde, M = manhã
+    //              e os últimos dígitos são as aulas
+    //                  1 = 1° aula, 2 = 2° aula, ..., 6 = 6° aula
+    wchar_t pre_requisitos[100];
 } Disciplina;
 
 typedef struct {
-    wchar_t nome[60];
     int carga;
-    wchar_t pre_requisitos[100];
+    wchar_t nome[60];
     wchar_t horario_ele[7];
+    wchar_t pre_requisitos[100];
 } Eletiva;
-
 
 /*void escolha_eletiva(Aluno aluno) {
     Eletiva eletivas[] = {
@@ -72,34 +60,21 @@ typedef struct {
         {"Seguranca de Sistemas Computacionais", 72, "Redes de Computadores", {}}
     };
 }
-
-typedef struct {
-    char hora_inicial[6]; //usar o horário militar (Ex: 1130 = 11:30)
-    char hora_final[6];
-    char dias[20];
-} Horario;
-
-typedef struct {
-    char nome[60];
-    int id;
-    int carga;
-    char pre_requisitos[100];
-    Horario horario;
-} Disciplina;
 */
 
-void inicializarObrigatorias(Disciplina obrigatorias[], int max, FILE * arquivo)
+void inicializarObrigatorias(Disciplina obrigatorias[], int max, FILE * arquivo) //função para inserir as matérias na struct
 {
     int i = 0;
     
-    //Periodo: 1, Nome: Programacao 1, Id: 359, CH: 72, Requisito: Nenhum, Horario: M = manha, T = Tarde, antes da letra sao os dias da semana e depois as aulas
-    while (fwscanf(arquivo, L"Periodo: %d, Nome: %59[^,], Id: %d, CH: %d, Requisito: %99[^,], Horario: %7[^,]\n", &obrigatorias[i].periodo, obrigatorias[i].nome, &obrigatorias[i].id, &obrigatorias[i].carga, obrigatorias[i].pre_requisitos, obrigatorias[i].horario_disc != EOF))
+    //Periodo: 1, Nome: Programacao 1, Id: 359, CH: 72, Requisito: Nenhum, Horario: 6M3456
+    //M = manha, T = Tarde, antes da letra sao os dias da semana e depois as aulas
+    while ((i < max) && fwscanf(arquivo, L"Periodo: %d, Nome: %59l[^,], Id: %d, CH: %d, Requisito: %99l[^,], Horario: %7l[^\n]\n", &obrigatorias[i].periodo, obrigatorias[i].nome, &obrigatorias[i].id, &obrigatorias[i].carga, obrigatorias[i].pre_requisitos, obrigatorias[i].horario_disc) != EOF)
     {
         wprintf(L"Periodo: %d, Nome: %ls, Id: %d, CH: %d, Requisito: %ls, Horario: %ls\n", obrigatorias[i].periodo, obrigatorias[i].nome, obrigatorias[i].id, obrigatorias[i].carga, obrigatorias[i].pre_requisitos, obrigatorias[i].horario_disc);
         
         ++i;
         
-        if (i >= max)
+        if (i > max)
         {
             wprintf(L"Algo deu errado na leitura!");
             return;
@@ -109,7 +84,27 @@ void inicializarObrigatorias(Disciplina obrigatorias[], int max, FILE * arquivo)
     return;
 }
 
-void suaSituacao (int resto[]) //essa função descreve os critérios estabelecidos pela professora
+int disciplinasPagas(Aluno * ptr, Disciplina obrigatorias[])
+{
+    int i = 0;
+
+    while (1)
+    {
+        if (obrigatorias[i].periodo >= ptr->periodo)
+        {
+            break;
+        }
+
+        ptr->horas_pagas += obrigatorias[i].carga;
+        ptr->materias_pagas[i] = obrigatorias[i].id;
+
+        ++i;
+    }
+
+    return i;
+}
+
+void suaSituacao (int resto[], Aluno * ptr) //essa função descreve os critérios estabelecidos pela professora
 {
     wprintf(L"=============================CRITÉRIOS=============================\n");
     
@@ -119,14 +114,17 @@ void suaSituacao (int resto[]) //essa função descreve os critérios estabeleci
     {
         case 0:
             wprintf(L"10 disciplinas\n");
+            ptr->max_disciplina = 10;
             break;
 
         case 1:
             wprintf(L"8 disciplinas\n");    
+            ptr->max_disciplina = 8; 
             break;
 
         case 2:
             wprintf(L"6 disciplinas\n");
+            ptr->max_disciplina = 6;
             break;
 
         default:
@@ -139,14 +137,17 @@ void suaSituacao (int resto[]) //essa função descreve os critérios estabeleci
     {
         case 0:
             wprintf(L"no menor tempo possível\n");
+            ptr->tempo_curso = 8;
             break;
 
         case 1:
-            wprintf(L"no maior tempo possível\n");    
+            wprintf(L"no maior tempo possível\n");  
+            ptr->tempo_curso = 12;     
             break;
 
         case 2:
             wprintf(L"no tempo médio possível\n");
+            ptr->tempo_curso = 10;
             break;
 
         default:
@@ -241,15 +242,17 @@ int name_sum(wchar_t *nome) {
 //função para separação do nome em partes para fazer a divisão
 void name_process(Aluno aluno, int resto[]) {
 
-    wchar_t copiaNome[50];
+    wchar_t copiaNome[60];
     wchar_t * ultimaParada; //ponteiro que guarda a posição de onde a função wcstok parou
-    wchar_t * delimitadores = L" "; //delimitador = espaço
+    wchar_t * delimitadores = L" "; //ponteiro que armazena os delimitadores da função wcstok que nesse caso é somente o espaço
 
     wcscpy(copiaNome, aluno.nome); //apesar de aluno.nome ser uma cópia iremos criar mais uma cópia por prevenção
 
+    //retorna uma substring da string nome
+    //recebe uma string, seus delimitadores e a última posição do ponteiro que é inicialmente NULL
     wchar_t * token = wcstok(aluno.nome, delimitadores, &ultimaParada); //como aluno.nome é uma cópia iremos utiliza-la
 
-    int j = 0; //indice para o array de inteiros
+    int j = 0; //indice para o array de inteiros e limitador de palavras
     int soma = 0; //guardará a soma das letras 
 
     while (token != NULL) //vai separar e ler cada partição, ou palavra, do nome
@@ -268,7 +271,7 @@ void name_process(Aluno aluno, int resto[]) {
             
         }
 
-        token = wcstok(NULL, delimitadores, &ultimaParada);
+        token = wcstok(NULL, delimitadores, &ultimaParada); //esse NULL é para dizer para ela continuar o processo
     }
 
     if (j < 3) //caso o nome não seja grande o suficiente iremos refazer o processo de particionamento
@@ -301,18 +304,11 @@ void name_process(Aluno aluno, int resto[]) {
     return;
 }
 
-/*
- wchar_t nome[50];
-    int materias_pagas[29]; //matérias já realizadas, ou pagas, pelo aluno
-    int horas_pagas; //com as possíveis matérias já pagas, logo o aluno também cumpriu com suas horas obrigatórias
-    int periodo; //periodo em que se encontra o aluno
-    int max_disciplina; //max de disciplinas que ele irá pagar por semestre
-    int tempo_curso; //tempo de curso
-    int enfase; //enfase escolhida
-    int turno_disciplina; //turno em que pagará as disciplinas
-    */
-
-#define MAX_OBRIG 24
+#define MAX_OBRIG 24 //n° max de matérias obrigatórias fora as das ênfases
+#define MAXR 4 //n° max de restos
+ 
+//nome completo: Erivaldo Jose Da Silva Santos Junior
+//nome teste: erivaldo jose silva santos
 
 int main() {
    setlocale(LC_ALL, "");
@@ -322,14 +318,15 @@ int main() {
    Aluno aluno = {.materias_pagas = {0}, .horas_pagas = 0}; //inicializando algumas variáveis
    Disciplina obrigatorias[MAX_OBRIG]; //array de structs que irá conter as matérias obrigatórias, 24 obrigatórias fora as da ênfases
    int resto[MAXR]; //guardará o resto das divisões das particões do nome
+   int materiasPagas = 0; //guardará um indide de controle sobre as disciplinas pagas
 
    FILE * disciplinasObrigatorias;
 
-   disciplinasObrigatorias = wfopen(L"obrigatorias.txt", L"r");
+   disciplinasObrigatorias = fopen("obrigatorias.txt", "r, ccs=UTF-8"); //abri no formato Unicode
 
    if (disciplinasObrigatorias == NULL)
    {
-        wprintf(L"Erro ao abrir o arquivo externo!\n"); //mostra o erro ao sistema
+        wprintf(L"Erro ao abrir o arquivo externo!\n"); //para caso tenha havido erro na abertura do arquivo
         return 1;
    }
 
@@ -340,7 +337,7 @@ int main() {
        wprintf(L"Digite seu nome completo aqui: ");
        fgetws(aluno.nome, sizeof(aluno.nome) / sizeof(wchar_t), stdin);
     
-       wchar_t * ptr = wcschr(aluno.nome, L'\n'); //ponteiro wchar_t para a 1° aparição do '\n'
+       wchar_t * ptr = wcschr(aluno.nome, L'\n'); //ponteiro wchar_t para a 1° aparição do '\n' que será retornado pela função wcschar
     
        if (ptr)
        {
@@ -362,7 +359,7 @@ int main() {
        wscanf(L"%d", &aluno.periodo);
        getwchar();
     
-       if (aluno.periodo < 1 || aluno.periodo > 8)
+       if (aluno.periodo < 1 || aluno.periodo > 10)
        {
             wprintf(L"Uepa! Valor inserido fora do intervalo! Vamos recomeçar!\n");
        }
@@ -371,10 +368,23 @@ int main() {
        }
     }
     
-    wprintf(L"%d\n", aluno.periodo);
+    //wprintf(L"%d\n", aluno.periodo);
+
+    if (aluno.periodo > 1)
+    {
+        materiasPagas = disciplinasPagas(&aluno, obrigatorias); //essa função irá preencher as variáveis carga horária e disciplinas pagas da struct Aluno
+
+        wprintf(L"Horas pagas: %d, Disciplinas Pagas: ", aluno.horas_pagas);
+
+        for (int i = 0; i < materiasPagas; ++i)
+        {
+            wprintf(L"%d ", aluno.materias_pagas[i]);
+        }
+
+        wprintf(L"\n");
+    }
 
    //decomposicao do nome, soma e divisão para obtenção do seu resto
-   wprintf(L"Decomposição do nome, soma e resto\n");
    name_process(aluno, resto);
 
    wprintf(L"Restos:\n");
@@ -384,9 +394,10 @@ int main() {
         wprintf(L"resto[%d] = %d\n", i + 1, resto[i]);
    }
 
-   suaSituacao(resto);
+   suaSituacao(resto, &aluno); //será passado o endereço da variável aluno para que seu valor seja integralmente alterado
    
-   fclose(disciplinasObrigatorias);
+   
+   fclose(disciplinasObrigatorias); //fechamento do ponteiro
 
    return 0;
 }
