@@ -20,7 +20,8 @@ typedef struct {
     //          T = tarde, M = manhã
     //              e os últimos dígitos são as aulas
     //                  1 = 1° aula, 2 = 2° aula, ..., 6 = 6° aula
-    wchar_t pre_requisitos[110];
+    int preRequisitos[3];
+    wchar_t pre_requisitos[12];
 } Disciplina;
 
 typedef struct {
