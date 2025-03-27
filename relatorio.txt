@@ -11,3 +11,6 @@ Desativei a função DisciplinasPagas
 Criei um arquivo txt que servirá de entrada para o aconselhamento
 
 Automatizei a repartição de nome, name_process
+
+Ocultação de alguns printfs
+

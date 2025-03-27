@@ -11,8 +11,8 @@ typedef struct {
     int paga; // 1 - sim, 0 - não
     int carga;
     int periodo;
-    wchar_t nome[60];
-    wchar_t horario_disc[7];
+    wchar_t nome[70];
+    wchar_t horario_disc[8];
     //OBS.: estilo de horário do sigaa: 35T56
     //os digítos antes da letra são os dias da semana que haverá aula
     //  2 = segunda, 3 = terça, 4 = quarta ...
@@ -20,7 +20,7 @@ typedef struct {
     //          T = tarde, M = manhã
     //              e os últimos dígitos são as aulas
     //                  1 = 1° aula, 2 = 2° aula, ..., 6 = 6° aula
-    wchar_t pre_requisitos[100];
+    wchar_t pre_requisitos[110];
 } Disciplina;
 
 typedef struct {
@@ -31,19 +31,19 @@ typedef struct {
 } MateriasPagas;
 
 typedef struct {
-    wchar_t nome[50];
-    MateriasPagas minhaGrade[29]; //variavel que guardará as disciplinas pagas pelo usuário
-    int periodo; //periodo em que se encontra o aluno
-    int max_disciplina; //max de disciplinas que ele irá pagar por semestre
-    int tempo_curso; //tempo de curso
     int enfase; //enfase escolhida
+    int tempo_curso; //tempo de curso
+    int periodoAtual; //periodo em que se encontra o aluno
+    wchar_t nome[60];
+    int max_disciplina; //max de disciplinas que ele irá pagar por semestre
     wchar_t turno_disciplina; //turno em que pagará as disciplinas
+    MateriasPagas minhaGrade[29]; //variavel que guardará as disciplinas pagas pelo usuário
 } Aluno;
 
 typedef struct {
     int carga;
     wchar_t nome[60];
-    wchar_t horario_ele[7];
+    wchar_t horario_ele[8];
     wchar_t pre_requisitos[100];
 } Eletiva;
 
@@ -75,9 +75,37 @@ void inicializarObrigatorias(Disciplina obrigatorias[], int max, FILE * arquivo)
     
     //Periodo: 1, Nome: Programacao 1, Id: 359, CH: 72, Requisito: Nenhum, Horario: 6M3456
     //M = manha, T = Tarde, antes da letra sao os dias da semana e depois as aulas
-    while ((i < max) && fwscanf(arquivo, L"Periodo: %d, Nome: %59l[^,], Id: %d, CH: %d, Requisito: %99l[^,], Horario: %7l[^\n]\n", &obrigatorias[i].periodo, obrigatorias[i].nome, &obrigatorias[i].id, &obrigatorias[i].carga, obrigatorias[i].pre_requisitos, obrigatorias[i].horario_disc) != EOF)
+    while ((i < max) && fwscanf(arquivo, L"Periodo: %d, Nome: %69l[^,], Id: %d, CH: %d, Requisito: %109l[^,], Horario: %7l[^\n]\n", &obrigatorias[i].periodo, obrigatorias[i].nome, &obrigatorias[i].id, &obrigatorias[i].carga, obrigatorias[i].pre_requisitos, obrigatorias[i].horario_disc) != EOF)
     {
         wprintf(L"Periodo: %d, Nome: %ls, Id: %d, CH: %d, Requisito: %ls, Horario: %ls\n", obrigatorias[i].periodo, obrigatorias[i].nome, obrigatorias[i].id, obrigatorias[i].carga, obrigatorias[i].pre_requisitos, obrigatorias[i].horario_disc);
+        
+        ++i;
+        
+        if (i > max)
+        {
+            wprintf(L"Algo deu errado na leitura!");
+            return;
+        }
+    }
+
+    return;
+}
+
+void inicializarMateriasPagas(Aluno * aluno, FILE * arquivo) //função para inserir as matérias pagas na struct
+{
+    int i = 0;
+    int max = 29;
+    
+    //Nome: Joao Victor Duarte do Nascimento, Periodo: 2
+    fwscanf(arquivo, L"Nome: %59l[^,], Periodo: %d\n", aluno->nome, &aluno->periodoAtual);
+
+    wprintf(L"Nome: %ls, Periodo: %d\n", aluno->nome, aluno->periodoAtual);
+    
+    //Nome: Logica para Programacao, Id: 360, CH: 72, Nota: 7.8
+    while (fwscanf(arquivo, L"Nome: %59l[^,], Id: %d, CH: %d, Nota: %lf\n", aluno->minhaGrade[i].nome, &aluno->minhaGrade[i].id, &aluno->minhaGrade[i].carga, &aluno->minhaGrade[i].nota) != EOF)
+    {
+        //wprintf(L"Nome: %ls, Id: %d, CH: %d, Requisito: %ls, Horario: %ls\n", obrigatorias[i].periodo, obrigatorias[i]);
+        wprintf(L"Nome: %ls, Id: %d, CH: %d, Nota: %lf\n", aluno->minhaGrade[i].nome, aluno->minhaGrade[i].id, aluno->minhaGrade[i].carga, aluno->minhaGrade[i].nota);
         
         ++i;
         
@@ -276,7 +304,7 @@ void name_process(Aluno aluno, int resto[]) {
             {
                 soma = name_sum(token);
                 resto[j] = (soma % 3);
-                wprintf(L"%d° palavra do nome: %ls, tem %ld letras e a soma das suas letras eh: %d\n", j + 1, token, wcslen(token), soma);
+                //wprintf(L"%d° palavra do nome: %ls, tem %ld letras e a soma das suas letras eh: %d\n", j + 1, token, wcslen(token), soma);
                 j++;
             }
     
@@ -291,7 +319,7 @@ void name_process(Aluno aluno, int resto[]) {
 #define MAXR 4 //n° max de restos
  
 //nome completo: Erivaldo Jose Da Silva Santos Junior
-//nome teste: erivaldo jose silva santos
+//nome modelo: erivaldo jose silva santos
 
 int main() {
    setlocale(LC_ALL, "");
@@ -301,21 +329,29 @@ int main() {
    Aluno aluno;
    Disciplina obrigatorias[MAX_OBRIG] = {0}; //array de structs que irá conter as matérias obrigatórias, 24 obrigatórias fora as da ênfases
    int resto[MAXR]; //guardará o resto das divisões das particões do nome
-   int materiasPagas = 0; //guardará um indice de controle sobre as disciplinas pagas
+   //int materiasPagas = 0; //guardará um indice de controle sobre as disciplinas pagas
 
    FILE * disciplinasObrigatorias;
+   FILE * historico;
 
-   disciplinasObrigatorias = fopen("obrigatorias.txt", "r, ccs=UTF-8"); //abri no formato Unicode
+   disciplinasObrigatorias = fopen("obrigatorias.txt", "r, ccs=UTF-8"); //abre no formato Unicode
+   historico = fopen("entrada.txt", "r, ccs=UTF-8");
 
-   if (disciplinasObrigatorias == NULL)
+   if (disciplinasObrigatorias == NULL || historico == NULL)
    {
         wprintf(L"Erro ao abrir o arquivo externo!\n"); //para caso tenha havido erro na abertura do arquivo
         return 1;
    }
 
-   inicializarObrigatorias(obrigatorias, MAX_OBRIG, disciplinasObrigatorias); //irá inserir as disciplinas obrigatórias do arquivo externo para a struct
+   inicializarObrigatorias(obrigatorias, MAX_OBRIG, disciplinasObrigatorias); //irá inserir todas as disciplinas obrigatórias do arquivo externo para a struct
+   inicializarMateriasPagas(&aluno, historico);
 
-   while (1) //loop para dar mais uma chance do usuário consertar seu erro
+   for (int i = 0; i < MAX_OBRIG; ++i)
+   {
+    wprintf(L"Periodo: %d, Nome: %ls, Id: %d, CH: %d, Requisito: %ls, Horario: %ls\n", obrigatorias[i].periodo, obrigatorias[i].nome, obrigatorias[i].id, obrigatorias[i].carga, obrigatorias[i].pre_requisitos, obrigatorias[i].horario_disc);
+   }
+
+   while (1) //loop para evitar erros na inserção do nome modelo
    {
        wprintf(L"Digite o nome modelo completo a seguir: ");
        fgetws(aluno.nome, sizeof(aluno.nome) / sizeof(wchar_t), stdin);
@@ -371,16 +407,17 @@ int main() {
    //decomposicao do nome, soma e divisão para obtenção do seu resto
    name_process(aluno, resto);
 
-   wprintf(L"Restos:\n");
+   /*wprintf(L"Restos:\n");
    
    for (int i = 0; i < 4; ++i)
    {
         wprintf(L"resto[%d] = %d\n", i + 1, resto[i]);
-   }
+   }*/
 
    suaSituacao(resto, &aluno); //será passado o endereço da variável aluno para que seu valor seja integralmente alterado
    
    fclose(disciplinasObrigatorias); //fechamento do ponteiro
+   fclose(historico);
 
    return 0;
 }
