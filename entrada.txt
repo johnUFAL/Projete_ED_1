@@ -1,4 +1,11 @@
-Nome: Joao Victor Duarte do Nascimento, Periodo: 2
+Nome: Erivaldo Jose Silva Santos, Periodo: 4
+Nome: Programacao 2, Id: 372, CH: 72, Requisito: Estrutura de Dados e Banco de dados e Redes de Computadores, Horario:25T12
+Nome: Programacao 3, Id: 373, CH: 72, Requisito: Estrutura de Dados e Banco de dados e Redes de Computadores, Horario: 34T34
+Nome: Projeto de Analise de Algoritmos, Id: 374, CH: 72, Requisito: Estrutura de Dados e Teoria dos Grafos, Horario: 35M56
+Nome: Teoria da Computacao, Id: 376, CH: 72, Requisito: Nenhum
+
+
+
 Nome: Programacao 1, Id: 359, CH: 72, Nota: 7.8
 Nome: Logica para Programacao, Id: 360, CH: 72, Nota: 7.8
 Nome: Computacao Sociedade e Etica, Id: 361, CH: 72, Nota: -1
