@@ -69,7 +69,7 @@ typedef struct {
 }
 */
 
-void aconselhamentoPedagogico (Disciplina obrigatorias[], int max)
+void aconselhamentoPedagogico (Disciplina obrigatorias[], int max, int periodoAtual)
 {
     int turnos[8][2] = {0};
     int p = -1; //periodo
@@ -83,7 +83,7 @@ void aconselhamentoPedagogico (Disciplina obrigatorias[], int max)
         {
             t = obrigatorias[i].periodo - 1;
             
-            wprintf(L"Periodo: %d: ", obrigatorias[i].periodo);
+            //wprintf(L"Periodo: %d: ", obrigatorias[i].periodo);
 
             wcscpy(string, obrigatorias[i].horario_disc);
 
@@ -91,13 +91,13 @@ void aconselhamentoPedagogico (Disciplina obrigatorias[], int max)
             {
                 if (string[j] == 'M')
                 {
-                    wprintf(L"M\n");
+                    //wprintf(L"M\n");
                     turnos[t][0]++;
                     break;
                 }
                 else if (string[j] == 'T')
                 {
-                    wprintf(L"T\n");
+                    //wprintf(L"T\n");
                     turnos[t][1]++;
                     break;
                 }
@@ -110,6 +110,8 @@ void aconselhamentoPedagogico (Disciplina obrigatorias[], int max)
         wprintf(L"%d° periodo -> Matérias Manhã: %d, Matérias Tarde: %d\n", m + 1, turnos[m][0], turnos[m][1]);
     }
 
+    wprintf(L"Lembre-se! Você está no %d° período, ou seja, você tem de terminar o curso em %d períodos\n", periodoAtual, 12 - periodoAtual);
+
     return;
 }
 
@@ -121,7 +123,7 @@ void inicializarObrigatorias(Disciplina obrigatorias[], int max, FILE * arquivo)
     //M = manha, T = Tarde, antes da letra sao os dias da semana e depois as aulas
     while ((i < max) && fwscanf(arquivo, L"Periodo: %d, Nome: %69l[^,], Id: %d, CH: %d, Requisito: %109l[^,], Horario: %7l[^\n]\n", &obrigatorias[i].periodo, obrigatorias[i].nome, &obrigatorias[i].id, &obrigatorias[i].carga, obrigatorias[i].pre_requisitos, obrigatorias[i].horario_disc) != EOF)
     {
-        wprintf(L"Periodo: %d, Nome: %ls, Id: %d, CH: %d, Requisito: %ls, Horario: %ls\n", obrigatorias[i].periodo, obrigatorias[i].nome, obrigatorias[i].id, obrigatorias[i].carga, obrigatorias[i].pre_requisitos, obrigatorias[i].horario_disc);
+        //wprintf(L"Periodo: %d, Nome: %ls, Id: %d, CH: %d, Requisito: %ls, Horario: %ls\n", obrigatorias[i].periodo, obrigatorias[i].nome, obrigatorias[i].id, obrigatorias[i].carga, obrigatorias[i].pre_requisitos, obrigatorias[i].horario_disc);
         
         ++i;
         
@@ -163,7 +165,7 @@ int inicializarMateriasPagas(Aluno * aluno, FILE * arquivo) //função para inse
         }
     }
 
-    wprintf(L"%d\n", i);
+    //wprintf(L"%d\n", i);
 
     return i;
 }
@@ -480,7 +482,7 @@ int main() {
 
    suaSituacao(resto, &aluno); //será passado o endereço da variável aluno para que seu valor seja integralmente alterado
 
-   aconselhamentoPedagogico(obrigatorias, MAX_OBRIG);
+   aconselhamentoPedagogico(obrigatorias, MAX_OBRIG, aluno.periodoAtual);
    
    fclose(disciplinasObrigatorias); //fechamento do ponteiro
    fclose(historico);
