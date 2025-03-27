@@ -69,6 +69,45 @@ typedef struct {
 }
 */
 
+void aconselhamentoPedagogico (Disciplina obrigatorias[], int max)
+{
+    int i = 0;
+    int matutino = 0;
+    int vespertino = 0;
+
+    //6M3456
+    for (i = 0; i < max; ++i)
+    {
+        wchar_t string[8];
+
+        wcscpy(string, obrigatorias[i].horario_disc);
+
+        for (int j = 0; string[j] != L'\0'; ++j)
+        {
+            if (string[j] == 'M')
+            {
+                ++matutino;
+                break;
+            }
+            else if (string[j] == 'T')
+            {
+                ++vespertino;
+                break;
+            }
+        }
+
+    }
+    
+    wprintf(L"Matutino: %d, Vespertino: %d, Total Matérias: %d\n", matutino, vespertino, i);
+
+    /*while (1)
+    {
+        //proximo periodo
+    }*/
+
+    return;
+}
+
 void inicializarObrigatorias(Disciplina obrigatorias[], int max, FILE * arquivo) //função para inserir as matérias na struct
 {
     int i = 0;
@@ -107,7 +146,7 @@ int inicializarMateriasPagas(Aluno * aluno, FILE * arquivo) //função para inse
         //wprintf(L"Nome: %ls, Id: %d, CH: %d, Requisito: %ls, Horario: %ls\n", obrigatorias[i].periodo, obrigatorias[i]);
         wprintf(L"Nome: %ls, Id: %d, CH: %d, Nota: %lf\n", aluno->minhaGrade[i].nome, aluno->minhaGrade[i].id, aluno->minhaGrade[i].carga, aluno->minhaGrade[i].nota);
         
-        if (aluno->minhaGrade[i].nota >= 0) //caso a nota do aluno seja menor que zero isso indicará que ele trancou a matéria, ou seja, não pagou ela
+        if (aluno->minhaGrade[i].nota > 7) //caso a nota do aluno seja menor que sete isso indicará que ele trancou a matéria, ou reprovou nela
         {
             ++i;
         }
@@ -349,12 +388,13 @@ int main() {
    inicializarObrigatorias(obrigatorias, MAX_OBRIG, disciplinasObrigatorias); //irá inserir todas as disciplinas obrigatórias do arquivo externo para a struct
    materiasPagas = inicializarMateriasPagas(&aluno, historico); //função para receber o histórico do usuário e em seguida no array obrigatorias irá indicar quais matérias já foram pagas
 
-   if (materiasPagas == -1)
+   if (materiasPagas == -1) //prevenção de erros
    {
         wprintf(L"Erro na leitura da entrada\n");
    }
 
    for (int i = 0; i < materiasPagas; ++i) //loop para informar no array obrigatorias quais materias ele já pagou
+   //vai comparando até achar a matéria correspondente
    {
         for (int j = 0; j < MAX_OBRIG; ++j)
         {
@@ -367,7 +407,6 @@ int main() {
             }
         }
    }
-
 
    while (1) //loop para evitar erros na inserção do nome modelo
    {
@@ -433,6 +472,8 @@ int main() {
    }*/
 
    suaSituacao(resto, &aluno); //será passado o endereço da variável aluno para que seu valor seja integralmente alterado
+
+   aconselhamentoPedagogico(obrigatorias, MAX_OBRIG);
    
    fclose(disciplinasObrigatorias); //fechamento do ponteiro
    fclose(historico);
