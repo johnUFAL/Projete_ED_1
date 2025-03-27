@@ -1,0 +1,5 @@
+Nome: Joao Victor Duarte do Nascimento, Periodo: 2
+Nome: Logica para Programacao, Id: 360, CH: 72, Nota: 7.8
+Nome: Programacao 1, Id: 359, CH: 72, Nota: 7.8
+Nome: Computacao Sociedade e Etica, Id: 361, CH: 72, Nota: 7.8
+Nome: Matematica Discreta, Id: 362, CH: 72, Nota: 7.8

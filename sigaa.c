@@ -7,18 +7,8 @@
 #include <wctype.h>
 
 typedef struct {
-    wchar_t nome[50];
-    int materias_pagas[29]; //matérias já realizadas, ou pagas, pelo aluno
-    int horas_pagas; //com as possíveis matérias já pagas, logo o aluno também cumpriu com suas horas obrigatórias
-    int periodo; //periodo em que se encontra o aluno
-    int max_disciplina; //max de disciplinas que ele irá pagar por semestre
-    int tempo_curso; //tempo de curso
-    int enfase; //enfase escolhida
-    int turno_disciplina; //turno em que pagará as disciplinas
-} Aluno;
-
-typedef struct {
     int id;
+    int paga; // 1 - sim, 0 - não
     int carga;
     int periodo;
     wchar_t nome[60];
@@ -32,6 +22,23 @@ typedef struct {
     //                  1 = 1° aula, 2 = 2° aula, ..., 6 = 6° aula
     wchar_t pre_requisitos[100];
 } Disciplina;
+
+typedef struct {
+    int id;
+    int carga;
+    double nota;
+    wchar_t nome[60];
+} MateriasPagas;
+
+typedef struct {
+    wchar_t nome[50];
+    MateriasPagas minhaGrade[29]; //variavel que guardará as disciplinas pagas pelo usuário
+    int periodo; //periodo em que se encontra o aluno
+    int max_disciplina; //max de disciplinas que ele irá pagar por semestre
+    int tempo_curso; //tempo de curso
+    int enfase; //enfase escolhida
+    wchar_t turno_disciplina; //turno em que pagará as disciplinas
+} Aluno;
 
 typedef struct {
     int carga;
@@ -84,6 +91,7 @@ void inicializarObrigatorias(Disciplina obrigatorias[], int max, FILE * arquivo)
     return;
 }
 
+/*
 int disciplinasPagas(Aluno * ptr, Disciplina obrigatorias[])
 {
     int i = 0;
@@ -102,7 +110,7 @@ int disciplinasPagas(Aluno * ptr, Disciplina obrigatorias[])
     }
 
     return i;
-}
+}*/
 
 void suaSituacao (int resto[], Aluno * ptr) //essa função descreve os critérios estabelecidos pela professora
 {
@@ -246,61 +254,36 @@ void name_process(Aluno aluno, int resto[]) {
     wchar_t * ultimaParada; //ponteiro que guarda a posição de onde a função wcstok parou
     wchar_t * delimitadores = L" "; //ponteiro que armazena os delimitadores da função wcstok que nesse caso é somente o espaço
 
-    wcscpy(copiaNome, aluno.nome); //apesar de aluno.nome ser uma cópia iremos criar mais uma cópia por prevenção
-
-    //retorna uma substring da string nome
-    //recebe uma string, seus delimitadores e a última posição do ponteiro que é inicialmente NULL
-    wchar_t * token = wcstok(aluno.nome, delimitadores, &ultimaParada); //como aluno.nome é uma cópia iremos utiliza-la
-
     int j = 0; //indice para o array de inteiros e limitador de palavras
     int soma = 0; //guardará a soma das letras 
-
-    while (token != NULL) //vai separar e ler cada partição, ou palavra, do nome
+    
+    while (j < 4) //loop para caso o nome seja pequeno e não consiga suprir os requisitos
     {
-        if (j > 3) //para caso o nome da pessoa seja muito extenso
-        {
-            break;
-        }
-
-        if (wcslen(token) > 3) //caso o tamanho da palavra for <= 3 a condição irá ignorar essa palavra e vai pular para a próxima
-        {
-            soma = name_sum(token);
-            resto[j] = (soma % 3);
-            j++;
-            wprintf(L"%d° palavra do nome: %ls, tem %ld letras e a soma das suas letras eh: %d\n", j + 1, token, wcslen(token), soma);
-            
-        }
-
-        token = wcstok(NULL, delimitadores, &ultimaParada); //esse NULL é para dizer para ela continuar o processo
-    }
-
-    if (j < 3) //caso o nome não seja grande o suficiente iremos refazer o processo de particionamento
-    {
-        //resetando os ponteiros
-        token = NULL;
-        ultimaParada = NULL;
+        wcscpy(copiaNome, aluno.nome); //apesar de aluno.nome ser uma cópia iremos criar mais uma cópia por prevenção
         
-        token = wcstok(copiaNome, delimitadores, &ultimaParada); //é aqui onde iremos utilizar nossa cópia de segurança
+        //retorna uma substring da string nome
+        //recebe uma string, seus delimitadores e a última posição do ponteiro que é inicialmente NULL
+        wchar_t * token = wcstok(copiaNome, delimitadores, &ultimaParada); 
 
-        while (token != NULL)
+        while (token != NULL) //vai separar e ler cada partição, ou palavra, do nome
         {
-            if (j > 3) //para caso o nome já tenha ultrapassado o necessário
+            if (j > 3) //para caso o nome da pessoa seja muito extenso
             {
                 break;
             }
-
+    
             if (wcslen(token) > 3) //caso o tamanho da palavra for <= 3 a condição irá ignorar essa palavra e vai pular para a próxima
             {
                 soma = name_sum(token);
                 resto[j] = (soma % 3);
-                j++;
                 wprintf(L"%d° palavra do nome: %ls, tem %ld letras e a soma das suas letras eh: %d\n", j + 1, token, wcslen(token), soma);
+                j++;
             }
-
-            token = wcstok(NULL, delimitadores, &ultimaParada);
-        }
+    
+            token = wcstok(NULL, delimitadores, &ultimaParada); //esse NULL é para dizer para ela continuar o processo
+        }        
     }
-
+    
     return;
 }
 
@@ -315,10 +298,10 @@ int main() {
 
    fwide(stdout, 1); //força stdout a operar no modo wide-character, reduzindo problemas com wprintf
 
-   Aluno aluno = {.materias_pagas = {0}, .horas_pagas = 0}; //inicializando algumas variáveis
-   Disciplina obrigatorias[MAX_OBRIG]; //array de structs que irá conter as matérias obrigatórias, 24 obrigatórias fora as da ênfases
+   Aluno aluno;
+   Disciplina obrigatorias[MAX_OBRIG] = {0}; //array de structs que irá conter as matérias obrigatórias, 24 obrigatórias fora as da ênfases
    int resto[MAXR]; //guardará o resto das divisões das particões do nome
-   int materiasPagas = 0; //guardará um indide de controle sobre as disciplinas pagas
+   int materiasPagas = 0; //guardará um indice de controle sobre as disciplinas pagas
 
    FILE * disciplinasObrigatorias;
 
@@ -334,7 +317,7 @@ int main() {
 
    while (1) //loop para dar mais uma chance do usuário consertar seu erro
    {
-       wprintf(L"Digite seu nome completo aqui: ");
+       wprintf(L"Digite o nome modelo completo a seguir: ");
        fgetws(aluno.nome, sizeof(aluno.nome) / sizeof(wchar_t), stdin);
     
        wchar_t * ptr = wcschr(aluno.nome, L'\n'); //ponteiro wchar_t para a 1° aparição do '\n' que será retornado pela função wcschar
@@ -353,6 +336,7 @@ int main() {
        }
    }
 
+   /*
    while (1) //loop para dar mais uma chance do usuário consertar seu erro
    {
        wprintf(L"Digite seu período aqui: ");
@@ -368,9 +352,9 @@ int main() {
        }
     }
     
-    //wprintf(L"%d\n", aluno.periodo);
+    wprintf(L"%d\n", aluno.periodo);
 
-    if (aluno.periodo > 1)
+    /*if (aluno.periodo > 1)
     {
         materiasPagas = disciplinasPagas(&aluno, obrigatorias); //essa função irá preencher as variáveis carga horária e disciplinas pagas da struct Aluno
 
@@ -382,7 +366,7 @@ int main() {
         }
 
         wprintf(L"\n");
-    }
+    }*/
 
    //decomposicao do nome, soma e divisão para obtenção do seu resto
    name_process(aluno, resto);
@@ -395,7 +379,6 @@ int main() {
    }
 
    suaSituacao(resto, &aluno); //será passado o endereço da variável aluno para que seu valor seja integralmente alterado
-   
    
    fclose(disciplinasObrigatorias); //fechamento do ponteiro
 

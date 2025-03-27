@@ -1,0 +1,13 @@
+Vou fazer o codigo de maneira generalista, ou seja, o aconselhamento pedagogico será baseado no nome do Erivaldo
+    Importando apenas as materias pagas pelo aluno
+        E não seu nome
+
+Criei uma nova struct que inseri na struct Aluno que conterá as informações necessárias das matérias pagas pelo aluno
+
+A struct Disciplinas agora informa as matérias faltantes do usuário
+
+Desativei a função DisciplinasPagas
+
+Criei um arquivo txt que servirá de entrada para o aconselhamento
+
+Automatizei a repartição de nome
