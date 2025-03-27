@@ -91,7 +91,7 @@ void inicializarObrigatorias(Disciplina obrigatorias[], int max, FILE * arquivo)
     return;
 }
 
-void inicializarMateriasPagas(Aluno * aluno, FILE * arquivo) //função para inserir as matérias pagas na struct
+int inicializarMateriasPagas(Aluno * aluno, FILE * arquivo) //função para inserir as matérias pagas na struct
 {
     int i = 0;
     int max = 29;
@@ -107,16 +107,19 @@ void inicializarMateriasPagas(Aluno * aluno, FILE * arquivo) //função para ins
         //wprintf(L"Nome: %ls, Id: %d, CH: %d, Requisito: %ls, Horario: %ls\n", obrigatorias[i].periodo, obrigatorias[i]);
         wprintf(L"Nome: %ls, Id: %d, CH: %d, Nota: %lf\n", aluno->minhaGrade[i].nome, aluno->minhaGrade[i].id, aluno->minhaGrade[i].carga, aluno->minhaGrade[i].nota);
         
-        ++i;
+        if (aluno->minhaGrade[i].nota >= 0) //caso a nota do aluno seja menor que zero isso indicará que ele trancou a matéria, ou seja, não pagou ela
+        {
+            ++i;
+        }
         
         if (i > max)
         {
             wprintf(L"Algo deu errado na leitura!");
-            return;
+            return -1;
         }
     }
 
-    return;
+    return i;
 }
 
 /*
@@ -329,7 +332,7 @@ int main() {
    Aluno aluno;
    Disciplina obrigatorias[MAX_OBRIG] = {0}; //array de structs que irá conter as matérias obrigatórias, 24 obrigatórias fora as da ênfases
    int resto[MAXR]; //guardará o resto das divisões das particões do nome
-   //int materiasPagas = 0; //guardará um indice de controle sobre as disciplinas pagas
+   int materiasPagas = 0; //guardará um indice de controle sobre as disciplinas pagas
 
    FILE * disciplinasObrigatorias;
    FILE * historico;
@@ -344,12 +347,27 @@ int main() {
    }
 
    inicializarObrigatorias(obrigatorias, MAX_OBRIG, disciplinasObrigatorias); //irá inserir todas as disciplinas obrigatórias do arquivo externo para a struct
-   inicializarMateriasPagas(&aluno, historico);
+   materiasPagas = inicializarMateriasPagas(&aluno, historico); //função para receber o histórico do usuário e em seguida no array obrigatorias irá indicar quais matérias já foram pagas
 
-   for (int i = 0; i < MAX_OBRIG; ++i)
+   if (materiasPagas == -1)
    {
-    wprintf(L"Periodo: %d, Nome: %ls, Id: %d, CH: %d, Requisito: %ls, Horario: %ls\n", obrigatorias[i].periodo, obrigatorias[i].nome, obrigatorias[i].id, obrigatorias[i].carga, obrigatorias[i].pre_requisitos, obrigatorias[i].horario_disc);
+        wprintf(L"Erro na leitura da entrada\n");
    }
+
+   for (int i = 0; i < materiasPagas; ++i) //loop para informar no array obrigatorias quais materias ele já pagou
+   {
+        for (int j = 0; j < MAX_OBRIG; ++j)
+        {
+            if (aluno.minhaGrade[i].id == obrigatorias[j].id)
+            {
+                wprintf(L"%d e %d\n", aluno.minhaGrade[i].id, obrigatorias[j].id);
+                
+                obrigatorias->paga = 1; //o aluno já pagou essa matéria
+                break;
+            }
+        }
+   }
+
 
    while (1) //loop para evitar erros na inserção do nome modelo
    {
