@@ -71,39 +71,44 @@ typedef struct {
 
 void aconselhamentoPedagogico (Disciplina obrigatorias[], int max)
 {
-    int i = 0;
-    int matutino = 0;
-    int vespertino = 0;
+    int turnos[8][2] = {0};
+    int p = -1; //periodo
+    int t = 0; //posição do indice no array obrigatorias
+    
+    wchar_t string[8];
 
-    //6M3456
-    for (i = 0; i < max; ++i)
+    for (int i = 0; i < max; ++i)
     {
-        wchar_t string[8];
-
-        wcscpy(string, obrigatorias[i].horario_disc);
-
-        for (int j = 0; string[j] != L'\0'; ++j)
+        if (obrigatorias[i].paga != 1)
         {
-            if (string[j] == 'M')
+            t = obrigatorias[i].periodo - 1;
+            
+            wprintf(L"Periodo: %d: ", obrigatorias[i].periodo);
+
+            wcscpy(string, obrigatorias[i].horario_disc);
+
+            for (int j = 0; string[j] != L'\0'; ++j)
             {
-                ++matutino;
-                break;
-            }
-            else if (string[j] == 'T')
-            {
-                ++vespertino;
-                break;
+                if (string[j] == 'M')
+                {
+                    wprintf(L"M\n");
+                    turnos[t][0]++;
+                    break;
+                }
+                else if (string[j] == 'T')
+                {
+                    wprintf(L"T\n");
+                    turnos[t][1]++;
+                    break;
+                }
             }
         }
-
     }
-    
-    wprintf(L"Matutino: %d, Vespertino: %d, Total Matérias: %d\n", matutino, vespertino, i);
 
-    /*while (1)
+    for (int m = 0; m < 8; ++m)
     {
-        //proximo periodo
-    }*/
+        wprintf(L"%d° periodo -> Matérias Manhã: %d, Matérias Tarde: %d\n", m + 1, turnos[m][0], turnos[m][1]);
+    }
 
     return;
 }
@@ -157,6 +162,8 @@ int inicializarMateriasPagas(Aluno * aluno, FILE * arquivo) //função para inse
             return -1;
         }
     }
+
+    wprintf(L"%d\n", i);
 
     return i;
 }
@@ -402,7 +409,7 @@ int main() {
             {
                 wprintf(L"%d e %d\n", aluno.minhaGrade[i].id, obrigatorias[j].id);
                 
-                obrigatorias->paga = 1; //o aluno já pagou essa matéria
+                obrigatorias[j].paga = 1; //o aluno já pagou essa matéria
                 break;
             }
         }
