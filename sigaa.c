@@ -170,27 +170,6 @@ int inicializarMateriasPagas(Aluno * aluno, FILE * arquivo) //função para inse
     return i;
 }
 
-/*
-int disciplinasPagas(Aluno * ptr, Disciplina obrigatorias[])
-{
-    int i = 0;
-
-    while (1)
-    {
-        if (obrigatorias[i].periodo >= ptr->periodo)
-        {
-            break;
-        }
-
-        ptr->horas_pagas += obrigatorias[i].carga;
-        ptr->materias_pagas[i] = obrigatorias[i].id;
-
-        ++i;
-    }
-
-    return i;
-}*/
-
 void suaSituacao (int resto[], Aluno * ptr) //essa função descreve os critérios estabelecidos pela professora
 {
     wprintf(L"=============================CRITÉRIOS=============================\n");
@@ -437,38 +416,6 @@ int main() {
             break;
        }
    }
-
-   /*
-   while (1) //loop para dar mais uma chance do usuário consertar seu erro
-   {
-       wprintf(L"Digite seu período aqui: ");
-       wscanf(L"%d", &aluno.periodo);
-       getwchar();
-    
-       if (aluno.periodo < 1 || aluno.periodo > 10)
-       {
-            wprintf(L"Uepa! Valor inserido fora do intervalo! Vamos recomeçar!\n");
-       }
-       else{
-            break;
-       }
-    }
-    
-    wprintf(L"%d\n", aluno.periodo);
-
-    /*if (aluno.periodo > 1)
-    {
-        materiasPagas = disciplinasPagas(&aluno, obrigatorias); //essa função irá preencher as variáveis carga horária e disciplinas pagas da struct Aluno
-
-        wprintf(L"Horas pagas: %d, Disciplinas Pagas: ", aluno.horas_pagas);
-
-        for (int i = 0; i < materiasPagas; ++i)
-        {
-            wprintf(L"%d ", aluno.materias_pagas[i]);
-        }
-
-        wprintf(L"\n");
-    }*/
 
    //decomposicao do nome, soma e divisão para obtenção do seu resto
    name_process(aluno, resto);
