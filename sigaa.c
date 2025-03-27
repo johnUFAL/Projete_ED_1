@@ -26,6 +26,7 @@ typedef struct {
 typedef struct {
     int id;
     int carga;
+    wchar_t requisito[80];
     double nota;
     wchar_t nome[60];
 } MateriasPagas;
@@ -148,10 +149,10 @@ int inicializarMateriasPagas(Aluno * aluno, FILE * arquivo) //função para inse
     wprintf(L"Nome: %ls, Periodo: %d\n", aluno->nome, aluno->periodoAtual);
     
     //Nome: Logica para Programacao, Id: 360, CH: 72, Nota: 7.8
-    while (fwscanf(arquivo, L"Nome: %59l[^,], Id: %d, CH: %d, Nota: %lf\n", aluno->minhaGrade[i].nome, &aluno->minhaGrade[i].id, &aluno->minhaGrade[i].carga, &aluno->minhaGrade[i].nota) != EOF)
+    while (fwscanf(arquivo, L"Nome: %59l[^,], Id: %d, CH: %d, Requisito: %79l[^,], Nota: %lf\n", aluno->minhaGrade[i].nome, &aluno->minhaGrade[i].id, &aluno->minhaGrade[i].carga, aluno->minhaGrade[i].requisito, &aluno->minhaGrade[i].nota) != EOF)
     {
         //wprintf(L"Nome: %ls, Id: %d, CH: %d, Requisito: %ls, Horario: %ls\n", obrigatorias[i].periodo, obrigatorias[i]);
-        wprintf(L"Nome: %ls, Id: %d, CH: %d, Nota: %lf\n", aluno->minhaGrade[i].nome, aluno->minhaGrade[i].id, aluno->minhaGrade[i].carga, aluno->minhaGrade[i].nota);
+        wprintf(L"Nome: %ls, Id: %d, CH: %d, Requisito: %ls, Nota: %lf\n", aluno->minhaGrade[i].nome, aluno->minhaGrade[i].id, aluno->minhaGrade[i].carga, aluno->minhaGrade[i].requisito, aluno->minhaGrade[i].nota);
         
         if (aluno->minhaGrade[i].nota > 7) //caso a nota do aluno seja menor que sete isso indicará que ele trancou a matéria, ou reprovou nela
         {
