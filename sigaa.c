@@ -352,6 +352,63 @@ void name_process(Aluno aluno, int resto[]) {
 //nome completo: Erivaldo Jose Da Silva Santos Junior
 //nome modelo: erivaldo jose silva santos
 
+//disciplina por turno 
+void DisciplinaPorTurno(Disciplina obrigatorias[], int max_obgt, Aluno *aluno, int resto[]) {
+    wchar_t turno = L'\0';
+
+    if (resto[3] == 1) { //devem ser do msm turno
+        int manha = 0, tarde = 0; // para saber qual turno é predominante
+        for (int i = 0; i < max_obgt; i++) {
+            if (obrigatorias[i].paga == 1) {
+                for (int j = 0; obrigatorias[i].horario_disc[j] != L'\0'; j++) { //com esse for vamos contabilizar cada uma
+                    if (obrigatorias[i].horario_disc[j] != L'M') {
+                        manha++;
+                        break;
+                    } 
+                    if (obrigatorias[i].horario_disc[j] != L'T') {
+                        tarde++;
+                        break;
+                    } 
+                }
+            }
+        }
+
+        turno = (manha >= tarde) ? L'M' : 'T'; //vai determinar o turno
+
+        wprintf(L"\n---RECOMENDACOES---\n");
+        wprintf(L"Turno com mais disciplinas: %c\n", turno);
+        wprintf(L"Discplinas recomendadas nesse turno\n:");
+
+        int recomendadas = 0; //contador 
+
+        //limita de acordo com o maximo permitido: 6
+        for (int i = 0; i < max_obgt && recomendadas < aluno->max_disciplina; i++) {
+            //verifica as que ja foram pagas e as que estao no turno desejado
+            if (obrigatorias[i].paga != 1 && obrigatorias[i].periodo > aluno->periodoAtual) {
+                int turno_desejado = 0;//verificacao
+                for (int j = 0; obrigatorias[i].horario_disc[j] != L'\0'; j++) {
+                    if (obrigatorias[i].horario_disc[j] == turno_desejado) {
+                        turno_desejado = 1;
+                        break;
+                    }
+                }
+                
+                if (turno_desejado) { //se ofor o certo
+                    wprintf(L"- %ls (Periodo: %d, Horario: %ls)\n", obrigatorias[i].nome, obrigatorias[i].periodo, obrigatorias[i].horario_disc);
+                    turno_desejado++;
+                }
+            }
+        }
+
+        if (recomendadas == 0) { //se nao tiver.....
+            wprintf(L"Nao ha disciplinas a serem consideradas");
+        } else {
+            wprintf(L"Total de Disciplinas recomendadas: %d\n", recomendadas);
+        }
+    } 
+}
+
+
 int main() {
    setlocale(LC_ALL, "");
 
@@ -431,6 +488,8 @@ int main() {
    suaSituacao(resto, &aluno); //será passado o endereço da variável aluno para que seu valor seja integralmente alterado
 
    aconselhamentoPedagogico(obrigatorias, MAX_OBRIG, aluno.periodoAtual);
+
+   DisciplinaPorTurno(obrigatorias, MAX_OBRIG, &aluno, resto); //recomendação de diciplina para o proximo semestre do aluno 
    
    fclose(disciplinasObrigatorias); //fechamento do ponteiro
    fclose(historico);
