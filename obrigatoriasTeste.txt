@@ -19,6 +19,6 @@ Periodo: 5, Nome: Sistemas Operacionais, Id: 378, CH: 72, Requisito_id: 366, Req
 Periodo: 5, Nome: Compiladores, Id: 379, CH: 72, Requisito_id: 360_364,  Requisito: Estrutura de Dados e Logica para Computacao, Horario: 24M56
 Periodo: 5, Nome: Inteligencia Artificial, Id: 380, CH: 72, Requisito_id: 360_364,  Requisito: Estrutura de Dados e Logica para Computacao, Horario: 35M34
 Periodo: 5, Nome: Computacao Grafica, Id: 381, CH: 72, Requisito_id: 0, Requisito: Nenhum, Horario: 36M56
-Periodo: 6, Nome: Projeto e Desenvolvimento de Sistemas, Id: 382, CH: 288, Requisito_id: 105,  Requisito: Todas as disciplinas do 1º ao 5º semestre, Horario: 26T1234
-Periodo: 7, Nome: Metodologias de Pesquisa e Trabalhos Individual, Id: 386, CH: 72, Requisito_id: 0,  Requisito: Nenhum, Horario: 36M34
+Periodo: 6, Nome: Projeto e Desenvolvimento de Sistemas, Id: 382, CH: 288, Requisito_id: 105, Requisito: Todas as disciplinas do 1º ao 5º semestre, Horario: 26T1234
+Periodo: 7, Nome: Metodologias de Pesquisa e Trabalhos Individual, Id: 386, CH: 72, Requisito_id: 0, Requisito: Nenhum, Horario: 36M34
 Periodo: 7, Nome: Nocoes de Direito, Id: 387, CH: 72, Requisito_id: 0, Requisito: Nenhum, Horario: 6T1234

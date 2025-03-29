@@ -20,7 +20,8 @@ typedef struct {
     //          T = tarde, M = manhã
     //              e os últimos dígitos são as aulas
     //                  1 = 1° aula, 2 = 2° aula, ..., 6 = 6° aula
-    wchar_t pre_requisitos[110];
+    int preRequisitos[3];
+    wchar_t pre_requisitos[12];
 } Disciplina;
 
 typedef struct {
@@ -71,13 +72,11 @@ typedef struct {
 }
 */
 
-void aconselhamentoPedagogico (Disciplina obrigatorias[], int max, int periodoAtual)
+//vai dá a distribuição das matérias ainda não pagas de todos os períodos
+void aconselhamentoPedagogico (Disciplina obrigatorias[], int max, Aluno aluno)
 {
     int turnos[8][2] = {0};
-    int p = -1; //periodo
     int t = 0; //posição do indice no array obrigatorias
-    
-    wchar_t string[8];
 
     for (int i = 0; i < max; ++i)
     {
@@ -87,17 +86,15 @@ void aconselhamentoPedagogico (Disciplina obrigatorias[], int max, int periodoAt
             
             //wprintf(L"Periodo: %d: ", obrigatorias[i].periodo);
 
-            wcscpy(string, obrigatorias[i].horario_disc);
-
-            for (int j = 0; string[j] != L'\0'; ++j)
+            for (int j = 0; obrigatorias[i].horario_disc[j] != L'\0'; ++j)
             {
-                if (string[j] == 'M')
+                if (obrigatorias[i].horario_disc[j] == L'M')
                 {
                     //wprintf(L"M\n");
                     turnos[t][0]++;
                     break;
                 }
-                else if (string[j] == 'T')
+                else if (obrigatorias[i].horario_disc[j] == L'T')
                 {
                     //wprintf(L"T\n");
                     turnos[t][1]++;
@@ -107,12 +104,66 @@ void aconselhamentoPedagogico (Disciplina obrigatorias[], int max, int periodoAt
         }
     }
 
+    int manha = 0;
+    int tarde = 0;
+
+    for (int i = 0; i < 8; ++i)
+    {
+        manha += turnos[i][0];
+        tarde += turnos[i][1];
+    }
+
     for (int m = 0; m < 8; ++m)
     {
         wprintf(L"%d° periodo -> Matérias Manhã: %d, Matérias Tarde: %d\n", m + 1, turnos[m][0], turnos[m][1]);
     }
 
-    wprintf(L"Lembre-se! Você está no %d° período, ou seja, você tem de terminar o curso em %d períodos\n", periodoAtual, 12 - periodoAtual);
+    wprintf(L"Ou seja, você tem %d disciplinas de manhã e %d disciplinas a tarde não pagas\n", manha, tarde);
+    wprintf(L"Lembre-se! Você está no %d° período, ou seja, você tem de terminar o curso em %d períodos\n", aluno.periodoAtual, aluno.tempo_curso - aluno.periodoAtual);
+    
+    int totalPeriodos = ((manha % aluno.max_disciplina) + (manha / aluno.max_disciplina)) + ((tarde / aluno.max_disciplina) + tarde % aluno.max_disciplina); //isso é uma soma bem grosseira, não sendo levado em conta os horários das aulas
+    
+    wprintf(L"Na sua situação atual você consegue terminar o curso em no mínimo %d períodos. Lhe restando %d períodos\n", totalPeriodos, aluno.tempo_curso - (totalPeriodos + aluno.periodoAtual));
+
+
+
+    int menorPeriodo = 999; //guardará o menor período entre todas as matérias que não foram pagas em seus respectivos períodos
+    int menorInd = 0; //guardará o índice do menor período
+    int IndperiodoSeguinte = 0; //armazenará o índice de onde começa o próximo período
+
+    for (int j = 0; j < max; ++j) //o loop vai das matérias do primeiro período até encontrar a disciplina no menor período que ainda não foi paga
+    {
+        if (obrigatorias[j].paga == 0 && obrigatorias[j].periodo < menorPeriodo) //se a disicplina não foi paga e se seu período é menor que o menorPeríodo
+        {
+            menorPeriodo = obrigatorias[j].periodo;
+            menorInd = j;
+            //temos a disciplina não paga no menor período e a sua posição 
+        }
+
+        if (obrigatorias[j].periodo > aluno.periodoAtual)
+        {
+            IndperiodoSeguinte = j;
+            break; //agora temos o índice de onde irá comecar o seguinte período após o atual
+        }
+    }
+
+
+    /*if (turnos[menorPeriodo - 1][0] > turnos[menorPeriodo - 1][1]) //manha > tarde
+    {
+        for (int j = menorInd)
+    }*/
+
+
+
+
+
+
+
+
+
+
+
+
 
     return;
 }
@@ -266,7 +317,8 @@ void suaSituacao (int resto[], Aluno * ptr) //essa função descreve os critéri
 }
 
 //função para checar se todos os valores digitados na string são letras
-int validation_string(Aluno aluno) {
+int validation_string(Aluno aluno) 
+{
     for (int i = 0; aluno.nome[i] != L'\0'; ++i)
     {
         if (!(iswalpha(aluno.nome[i]) || iswspace(aluno.nome[i]))) //validacao de tipo string
@@ -278,8 +330,10 @@ int validation_string(Aluno aluno) {
    return 1;
 }
 
-int value_string(wchar_t letra) { 
-   switch (letra) {
+int value_string(wchar_t letra) //retorna o valor de cada letra do nome
+{ 
+   switch (letra) 
+   {
        case L'q': return 1; case L'w': return 6; case L'e': return 7;
        case L'r': return 6; case L't': return 5; case L'y': return 2;
        case L'u': return 3; case L'i': return 8; case L'o': return 9;
@@ -296,7 +350,8 @@ int value_string(wchar_t letra) {
    }
 }
 
-int name_sum(wchar_t *nome) {
+int name_sum(wchar_t *nome) //soma os valores das letras
+{
    int soma = 0;
 
    for (int i = 0; nome[i] != L'\0'; ++i)
@@ -308,8 +363,8 @@ int name_sum(wchar_t *nome) {
 }
 
 //função para separação do nome em partes para fazer a divisão
-void name_process(Aluno aluno, int resto[]) {
-
+void name_process(Aluno aluno, int resto[]) 
+{
     wchar_t copiaNome[60];
     wchar_t * ultimaParada; //ponteiro que guarda a posição de onde a função wcstok parou
     wchar_t * delimitadores = L" "; //ponteiro que armazena os delimitadores da função wcstok que nesse caso é somente o espaço
@@ -347,48 +402,80 @@ void name_process(Aluno aluno, int resto[]) {
     return;
 }
 
-#define MAX_OBRIG 24 //n° max de matérias obrigatórias fora as das ênfases
-#define MAXR 4 //n° max de restos
- 
-//nome completo: Erivaldo Jose Da Silva Santos Junior
-//nome modelo: erivaldo jose silva santos
+/*
+void DisciplinaPorTurno(Disciplina obrigatorias[], int max_obgt, Aluno *aluno, int resto[]) //função que dirá as disciplinas para o seguinte turno 
+//array de structs da struct obrigatorias, max de obrigatorias = 24, ponteiro para a struct Aluno, array de restos
+{
+    wchar_t turno = L'\0'; //irá armazenar o turno predominante
 
-//disciplina por turno 
-void DisciplinaPorTurno(Disciplina obrigatorias[], int max_obgt, Aluno *aluno, int resto[]) {
-    wchar_t turno = L'\0';
+    if (resto[3] == 1) //condição: as matérias devem ser do msm turno
+    { 
+        int manha = 0, tarde = 0; //inicializando variáveis que armazenarão a qtd dos turnos
+        int menorPeriodo = 999; //guardará o menor período entre todas as matérias que não foram pagas em seus respectivos períodos
+        int menorInd = 0; //guardará o índice do menor período
+        int IndperiodoSeguinte = 0; //armazenará o índice de onde começa o próximo período
 
-    if (resto[3] == 1) { //devem ser do msm turno
-        int manha = 0, tarde = 0; // para saber qual turno é predominante
-        for (int i = 0; i < max_obgt; i++) {
-            if (obrigatorias[i].paga == 1) {
-                for (int j = 0; obrigatorias[i].horario_disc[j] != L'\0'; j++) { //com esse for vamos contabilizar cada uma
-                    if (obrigatorias[i].horario_disc[j] != L'M') {
+        for (int j = 0; j < max_obgt; ++j) //o loop vai das matérias do primeiro período até encontrar a disciplina no menor período que ainda não foi paga
+        {
+            if (obrigatorias[j].paga == 0 && obrigatorias[j].periodo < menorPeriodo) //se a disicplina não foi paga e se seu período é menor que o menorPeríodo
+            {
+                menorPeriodo = obrigatorias[j].periodo;
+                menorInd = j;
+                //temos a disciplina não paga no menor período e a sua posição 
+            }
+
+            if (obrigatorias[j].periodo > aluno->periodoAtual)
+            {
+                IndperiodoSeguinte = j;
+                break; //agora temos o índice de onde irá comecar o seguinte período após o atual
+            }
+        }
+
+        for (int i = menorInd; i < IndperiodoSeguinte; i++) //loop para contabilizar a qtd dos tipos do turno (M/T)
+        //que são predominantes nas disciplinas não pagas do menor período até o período atual 
+        {
+            if (obrigatorias[i].paga != 1) //se for != de 1 quer dizer que não foi paga
+            {
+                for (int j = 0; obrigatorias[i].horario_disc[j] != L'\0'; ++j) //vai da primeira posição da string até encontrar o '\0'
+                {
+                    if (obrigatorias[i].horario_disc[j] == L'M')
+                    {
+                        //wprintf(L"M\n");
                         manha++;
                         break;
-                    } 
-                    if (obrigatorias[i].horario_disc[j] != L'T') {
+                    }
+                    else if (obrigatorias[i].horario_disc[j] == L'T')
+                    {
+                        //wprintf(L"T\n");
                         tarde++;
                         break;
-                    } 
+                    }
                 }
             }
         }
 
-        turno = (manha >= tarde) ? L'M' : 'T'; //vai determinar o turno
+        turno = (manha >= tarde) ? L'M' : L'T'; //vai indicar o turno com mais disciplinas não pagas
 
-        wprintf(L"\n---RECOMENDACOES---\n");
+        wprintf(L"\n=============================RECOMENDAÇÕES=============================\n");
         wprintf(L"Turno com mais disciplinas: %c\n", turno);
+        wprintf(L"Você tem %d disciplinas do turno da manhã e %d disciplinas do turno da tarde ainda não pagas!\n", manha, tarde);
         wprintf(L"Discplinas recomendadas nesse turno\n:");
 
+        
         int recomendadas = 0; //contador 
 
         //limita de acordo com o maximo permitido: 6
-        for (int i = 0; i < max_obgt && recomendadas < aluno->max_disciplina; i++) {
+        for (int i = 0; i < max_obgt && recomendadas < aluno->max_disciplina; i++) 
+        {
             //verifica as que ja foram pagas e as que estao no turno desejado
-            if (obrigatorias[i].paga != 1 && obrigatorias[i].periodo > aluno->periodoAtual) {
+            if (obrigatorias[i].paga != 1 && obrigatorias[i].periodo > aluno->periodoAtual) 
+            {
                 int turno_desejado = 0;//verificacao
-                for (int j = 0; obrigatorias[i].horario_disc[j] != L'\0'; j++) {
-                    if (obrigatorias[i].horario_disc[j] == turno_desejado) {
+
+                for (int j = 0; obrigatorias[i].horario_disc[j] != L'\0'; j++) 
+                {
+                    if (obrigatorias[i].horario_disc[j] == turno_desejado) 
+                    {
                         turno_desejado = 1;
                         break;
                     }
@@ -408,75 +495,94 @@ void DisciplinaPorTurno(Disciplina obrigatorias[], int max_obgt, Aluno *aluno, i
         }
     } 
 }
+*/
 
+#define MAX_OBRIG 24 //n° max de matérias obrigatórias fora as das ênfases
+#define MAXR 4 //n° max de restos
+ 
+//nome completo: Erivaldo Jose Da Silva Santos Junior
+//nome modelo: erivaldo jose silva santos
 
-int main() {
+int main() 
+{
    setlocale(LC_ALL, "");
 
    fwide(stdout, 1); //força stdout a operar no modo wide-character, reduzindo problemas com wprintf
 
-   Aluno aluno;
+   //structs
+   Aluno aluno = {.nome = L"Erivaldo Jose Silva Santos"};
    Disciplina obrigatorias[MAX_OBRIG] = {0}; //array de structs que irá conter as matérias obrigatórias, 24 obrigatórias fora as da ênfases
+   //ints
    int resto[MAXR]; //guardará o resto das divisões das particões do nome
    int materiasPagas = 0; //guardará um indice de controle sobre as disciplinas pagas
-
+   //ponteiros FILE
    FILE * disciplinasObrigatorias;
    FILE * historico;
-
+   //atribuindo o endereço dos arquivos externos aos ponteiros FILE
    disciplinasObrigatorias = fopen("obrigatorias.txt", "r, ccs=UTF-8"); //abre no formato Unicode
    historico = fopen("entrada.txt", "r, ccs=UTF-8");
 
-   if (disciplinasObrigatorias == NULL || historico == NULL)
+   if (disciplinasObrigatorias == NULL || historico == NULL) //checagem para caso tenha havido erro na abertura de um dos arquivos
    {
-        wprintf(L"Erro ao abrir o arquivo externo!\n"); //para caso tenha havido erro na abertura do arquivo
+        wprintf(L"Erro ao abrir o arquivo externo!\n");
         return 1;
    }
 
+   //funções para passar os dados dos arquivos externos para as structs
    inicializarObrigatorias(obrigatorias, MAX_OBRIG, disciplinasObrigatorias); //irá inserir todas as disciplinas obrigatórias do arquivo externo para a struct
    materiasPagas = inicializarMateriasPagas(&aluno, historico); //função para receber o histórico do usuário e em seguida no array obrigatorias irá indicar quais matérias já foram pagas
 
-   if (materiasPagas == -1) //prevenção de erros
+   if (materiasPagas == -1) //prevenção de erros para caso a função tenha lido uma qtd de linhas não esperadas
    {
         wprintf(L"Erro na leitura da entrada\n");
    }
 
-   for (int i = 0; i < materiasPagas; ++i) //loop para informar no array obrigatorias quais materias ele já pagou
-   //vai comparando até achar a matéria correspondente
+   wprintf(L"Matérias pagas:\n");
+
+   //loop para informar no array obrigatorias quais materias ele já pagou
+   for (int i = 0; i < materiasPagas; ++i) //vai comparando até achar a matéria correspondente
    {
-        for (int j = 0; j < MAX_OBRIG; ++j)
+        //o loop externo roda a struct aluno
+        //e a interna roda a struct obrigatorias    
+
+        for (int j = 0; j < MAX_OBRIG; ++j) //vai analisar todas as matérias obrigatórias
         {
-            if (aluno.minhaGrade[i].id == obrigatorias[j].id)
+            if (aluno.minhaGrade[i].id == obrigatorias[j].id) //caso haja um correspondente entre a que ele pagou que consta no histórico
+            //e a da struct obrigatorias 
             {
-                wprintf(L"%d e %d\n", aluno.minhaGrade[i].id, obrigatorias[j].id);
+                wprintf(L"%ls\n", aluno.minhaGrade[i].nome);
                 
                 obrigatorias[j].paga = 1; //o aluno já pagou essa matéria
                 break;
             }
         }
    }
+   wprintf(L"Digite o nome modelo completo a seguir: %ls\n", aluno.nome);
 
-   while (1) //loop para evitar erros na inserção do nome modelo
+   /*while (1) //loop para evitar erros na inserção do nome modelo
    {
        wprintf(L"Digite o nome modelo completo a seguir: ");
        fgetws(aluno.nome, sizeof(aluno.nome) / sizeof(wchar_t), stdin);
     
        wchar_t * ptr = wcschr(aluno.nome, L'\n'); //ponteiro wchar_t para a 1° aparição do '\n' que será retornado pela função wcschar
     
-       if (ptr)
+       if (ptr) //caso ptr for != de NULL quer dizer que ele encontrou a última posição do '\n'
        {
             *ptr = L'\0'; //substituindo o '\n' por '\0'
        }
     
        //validacao do nome 
-       if (!validation_string(aluno)) {
+       if (!validation_string(aluno)) 
+       {
            wprintf(L"Existe caracteres não alfabéticos no seu nome! Vamos recomeçar!\n");
        }
-       else{
+       else
+       {
             break;
        }
-   }
+   }*/
 
-   //decomposicao do nome, soma e divisão para obtenção do seu resto
+   //decomposicao do nome, soma e divisão para obtenção do seu resto que nos ajudará no conhecimento das condições do projeto
    name_process(aluno, resto);
 
    /*wprintf(L"Restos:\n");
@@ -488,9 +594,9 @@ int main() {
 
    suaSituacao(resto, &aluno); //será passado o endereço da variável aluno para que seu valor seja integralmente alterado
 
-   aconselhamentoPedagogico(obrigatorias, MAX_OBRIG, aluno.periodoAtual);
+   aconselhamentoPedagogico(obrigatorias, MAX_OBRIG, aluno); //vai dá a distribuição das matérias ainda não pagas de todos os períodos
 
-   DisciplinaPorTurno(obrigatorias, MAX_OBRIG, &aluno, resto); //recomendação de diciplina para o proximo semestre do aluno 
+   //DisciplinaPorTurno(obrigatorias, MAX_OBRIG, &aluno, resto); //recomendação de disciplina para o próximo semestre do aluno 
    
    fclose(disciplinasObrigatorias); //fechamento do ponteiro
    fclose(historico);

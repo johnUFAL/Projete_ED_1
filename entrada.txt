@@ -1,5 +1,5 @@
 Nome: Erivaldo Jose Silva Santos, Periodo: 4
-Id: COMP372, Nome: Programacao 2, Nota: 7.8
-Id: COMP373, Nome: Programacao 3, Nota: 7.8
-Id: COMP374, Nome: Projeto de Analise de Algoritmos, Nota: -1
-Id: COMP376, Nome: Teoria da Computacao, Nota: 7.8
+Nome: Programacao 2, Id: 372, CH: 72, Requisito: Estrutura de Dados e Banco de dados e Redes de Computadores, Nota: 7.8
+Nome: Programacao 3, Id: 373, CH: 72, Requisito: Estrutura de Dados e Banco de dados e Redes de Computadores, Nota: 7.8
+Nome: Projeto de Analise de Algoritmos, Id: 374, CH: 72, Requisito: Estrutura de Dados e Teoria dos Grafos, Nota: -1
+Nome: Teoria da Computacao, Id: 376, CH: 72, Requisito: Nenhum, Nota: 7.8
