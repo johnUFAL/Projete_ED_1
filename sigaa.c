@@ -153,18 +153,6 @@ void aconselhamentoPedagogico (Disciplina obrigatorias[], int max, Aluno aluno)
         for (int j = menorInd)
     }*/
 
-
-
-
-
-
-
-
-
-
-
-
-
     return;
 }
 
