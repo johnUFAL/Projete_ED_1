@@ -72,7 +72,7 @@ typedef struct {
 */
 
 //vai dá a distribuição das matérias ainda não pagas de todos os períodos
-void aconselhamentoPedagogico (Disciplina obrigatorias[], int max, int periodoAtual, Aluno aluno)
+void aconselhamentoPedagogico (Disciplina obrigatorias[], int max, Aluno aluno)
 {
     int turnos[8][2] = {0};
     int t = 0; //posição do indice no array obrigatorias
@@ -103,12 +103,26 @@ void aconselhamentoPedagogico (Disciplina obrigatorias[], int max, int periodoAt
         }
     }
 
+    int manha = 0;
+    int tarde = 0;
+
+    for (int i = 0; i < 8; ++i)
+    {
+        manha += turnos[i][0];
+        tarde += turnos[i][1];
+    }
+
     for (int m = 0; m < 8; ++m)
     {
         wprintf(L"%d° periodo -> Matérias Manhã: %d, Matérias Tarde: %d\n", m + 1, turnos[m][0], turnos[m][1]);
     }
 
-    wprintf(L"Lembre-se! Você está no %d° período, ou seja, você tem de terminar o curso em %d períodos\n", periodoAtual, aluno.tempo_curso - periodoAtual);
+    wprintf(L"Ou seja, você tem %d disciplinas de manhã e %d disciplinas a tarde não pagas\n", manha, tarde);
+    wprintf(L"Lembre-se! Você está no %d° período, ou seja, você tem de terminar o curso em %d períodos\n", aluno.periodoAtual, aluno.tempo_curso - aluno.periodoAtual);
+    
+    int totalPeriodos = ((manha % aluno.max_disciplina) + (manha / aluno.max_disciplina)) + ((tarde / aluno.max_disciplina) + tarde % aluno.max_disciplina); //isso é uma soma bem grosseira, não sendo levado em conta os horários das aulas
+    
+    wprintf(L"Na sua situação atual você consegue terminar o curso em no mínimo %d períodos. Lhe restando %d períodos\n", totalPeriodos, aluno.tempo_curso - (totalPeriodos + aluno.periodoAtual));
 
     return;
 }
@@ -347,6 +361,7 @@ void name_process(Aluno aluno, int resto[])
     return;
 }
 
+/*
 void DisciplinaPorTurno(Disciplina obrigatorias[], int max_obgt, Aluno *aluno, int resto[]) //função que dirá as disciplinas para o seguinte turno 
 //array de structs da struct obrigatorias, max de obrigatorias = 24, ponteiro para a struct Aluno, array de restos
 {
@@ -437,9 +452,9 @@ void DisciplinaPorTurno(Disciplina obrigatorias[], int max_obgt, Aluno *aluno, i
         } else {
             wprintf(L"Total de Disciplinas recomendadas: %d\n", recomendadas);
         }
-        */
     } 
 }
+*/
 
 #define MAX_OBRIG 24 //n° max de matérias obrigatórias fora as das ênfases
 #define MAXR 4 //n° max de restos
@@ -537,9 +552,9 @@ int main()
 
    suaSituacao(resto, &aluno); //será passado o endereço da variável aluno para que seu valor seja integralmente alterado
 
-   aconselhamentoPedagogico(obrigatorias, MAX_OBRIG, aluno.periodoAtual, aluno); //vai dá a distribuição das matérias ainda não pagas de todos os períodos
+   aconselhamentoPedagogico(obrigatorias, MAX_OBRIG, aluno); //vai dá a distribuição das matérias ainda não pagas de todos os períodos
 
-   DisciplinaPorTurno(obrigatorias, MAX_OBRIG, &aluno, resto); //recomendação de disciplina para o próximo semestre do aluno 
+   //DisciplinaPorTurno(obrigatorias, MAX_OBRIG, &aluno, resto); //recomendação de disciplina para o próximo semestre do aluno 
    
    fclose(disciplinasObrigatorias); //fechamento do ponteiro
    fclose(historico);
