@@ -1,5 +1,8 @@
-Nome: Erivaldo Jose Silva Santos, Periodo: 4
-Nome: Programacao 2, Id: 372, CH: 72, Requisito: Estrutura de Dados e Banco de dados e Redes de Computadores, Nota: 7.8
-Nome: Programacao 3, Id: 373, CH: 72, Requisito: Estrutura de Dados e Banco de dados e Redes de Computadores, Nota: 7.8
-Nome: Projeto de Analise de Algoritmos, Id: 374, CH: 72, Requisito: Estrutura de Dados e Teoria dos Grafos, Nota: -1
-Nome: Teoria da Computacao, Id: 376, CH: 72, Requisito: Nenhum, Nota: 7.8
+Nome: Erivaldo Jose Silva Santos, Periodo: 3
+
+Nome: Programacao 1, Id: 359, CH: 72, Requisito: Nenhum, Nota: 6
+Nome: Logica para Computacao, Id: 360, CH: 72, Requisito: Nenhum, Nota: 9.6
+Nome: Computacao Sociedade e Etica, Id: 361, CH: 72, Requisito: Nenhum, Nota: 9.6
+Nome: Matematica Discreta, Id: 362, CH: 72, Requisito: Nenhum, Nota: 8.7
+Nome: Calculo Diferencial e Integral, Id: 363, CH: 144, Requisito: Nenhum, Nota: 7.1
+Nome: Banco de dados, Id: 365, CH: 72, Requisito: Nenhum, Nota: 8

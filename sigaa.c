@@ -124,6 +124,46 @@ void aconselhamentoPedagogico (Disciplina obrigatorias[], int max, Aluno aluno)
     
     wprintf(L"Na sua situação atual você consegue terminar o curso em no mínimo %d períodos. Lhe restando %d períodos\n", totalPeriodos, aluno.tempo_curso - (totalPeriodos + aluno.periodoAtual));
 
+
+
+    int menorPeriodo = 999; //guardará o menor período entre todas as matérias que não foram pagas em seus respectivos períodos
+    int menorInd = 0; //guardará o índice do menor período
+    int IndperiodoSeguinte = 0; //armazenará o índice de onde começa o próximo período
+
+    for (int j = 0; j < max; ++j) //o loop vai das matérias do primeiro período até encontrar a disciplina no menor período que ainda não foi paga
+    {
+        if (obrigatorias[j].paga == 0 && obrigatorias[j].periodo < menorPeriodo) //se a disicplina não foi paga e se seu período é menor que o menorPeríodo
+        {
+            menorPeriodo = obrigatorias[j].periodo;
+            menorInd = j;
+            //temos a disciplina não paga no menor período e a sua posição 
+        }
+
+        if (obrigatorias[j].periodo > aluno.periodoAtual)
+        {
+            IndperiodoSeguinte = j;
+            break; //agora temos o índice de onde irá comecar o seguinte período após o atual
+        }
+    }
+
+
+    /*if (turnos[menorPeriodo - 1][0] > turnos[menorPeriodo - 1][1]) //manha > tarde
+    {
+        for (int j = menorInd)
+    }*/
+
+
+
+
+
+
+
+
+
+
+
+
+
     return;
 }
 
@@ -469,7 +509,7 @@ int main()
    fwide(stdout, 1); //força stdout a operar no modo wide-character, reduzindo problemas com wprintf
 
    //structs
-   Aluno aluno;
+   Aluno aluno = {.nome = L"Erivaldo Jose Silva Santos"};
    Disciplina obrigatorias[MAX_OBRIG] = {0}; //array de structs que irá conter as matérias obrigatórias, 24 obrigatórias fora as da ênfases
    //ints
    int resto[MAXR]; //guardará o resto das divisões das particões do nome
@@ -516,8 +556,9 @@ int main()
             }
         }
    }
+   wprintf(L"Digite o nome modelo completo a seguir: %ls\n", aluno.nome);
 
-   while (1) //loop para evitar erros na inserção do nome modelo
+   /*while (1) //loop para evitar erros na inserção do nome modelo
    {
        wprintf(L"Digite o nome modelo completo a seguir: ");
        fgetws(aluno.nome, sizeof(aluno.nome) / sizeof(wchar_t), stdin);
@@ -538,7 +579,7 @@ int main()
        {
             break;
        }
-   }
+   }*/
 
    //decomposicao do nome, soma e divisão para obtenção do seu resto que nos ajudará no conhecimento das condições do projeto
    name_process(aluno, resto);
