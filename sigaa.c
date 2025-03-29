@@ -347,50 +347,129 @@ void name_process(Aluno aluno, int resto[]) {
     return;
 }
 
+void DisciplinaPorTurno(Disciplina obrigatorias[], int max_obgt, Aluno *aluno, int resto[]) //função que dirá as disciplinas para o seguinte turno 
+//array de structs obrigatorias, max de obrigatorias = 24, array de restos
+{
+    wchar_t turno = L'\0'; //irá armazenar o turno predominante
+
+    if (resto[3] == 1) //condição: devem ser do msm turno
+    { 
+        int manha = 0, tarde = 0; //inicializando variáveis
+
+        for (int i = 0; i < max_obgt; i++) // loop para saber qual turno é predominante
+        {
+            if (obrigatorias[i].paga != 1) //se for != de 1 quer dizer que não foi paga
+            {
+                for (int j = 0; obrigatorias[i].horario_disc[j] != L'\0'; j++) //com esse loop vamos contabilizar cada uma
+                { 
+                    if (obrigatorias[i].horario_disc[j] != L'M') 
+                    {
+                        manha++;
+                        break;
+                    } 
+                    if (obrigatorias[i].horario_disc[j] != L'T') 
+                    {
+                        tarde++;
+                        break;
+                    } 
+                }
+            }
+        }
+
+        turno = (manha >= tarde) ? L'M' : L'T'; //vai determinar o turno
+
+        wprintf(L"\n---RECOMENDAÇÕES---\n");
+        wprintf(L"Turno com mais disciplinas: %c\n", turno);
+        wprintf(L"Discplinas recomendadas nesse turno\n:");
+
+        int recomendadas = 0; //contador 
+
+        //limita de acordo com o maximo permitido: 6
+        for (int i = 0; i < max_obgt && recomendadas < aluno->max_disciplina; i++) 
+        {
+            //verifica as que ja foram pagas e as que estao no turno desejado
+            if (obrigatorias[i].paga != 1 && obrigatorias[i].periodo > aluno->periodoAtual) 
+            {
+                int turno_desejado = 0;//verificacao
+
+                for (int j = 0; obrigatorias[i].horario_disc[j] != L'\0'; j++) 
+                {
+                    if (obrigatorias[i].horario_disc[j] == turno_desejado) 
+                    {
+                        turno_desejado = 1;
+                        break;
+                    }
+                }
+                
+                if (turno_desejado) { //se ofor o certo
+                    wprintf(L"- %ls (Periodo: %d, Horario: %ls)\n", obrigatorias[i].nome, obrigatorias[i].periodo, obrigatorias[i].horario_disc);
+                    turno_desejado++;
+                }
+            }
+        }
+
+        if (recomendadas == 0) { //se nao tiver.....
+            wprintf(L"Nao ha disciplinas a serem consideradas");
+        } else {
+            wprintf(L"Total de Disciplinas recomendadas: %d\n", recomendadas);
+        }
+    } 
+}
+
 #define MAX_OBRIG 24 //n° max de matérias obrigatórias fora as das ênfases
 #define MAXR 4 //n° max de restos
  
 //nome completo: Erivaldo Jose Da Silva Santos Junior
 //nome modelo: erivaldo jose silva santos
 
-int main() {
+int main() 
+{
    setlocale(LC_ALL, "");
 
    fwide(stdout, 1); //força stdout a operar no modo wide-character, reduzindo problemas com wprintf
 
+   //structs
    Aluno aluno;
    Disciplina obrigatorias[MAX_OBRIG] = {0}; //array de structs que irá conter as matérias obrigatórias, 24 obrigatórias fora as da ênfases
+   //ints
    int resto[MAXR]; //guardará o resto das divisões das particões do nome
    int materiasPagas = 0; //guardará um indice de controle sobre as disciplinas pagas
-
+   //ponteiros FILE
    FILE * disciplinasObrigatorias;
    FILE * historico;
-
+   //atribuindo o endereço dos arquivos externos aos ponteiros FILE
    disciplinasObrigatorias = fopen("obrigatorias.txt", "r, ccs=UTF-8"); //abre no formato Unicode
    historico = fopen("entrada.txt", "r, ccs=UTF-8");
 
-   if (disciplinasObrigatorias == NULL || historico == NULL)
+   if (disciplinasObrigatorias == NULL || historico == NULL) //checagem para caso tenha havido erro na abertura de um dos arquivos
    {
-        wprintf(L"Erro ao abrir o arquivo externo!\n"); //para caso tenha havido erro na abertura do arquivo
+        wprintf(L"Erro ao abrir o arquivo externo!\n");
         return 1;
    }
 
+   //funções para passar os dados dos arquivos externos para as structs
    inicializarObrigatorias(obrigatorias, MAX_OBRIG, disciplinasObrigatorias); //irá inserir todas as disciplinas obrigatórias do arquivo externo para a struct
    materiasPagas = inicializarMateriasPagas(&aluno, historico); //função para receber o histórico do usuário e em seguida no array obrigatorias irá indicar quais matérias já foram pagas
 
-   if (materiasPagas == -1) //prevenção de erros
+   if (materiasPagas == -1) //prevenção de erros para caso a função tenha lido uma qtd de linhas não esperadas
    {
         wprintf(L"Erro na leitura da entrada\n");
    }
 
-   for (int i = 0; i < materiasPagas; ++i) //loop para informar no array obrigatorias quais materias ele já pagou
-   //vai comparando até achar a matéria correspondente
+   wprintf(L"Matérias pagas:\n");
+
+   //loop para informar no array obrigatorias quais materias ele já pagou
+   for (int i = 0; i < materiasPagas; ++i) //vai comparando até achar a matéria correspondente
    {
-        for (int j = 0; j < MAX_OBRIG; ++j)
+        //o loop externo roda a struct aluno
+        //e a interna roda a struct obrigatorias    
+
+        for (int j = 0; j < MAX_OBRIG; ++j) //vai analisar todas as matérias obrigatórias
         {
-            if (aluno.minhaGrade[i].id == obrigatorias[j].id)
+            if (aluno.minhaGrade[i].id == obrigatorias[j].id) //caso haja um correspondente entre a que ele pagou que consta no histórico
+            //e a da struct obrigatorias 
             {
-                wprintf(L"%d e %d\n", aluno.minhaGrade[i].id, obrigatorias[j].id);
+                wprintf(L"%ls\n", aluno.minhaGrade[i].nome);
                 
                 obrigatorias[j].paga = 1; //o aluno já pagou essa matéria
                 break;
@@ -432,6 +511,8 @@ int main() {
    suaSituacao(resto, &aluno); //será passado o endereço da variável aluno para que seu valor seja integralmente alterado
 
    aconselhamentoPedagogico(obrigatorias, MAX_OBRIG, aluno.periodoAtual);
+
+   //DisciplinaPorTurno(obrigatorias, MAX_OBRIG, &aluno, resto); //recomendação de disciplina para o próximo semestre do aluno 
    
    fclose(disciplinasObrigatorias); //fechamento do ponteiro
    fclose(historico);
