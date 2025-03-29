@@ -7,7 +7,7 @@
 #include <wctype.h>
 
 typedef struct {
-    int id;
+    wchar_t id[10];
     int paga; // 1 - sim, 0 - não
     int carga;
     int periodo;
@@ -24,7 +24,7 @@ typedef struct {
 } Disciplina;
 
 typedef struct {
-    int id;
+    wchar_t id[10];
     int carga;
     wchar_t requisito[80];
     double nota;
@@ -43,6 +43,7 @@ typedef struct {
 
 typedef struct {
     int carga;
+    wchar_t id[10];
     wchar_t nome[60];
     wchar_t horario_ele[8];
     wchar_t pre_requisitos[100];
@@ -122,7 +123,7 @@ void inicializarObrigatorias(Disciplina obrigatorias[], int max, FILE * arquivo)
     
     //Periodo: 1, Nome: Programacao 1, Id: 359, CH: 72, Requisito: Nenhum, Horario: 6M3456
     //M = manha, T = Tarde, antes da letra sao os dias da semana e depois as aulas
-    while ((i < max) && fwscanf(arquivo, L"Periodo: %d, Nome: %69l[^,], Id: %d, CH: %d, Requisito: %109l[^,], Horario: %7l[^\n]\n", &obrigatorias[i].periodo, obrigatorias[i].nome, &obrigatorias[i].id, &obrigatorias[i].carga, obrigatorias[i].pre_requisitos, obrigatorias[i].horario_disc) != EOF)
+    while ((i < max) && fwscanf(arquivo, L"Periodo: %d, Nome: %69l[^,], Id: %9l[^,], CH: %d, Requisito: %109l[^,], Horario: %7l[^\n]\n", &obrigatorias[i].periodo, obrigatorias[i].nome, obrigatorias[i].id, &obrigatorias[i].carga, obrigatorias[i].pre_requisitos, obrigatorias[i].horario_disc) != EOF)
     {
         //wprintf(L"Periodo: %d, Nome: %ls, Id: %d, CH: %d, Requisito: %ls, Horario: %ls\n", obrigatorias[i].periodo, obrigatorias[i].nome, obrigatorias[i].id, obrigatorias[i].carga, obrigatorias[i].pre_requisitos, obrigatorias[i].horario_disc);
         
@@ -149,10 +150,10 @@ int inicializarMateriasPagas(Aluno * aluno, FILE * arquivo) //função para inse
     wprintf(L"Nome: %ls, Periodo: %d\n", aluno->nome, aluno->periodoAtual);
     
     //Nome: Logica para Programacao, Id: 360, CH: 72, Nota: 7.8
-    while (fwscanf(arquivo, L"Nome: %59l[^,], Id: %d, CH: %d, Requisito: %79l[^,], Nota: %lf\n", aluno->minhaGrade[i].nome, &aluno->minhaGrade[i].id, &aluno->minhaGrade[i].carga, aluno->minhaGrade[i].requisito, &aluno->minhaGrade[i].nota) != EOF)
+    while (fwscanf(arquivo, L"Id: %9l[^,], Nome: %59l[^,], Nota: %lf\n", aluno->minhaGrade[i].id, aluno->minhaGrade[i].nome, &aluno->minhaGrade[i].nota) != EOF)
     {
         //wprintf(L"Nome: %ls, Id: %d, CH: %d, Requisito: %ls, Horario: %ls\n", obrigatorias[i].periodo, obrigatorias[i]);
-        wprintf(L"Nome: %ls, Id: %d, CH: %d, Requisito: %ls, Nota: %lf\n", aluno->minhaGrade[i].nome, aluno->minhaGrade[i].id, aluno->minhaGrade[i].carga, aluno->minhaGrade[i].requisito, aluno->minhaGrade[i].nota);
+        wprintf(L"Id: %ls, Nome: %ls, Nota: %lf\n", aluno->minhaGrade[i].id, aluno->minhaGrade[i].nome, aluno->minhaGrade[i].nota);
         
         if (aluno->minhaGrade[i].nota > 7) //caso a nota do aluno seja menor que sete isso indicará que ele trancou a matéria, ou reprovou nela
         {

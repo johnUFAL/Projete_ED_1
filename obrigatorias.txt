@@ -1,24 +1,24 @@
-Periodo: 1, Nome: Programacao 1, Id: 359, CH: 72, Requisito: Nenhum, Horario: 6M3456
-Periodo: 1, Nome: Logica para Computacao, Id: 360, CH: 72, Requisito: Nenhum, Horario: 24M34
-Periodo: 1, Nome: Computacao Sociedade e Etica, Id: 361, CH: 72, Requisito: Nenhum, Horario: 24M56
-Periodo: 1, Nome: Matematica Discreta, Id: 362, CH: 72, Requisito: Nenhum, Horario: 24M12
-Periodo: 1, Nome: Calculo Diferencial e Integral, Id: 363, CH: 144, Requisito: Nenhum, Horario: 35M234
-Periodo: 2, Nome: Estrutura de Dados, Id: 364, CH: 72, Requisito: Programacao 1, Horario: 24M56
-Periodo: 2, Nome: Banco de dados, Id: 365, CH: 72, Requisito: Nenhum, Horario: 24T34
-Periodo: 2, Nome: Org. E arq. de Computadores, Id: 366, CH: 72, Requisito: Nenhum, Horario: 24T12
-Periodo: 2, Nome: Geometria Analitica, Id: 367, CH: 72, Requisito: Nenhum, Horario: 24M34
-Periodo: 3, Nome: Redes de Computadores, Id: 368, CH: 72, Requisito: Programacao 1, Horario: 34M56
-Periodo: 3, Nome: Teoria dos Grafos, Id: 369, CH: 72, Requisito: Estrutra de Dados e Matematica Discreta, Horario: 25T56
-Periodo: 3, Nome: Probabilidade e Estastistica, Id: 370, CH: 72, Requisito: Calculo Diferencial e Integral, Horario: 24T12
-Periodo: 3, Nome: Algebra Linear, Id: 371, CH: 72, Requisito: Geometria Analitica, Horario: 24T34
-Periodo: 4, Nome: Programacao 2, Id: 372, CH: 72, Requisito: Estrutura de Dados e Banco de dados e Redes de Computadores, Horario:25T12
-Periodo: 4, Nome: Programacao 3, Id: 373, CH: 72, Requisito: Estrutura de Dados e Banco de dados e Redes de Computadores, Horario: 34T34
-Periodo: 4, Nome: Projeto de Analise de Algoritmos, Id: 374, CH: 72, Requisito: Estrutura de Dados e Teoria dos Grafos, Horario: 35M56
-Periodo: 4, Nome: Teoria da Computacao, Id: 376, CH: 72, Requisito: Nenhum, Horario: 24T12
-Periodo: 5, Nome: Sistemas Operacionais, Id: 378, CH: 72, Requisito: Org. e arq. de Computadores, Horario: 27M34
-Periodo: 5, Nome: Compiladores, Id: 379, CH: 72, Requisito: Estrutura de Dados e Logica para Computacao, Horario: 24M56
-Periodo: 5, Nome: Inteligencia Artificial, Id: 380, CH: 72, Requisito: Estrutura de Dados e Logica para Computacao, Horario: 35M34
-Periodo: 5, Nome: Computacao Grafica, Id: 381, CH: 72, Requisito: Nenhum, Horario: 36M56
-Periodo: 6, Nome: Projeto e Desenvolvimento de Sistemas, Id: 382, CH: 288, Requisito: Todas as disciplinas do 1º ao 5º semestre, Horario: 26T1234
-Periodo: 7, Nome: Metodologias de Pesquisa e Trabalhos Individual, Id: 386, CH: 72, Requisito: Nenhum, Horario: 36M34
-Periodo: 7, Nome: Nocoes de Direito, Id: 387, CH: 72, Requisito: Nenhum, Horario: 6T1234
+Periodo: 1, Nome: Programacao 1, Id: COMP359, CH: 72, Requisito: Nenhum, Horario: 6M3456
+Periodo: 1, Nome: Logica para Computacao, Id: COMP360, CH: 72, Requisito: Nenhum, Horario: 24M34
+Periodo: 1, Nome: Computacao Sociedade e Etica, Id: COMP361, CH: 72, Requisito: Nenhum, Horario: 24M56
+Periodo: 1, Nome: Matematica Discreta, Id: COMP362, CH: 72, Requisito: Nenhum, Horario: 24M12
+Periodo: 1, Nome: Calculo Diferencial e Integral, Id: COMP363, CH: 144, Requisito: Nenhum, Horario: 35M234
+Periodo: 2, Nome: Estrutura de Dados, Id: COMP364, CH: 72, Requisito: Programacao 1, Horario: 24M56
+Periodo: 2, Nome: Banco de dados, Id: COMP365, CH: 72, Requisito: Nenhum, Horario: 24T34
+Periodo: 2, Nome: Org. E arq. de Computadores, Id: COMP366, CH: 72, Requisito: Nenhum, Horario: 24T12
+Periodo: 2, Nome: Geometria Analitica, Id: COMP367, CH: 72, Requisito: Nenhum, Horario: 24M34
+Periodo: 3, Nome: Redes de Computadores, Id: COMP368, CH: 72, Requisito: Programacao 1, Horario: 34M56
+Periodo: 3, Nome: Teoria dos Grafos, Id: COMP369, CH: 72, Requisito: Estrutra de Dados e Matematica Discreta, Horario: 25T56
+Periodo: 3, Nome: Probabilidade e Estastistica, Id: COMP370, CH: 72, Requisito: Calculo Diferencial e Integral, Horario: 24T12
+Periodo: 3, Nome: Algebra Linear, Id: COMP371, CH: 72, Requisito: Geometria Analitica, Horario: 24T34
+Periodo: 4, Nome: Programacao 2, Id: COMP372, CH: 72, Requisito: Estrutura de Dados e Banco de dados e Redes de Computadores, Horario:25T12
+Periodo: 4, Nome: Programacao 3, Id: COMP373, CH: 72, Requisito: Estrutura de Dados e Banco de dados e Redes de Computadores, Horario: 34T34
+Periodo: 4, Nome: Projeto de Analise de Algoritmos, Id: COMP374, CH: 72, Requisito: Estrutura de Dados e Teoria dos Grafos, Horario: 35M56
+Periodo: 4, Nome: Teoria da Computacao, Id: COMP376, CH: 72, Requisito: Nenhum, Horario: 24T12
+Periodo: 5, Nome: Sistemas Operacionais, Id: COMP378, CH: 72, Requisito: Org. e arq. de Computadores, Horario: 27M34
+Periodo: 5, Nome: Compiladores, Id: COMP379, CH: 72, Requisito: Estrutura de Dados e Logica para Computacao, Horario: 24M56
+Periodo: 5, Nome: Inteligencia Artificial, Id: COMP380, CH: 72, Requisito: Estrutura de Dados e Logica para Computacao, Horario: 35M34
+Periodo: 5, Nome: Computacao Grafica, Id: COMP381, CH: 72, Requisito: Nenhum, Horario: 36M56
+Periodo: 6, Nome: Projeto e Desenvolvimento de Sistemas, Id: COMP382, CH: 288, Requisito: Todas as disciplinas do 1º ao 5º semestre, Horario: 26T1234
+Periodo: 7, Nome: Metodologias de Pesquisa e Trabalhos Individual, Id: COMP386, CH: 72, Requisito: Nenhum, Horario: 36M34
+Periodo: 7, Nome: Nocoes de Direito, Id: COMP387, CH: 72, Requisito: Nenhum, Horario: 6T1234
