@@ -498,6 +498,16 @@ int main()
        }
    }
 
+
+
+
+
+
+//teste rapido
+
+
+
+
    //decomposicao do nome, soma e divisão para obtenção do seu resto
    name_process(aluno, resto);
 
