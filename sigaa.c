@@ -145,8 +145,7 @@ void aconselhamentoPedagogico (Disciplina obrigatorias[], int max, Aluno * aluno
 
     wprintf(L"%d\n", aluno->periodoAtual);
 
-    int z = 4;
-    while (z > 0 || (aluno->periodoAtual < aluno->tempo_curso)) //materiasNaoPagas > 0
+    while (materiasNaoPagas > 0 && (aluno->periodoAtual < aluno->tempo_curso)) 
     {
         materiasNaoPagas = 0;
         
@@ -383,6 +382,7 @@ void aconselhamentoPedagogico (Disciplina obrigatorias[], int max, Aluno * aluno
         {
             if (obrigatorias[j].paga != 1)
             {
+                wprintf(L"%ls\n", obrigatorias[j].nome);
                 materiasNaoPagas++;
             }
         }
@@ -392,8 +392,7 @@ void aconselhamentoPedagogico (Disciplina obrigatorias[], int max, Aluno * aluno
 
         aluno->periodoAtual++;
         menorPeriodo++;
-
-        z--;
+   
 
     }
 
