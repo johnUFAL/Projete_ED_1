@@ -74,7 +74,7 @@ typedef struct {
 */
 
 //vai dá a distribuição das matérias ainda não pagas de todos os períodos
-void aconselhamentoPedagogico (Disciplina obrigatorias[], int max, Aluno aluno)
+void aconselhamentoPedagogico (Disciplina obrigatorias[], int max, Aluno * aluno)
 {
     int turnos[8][2] = {0};
     int t = 0; //posição do indice no array obrigatorias
@@ -122,11 +122,11 @@ void aconselhamentoPedagogico (Disciplina obrigatorias[], int max, Aluno aluno)
     }
 
     wprintf(L"Ou seja, você tem %d disciplinas de manhã e %d disciplinas a tarde não pagas\n", manha, tarde);
-    wprintf(L"Lembre-se! Você está no %d° período, ou seja, você tem de terminar o curso em %d períodos\n", aluno.periodoAtual, aluno.tempo_curso - aluno.periodoAtual);
+    wprintf(L"Lembre-se! Você está no %d° período, ou seja, você tem de terminar o curso em %d períodos\n", aluno->periodoAtual, aluno->tempo_curso - aluno->periodoAtual);
     
-    int totalPeriodos = ((manha % aluno.max_disciplina) + (manha / aluno.max_disciplina)) + ((tarde / aluno.max_disciplina) + tarde % aluno.max_disciplina); //isso é uma soma bem grosseira, não sendo levado em conta os horários das aulas
+    int totalPeriodos = ((manha % aluno->max_disciplina) + (manha / aluno->max_disciplina)) + ((tarde / aluno->max_disciplina) + tarde % aluno->max_disciplina); //isso é uma soma bem grosseira, não sendo levado em conta os horários das aulas
     
-    wprintf(L"Na sua situação atual você consegue terminar o curso em no mínimo %d períodos. Lhe restando %d períodos\n", totalPeriodos, aluno.tempo_curso - (totalPeriodos + aluno.periodoAtual));
+    wprintf(L"Na sua situação atual você consegue terminar o curso em no mínimo %d períodos. Lhe restando %d períodos\n", totalPeriodos, aluno->tempo_curso - (totalPeriodos + aluno->periodoAtual));
 
     wprintf(L"====================================================================\n");
     
@@ -148,7 +148,9 @@ void aconselhamentoPedagogico (Disciplina obrigatorias[], int max, Aluno aluno)
     int menorInd = 0; //guardará o índice do menor período
     int IndperiodoSeguinte = 0; //armazenará o índice de onde começa o próximo período
 
-    int z = 1;
+    wprintf(L"%d\n", aluno->periodoAtual);
+
+    int z = 2;
     while (z > 0) //materiasNaoPagas > 0
     {
         for (int j = menorInd; j < max; ++j) //o loop vai das matérias do primeiro período até encontrar a disciplina no menor período que ainda não foi paga
@@ -174,6 +176,8 @@ void aconselhamentoPedagogico (Disciplina obrigatorias[], int max, Aluno aluno)
         wchar_t letras[] = L"MT";
         wchar_t * ptr; //ponteiro para a 1° ocorrência de determinada letra
 
+        wprintf(L"Peso tarde: %d\nPeso manha: %d\nTarde: %d\nManha: %d\n", pesoTarde, pesoManha, tarde, manha);
+
         for (int j = menorInd; j < IndperiodoSeguinte; ++j) //verifica todas as disciplinas não pagas no menor período
         {
            for (int i = 0; letras[i] != L'\0'; ++i) //loop para quantificar a qtd de disciplinas em cada turno
@@ -182,7 +186,7 @@ void aconselhamentoPedagogico (Disciplina obrigatorias[], int max, Aluno aluno)
 
                 if (ptr != NULL)
                 {
-                    if (letras[i] == L'M')
+                    if ((letras[i] == L'M') && (obrigatorias[j].paga != 1))
                     {
                         manha++;
 
@@ -191,7 +195,7 @@ void aconselhamentoPedagogico (Disciplina obrigatorias[], int max, Aluno aluno)
                             pesoManha = obrigatorias[j].peso;
                         }
                     }
-                    else if (letras[i] == L'T')
+                    else if ((letras[i] == L'T') && (obrigatorias[j].paga != 1))
                     {
                         tarde++;
 
@@ -200,15 +204,15 @@ void aconselhamentoPedagogico (Disciplina obrigatorias[], int max, Aluno aluno)
                             pesoTarde = obrigatorias[j].peso;
                         }
                     }
-                    else
-                    {
-                        wprintf(L"Letra incomum encontrada: %lc\n", letras[i]);
-                    }
                 }
            }
         }
 
-        if (pesoTarde >= pesoManha)
+        ptr = NULL;
+
+        wprintf(L"Peso tarde: %d\nPeso manha: %d\nTarde: %d\nManha: %d\n", pesoTarde, pesoManha, tarde, manha);
+
+        if (pesoTarde > pesoManha)
         {
              wprintf(L"Suas disciplinas no próximo período serão a tarde. São elas:\n");
          
@@ -229,33 +233,36 @@ void aconselhamentoPedagogico (Disciplina obrigatorias[], int max, Aluno aluno)
                  }
              }
         }
-        else
+        else if (pesoTarde < pesoManha)
         {
-             wprintf(L"Suas disciplinas no próximo período serão de manhã. São elas:\n");
-             
-             for (int j = menorInd; j < IndperiodoSeguinte; ++j)
-             {
-                 for (int i = 0; letras[i] != L'\0'; ++i) 
-                 {
-                     ptr = wcschr(obrigatorias[j].horario_disc, letras[i]); //ponteiro que retorna a 1° ocorrência de determinada letra
+            wprintf(L"Suas disciplinas no próximo período serão de manhã. São elas:\n");
+            
+            for (int j = menorInd; j < IndperiodoSeguinte; ++j)
+            {
+                for (int i = 0; letras[i] != L'\0'; ++i) 
+                {
+                    ptr = wcschr(obrigatorias[j].horario_disc, letras[i]); //ponteiro que retorna a 1° ocorrência de determinada letra
 
-                     if (ptr != NULL)
-                     {
-                         if ((letras[i] == L'M') && (obrigatorias[j].paga != 1)) //vai imprimir somente se a matéria for do turno da tarde e se ele ainda não foi paga
-                         {
-                             wprintf(L"%ls\n", obrigatorias[j].nome);
-                             obrigatorias[j].paga = 1;
-                         }
-                     }
-                 }
-             }
+                    if (ptr != NULL)
+                    {
+                        if ((letras[i] == L'M') && (obrigatorias[j].paga != 1)) //vai imprimir somente se a matéria for do turno da tarde e se ele ainda não foi paga
+                        {
+                            wprintf(L"%ls\n", obrigatorias[j].nome);
+                            obrigatorias[j].paga = 1;
+                        }
+                    }
+                }
+            }
         }
+
+        aluno->periodoAtual++;
 
         z--;
 
     }
 
 
+    wprintf(L"%d\n", aluno->periodoAtual);
     wprintf(L"acabou\n");
 
 
@@ -624,7 +631,7 @@ int main()
 
    suaSituacao(resto, &aluno); //será passado o endereço da variável aluno para que seu valor seja integralmente alterado
 
-   aconselhamentoPedagogico(obrigatorias, MAX_OBRIG, aluno); //vai dá a distribuição das matérias ainda não pagas de todos os períodos
+   aconselhamentoPedagogico(obrigatorias, MAX_OBRIG, &aluno); //vai dá a distribuição das matérias ainda não pagas de todos os períodos
    
    
    

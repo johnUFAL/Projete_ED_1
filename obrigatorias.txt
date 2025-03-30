@@ -5,11 +5,11 @@ Periodo: 1, Nome: Matematica Discreta, Id: COMP362, Peso: 1, CH: 72, Requisito: 
 Periodo: 1, Nome: Calculo Diferencial e Integral, Id: COMP363, Peso: 1, CH: 144, Requisito: 0, Horario: 35M234
 Periodo: 2, Nome: Estrutura de Dados, Id: COMP364, Peso: 2, CH: 72, Requisito: COMP359, Horario: 24M56
 Periodo: 2, Nome: Banco de dados, Id: COMP365, Peso: 1, CH: 72, Requisito: 0, Horario: 24T34
-Periodo: 2, Nome: Org. E arq. de Computadores, Id: COMP366, Peso: 1, CH: 72, Requisito: 0, Horario: 24T12
+Periodo: 2, Nome: Org. E Arq. de Computadores, Id: COMP366, Peso: 1, CH: 72, Requisito: 0, Horario: 24T12
 Periodo: 2, Nome: Geometria Analitica, Id: COMP367, Peso: 1, CH: 72, Requisito: 0, Horario: 24M34
 Periodo: 3, Nome: Redes de Computadores, Id: COMP368, Peso: 1, CH: 72, Requisito: COMP359, Horario: 34M56
 Periodo: 3, Nome: Teoria dos Grafos, Id: COMP369, Peso: 1, CH: 72, Requisito: COMP362_COMP364, Horario: 25T56
-Periodo: 3, Nome: Probabilidade e Estastistica, Id: COMP370, Peso: 0, CH: 72, Requisito: COMP363, Horario: 24T12
+Periodo: 3, Nome: Probabilidade e Estatistica, Id: COMP370, Peso: 0, CH: 72, Requisito: COMP363, Horario: 24T12
 Periodo: 3, Nome: Algebra Linear, Id: COMP371, Peso: 0, CH: 72, Requisito: COMP367, Horario: 24T34
 Periodo: 4, Nome: Programacao 2, Id: COMP372, Peso: 0, CH: 72, Requisito: COMP364_COMP365_COMP368, Horario: 25T12
 Periodo: 4, Nome: Programacao 3, Id: COMP373, Peso: 0, CH: 72, Requisito: COMP364_COMP365_COMP368, Horario: 34T34
