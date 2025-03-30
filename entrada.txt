@@ -1,5 +1,6 @@
-Nome: Erivaldo Jose Silva Santos, Periodo: 4
-Id: COMP372, Nome: Programacao 2, Nota: 7.8
-Id: COMP373, Nome: Programacao 3, Nota: 7.8
-Id: COMP374, Nome: Projeto de Analise de Algoritmos, Nota: -1
-Id: COMP376, Nome: Teoria da Computacao, Nota: 7.8
+Nome: Erivaldo Jose Silva Santos, Periodo: 1
+Id: COMP359, Nome: Programacao 1, Nota: 7.8
+Id: COMP360, Nome: Logica para Computacao, Nota: 7.8
+Id: COMP361, Nome: Computacao Sociedade e Etica, Nota: 9.6
+Id: COMP362, Nome: Matematica Discreta, Nota: 8.9
+Id: COMP363, Nome: Calculo Diferencial e Integral, Nota: 7.8
