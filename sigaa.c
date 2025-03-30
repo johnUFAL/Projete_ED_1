@@ -176,7 +176,7 @@ void aconselhamentoPedagogico (Disciplina obrigatorias[], int max, Aluno * aluno
         wchar_t letras[] = L"MT";
         wchar_t * ptr; //ponteiro para a 1° ocorrência de determinada letra
 
-        wprintf(L"Peso tarde: %d\nPeso manha: %d\nTarde: %d\nManha: %d\n", pesoTarde, pesoManha, tarde, manha);
+        //wprintf(L"Peso tarde: %d\nPeso manha: %d\nTarde: %d\nManha: %d\n", pesoTarde, pesoManha, tarde, manha);
 
         for (int j = menorInd; j < IndperiodoSeguinte; ++j) //verifica todas as disciplinas não pagas no menor período
         {
@@ -214,28 +214,28 @@ void aconselhamentoPedagogico (Disciplina obrigatorias[], int max, Aluno * aluno
 
         if (pesoTarde > pesoManha)
         {
-             wprintf(L"Suas disciplinas no próximo período serão a tarde. São elas:\n");
+             wprintf(L"\033[4mPeríodo Atual: %d. Suas disciplinas no próximo período (%d°) serão a tarde. S\033[0mão elas:\n", aluno->periodoAtual, aluno->periodoAtual + 1);
          
              for (int j = menorInd; j < IndperiodoSeguinte; ++j)
              {
-                 for (int i = 0; letras[i] != L'\0'; ++i) 
-                 {
-                     ptr = wcschr(obrigatorias[j].horario_disc, letras[i]); //ponteiro que retorna a 1° ocorrência de determinada letra
+                for (int i = 0; letras[i] != L'\0'; ++i) 
+                {
+                    ptr = wcschr(obrigatorias[j].horario_disc, letras[i]); //ponteiro que retorna a 1° ocorrência de determinada letra
 
-                     if (ptr != NULL)
-                     {
-                         if ((letras[i] == L'T') && (obrigatorias[j].paga != 1)) //vai imprimir somente se a matéria for do turno da tarde e se ele ainda não foi paga
-                         {
-                             wprintf(L"%ls\n", obrigatorias[j].nome);
-                             obrigatorias[j].paga = 1;
-                         }
-                     }
-                 }
+                    if (ptr != NULL)
+                    {
+                        if ((letras[i] == L'T') && (obrigatorias[j].paga != 1)) //vai imprimir somente se a matéria for do turno da tarde e se ele ainda não foi paga
+                        {
+                            wprintf(L"|\033[4mNome: %-30ls| Id: %-12ls| Horário: %10ls\033[0m|\n", obrigatorias[j].nome, obrigatorias[j].id, obrigatorias[j].horario_disc);
+                            obrigatorias[j].paga = 1;
+                        }
+                    }
+                }
              }
         }
         else if (pesoTarde < pesoManha)
         {
-            wprintf(L"Suas disciplinas no próximo período serão de manhã. São elas:\n");
+            wprintf(L"\033[4mPeríodo Atual: %d. Suas disciplinas no próximo período (%d°) serão de manhã. \033[0mSão elas:\n", aluno->periodoAtual, aluno->periodoAtual + 1);
             
             for (int j = menorInd; j < IndperiodoSeguinte; ++j)
             {
@@ -247,7 +247,7 @@ void aconselhamentoPedagogico (Disciplina obrigatorias[], int max, Aluno * aluno
                     {
                         if ((letras[i] == L'M') && (obrigatorias[j].paga != 1)) //vai imprimir somente se a matéria for do turno da tarde e se ele ainda não foi paga
                         {
-                            wprintf(L"%ls\n", obrigatorias[j].nome);
+                            wprintf(L"|\033[4mNome: %-30ls| Id: %-12ls| Horário: %10ls\033[0m|\n", obrigatorias[j].nome, obrigatorias[j].id, obrigatorias[j].horario_disc);
                             obrigatorias[j].paga = 1;
                         }
                     }
