@@ -146,7 +146,7 @@ void aconselhamentoPedagogico (Disciplina obrigatorias[], int max, Aluno * aluno
     wprintf(L"%d\n", aluno->periodoAtual);
 
     int z = 4;
-    while (z > 0 || (aluno->periodoAtual >= aluno->tempo_curso)) //materiasNaoPagas > 0
+    while (z > 0 || (aluno->periodoAtual < aluno->tempo_curso)) //materiasNaoPagas > 0
     {
         materiasNaoPagas = 0;
         
@@ -246,7 +246,7 @@ void aconselhamentoPedagogico (Disciplina obrigatorias[], int max, Aluno * aluno
 
         if (pesoTarde > pesoManha)
         {
-             wprintf(L"\033[4mPeríodo Atual: %d. Suas disciplinas no próximo período (%d°) serão a tarde. S\033[0mão elas:\n", aluno->periodoAtual, aluno->periodoAtual + 1);
+             wprintf(L"\033[4mPeríodo Atual: %d. Suas disciplinas no próximo período (%d°) serão a tarde. São elas:\033[0m\n", aluno->periodoAtual, aluno->periodoAtual + 1);
          
              for (int j = menorInd; j < IndperiodoSeguinte; ++j)
              {
@@ -258,7 +258,7 @@ void aconselhamentoPedagogico (Disciplina obrigatorias[], int max, Aluno * aluno
                     {
                         if ((letras[i] == L'T') && (obrigatorias[j].paga != 1)) //vai imprimir somente se a matéria for do turno da tarde e se ele ainda não foi paga
                         {
-                            wprintf(L"|\033[4mNome: %-30ls| Id: %-12ls| Horário: %10ls\033[0m|\n", obrigatorias[j].nome, obrigatorias[j].id, obrigatorias[j].horario_disc);
+                            wprintf(L"|\033[4mNome: %-40ls| Id: %-12ls| Horário: %10ls\033[0m|\n", obrigatorias[j].nome, obrigatorias[j].id, obrigatorias[j].horario_disc);
                             obrigatorias[j].paga = 1;
 
                             //inferimos que o aluno passou nessas matérias para que possamos construir o restante do aconselhamento
@@ -272,7 +272,7 @@ void aconselhamentoPedagogico (Disciplina obrigatorias[], int max, Aluno * aluno
         }
         else if (pesoTarde <= pesoManha)
         {
-            wprintf(L"\033[4mPeríodo Atual: %d. Suas disciplinas no próximo período (%d°) serão de manhã. \033[0mSão elas:\n", aluno->periodoAtual, aluno->periodoAtual + 1);
+            wprintf(L"\033[4mPeríodo Atual: %d. Suas disciplinas no próximo período (%d°) serão de manhã. São elas:\033[0m\n", aluno->periodoAtual, aluno->periodoAtual + 1);
             
             for (int j = menorInd; j < IndperiodoSeguinte; ++j)
             {
@@ -284,7 +284,7 @@ void aconselhamentoPedagogico (Disciplina obrigatorias[], int max, Aluno * aluno
                     {
                         if ((letras[i] == L'M') && (obrigatorias[j].paga != 1)) //vai imprimir somente se a matéria for do turno da tarde e se ele ainda não foi paga
                         {
-                            wprintf(L"|\033[4mNome: %-30ls| Id: %-12ls| Horário: %10ls\033[0m|\n", obrigatorias[j].nome, obrigatorias[j].id, obrigatorias[j].horario_disc);
+                            wprintf(L"|\033[4mNome: %-40ls| Id: %-12ls| Horário: %10ls\033[0m|\n", obrigatorias[j].nome, obrigatorias[j].id, obrigatorias[j].horario_disc);
                             obrigatorias[j].paga = 1;
 
                             //inferimos que o aluno passou nessas matérias para que possamos construir o restante do aconselhamento
