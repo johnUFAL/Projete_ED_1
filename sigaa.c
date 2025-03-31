@@ -48,27 +48,136 @@ typedef struct {
     wchar_t pre_requisitos[100];
 } Eletiva;
 
-/*void escolha_eletiva(Aluno aluno) {
-    Eletiva eletivas[] = {
-        {"Calculo 3", 72, "Calculo Diferencial e Integral", {}},
-        {"Conceitos de Linguagem de Programação", 72, "Nenhum", {}},
-        {"Apredizagem de Máquina", 72, "Calculo 3", {}},
-        {"Sisitemas Digitais", 72, "Calculo 3", {}},
-        {"Sistemas Distribuidos", 72, "Nenhum", {}},
-        {"redes Neurais e Aprendizado Profundo", 72, "Nenhum", {}},
-        {"FPGA", 72, "Nenhum", {}},
-        {"Interacao Homem-Maquina", 72, "Programcao 3", {}},
-        {"Processamento Digital de Imagem", 72, "Computaçao Grafica", {}},
-        {"Computcao Evolucionaria", 72, "Nenhum", {}},
-        {"Sistemas Embarcados", 72, "Nenhum", {}},
-        {"Gerencia de Projeto", 72, "Projeto e Desenvolvimento de Sistemas", {}},
-        {"Visao Computacional", 72, "Nenhum", {}},
-        {"Ciencia de Dados", 72, "Probabilidade e Estatistica", {}},
-        {"Microcontroladores e Aplicacoes", 72, "Nenhum", {}},
-        {"Seguranca de Sistemas Computacionais", 72, "Redes de Computadores", {}}
-    };
+//verficar conflitos de horarios
+/*int choqueHorario(const wchar_t *horario1, const wchar_t *horario2) {
+    //pegar dias e turnos do priemrio horario
+    int dias1[7] = {0};
+    wchar_t turno1 = L' ';
+    int aulas1[6] = {0};
+    
+    //pegar dias e turnos do segundo horario
+    int dias2[7] = {0};
+    wchar_t turno2 = L' ';
+    int aulas2[6] = {0};
+    
+    //processamento do horario um
+    int i = 0;
+    while (horario1[i] != L'\0' && !iswalpha(horario1[i])) { //verifica se esta no intervalo de letras
+        int dia = horario1[i] - L'0';
+        if (dia >= 2 && dia <= 7) { //seg ate sab
+            dias1[dia-2] = 1; //2=seg, 3=ter, 4=qua......
+        }
+        i++;
+    }
+    turno1 = horario1[i];
+    i++;
+    while (horario1[i] != L'\0') {
+        int aula = horario1[i] - L'0';
+        if (aula >= 1 && aula <= 6) {
+            aulas1[aula-1] = 1;
+        }
+        i++;
+    }
+    
+    //agora pro horario 2
+    i = 0;
+    while (horario2[i] != L'\0' && !iswalpha(horario2[i])) {
+        int dia = horario2[i] - L'0';
+        if (dia >= 2 && dia <= 7) {
+            dias2[dia-2] = 1;
+        }
+        i++;
+    }
+    turno2 = horario2[i];
+    i++;
+    while (horario2[i] != L'\0') {
+        int aula = horario2[i] - L'0';
+        if (aula >= 1 && aula <= 6) {
+            aulas2[aula-1] = 1;
+        }
+        i++;
+    }
+    
+    //ver se é do msm turno
+    if (turno1 != turno2) {
+        return 0; //se diferente, sem choque
+    }
+    
+    //ver os dias em comum
+    int comum_dia = 0;
+    for (int j = 0; j < 5; j++) {
+        if (dias1[j] && dias2[j]) {
+            comum_dia = 1;
+            break;
+        }
+    }
+    
+    if (!comum_dia) {
+        return 0; //sem dias em comum
+    }
+    
+    //aulas em dia comum
+    for (int j = 0; j < 6; j++) {
+        if (aulas1[j] && aulas2[j]) {
+            return 1; //tem choque
+        }
+    }
+    
+    return 0; //sem choque aeeeee
 }
-*/
+
+void selecionarDisciplinasSemChoque(Disciplina *disciplinas, int inicio, int fim, int maxDisciplinas, Aluno *aluno, int *materiasPagas) {
+    Disciplina selecionadas[10]; 
+    int num_select = 0;
+    
+    //ordenar por peso, meio primeiro
+    for (int i = inicio; i < fim-1; i++) {
+        for (int j = i+1; j < fim; j++) {
+            if (disciplinas[j].peso > disciplinas[i].peso) {
+                Disciplina temp = disciplinas[i];
+                disciplinas[i] = disciplinas[j];
+                disciplinas[j] = temp;
+            }
+        }
+    }
+    
+    //pega a disc sem choque
+    for (int i = inicio; i < fim && num_select < maxDisciplinas; i++) {
+        if (disciplinas[i].paga == 1) continue;
+        
+        int choque = 0;
+        
+        //ve se tem choque com as que ja tao add
+        for (int j = 0; j < num_select; j++) {
+            if (choqueHorario(disciplinas[i].horario_disc, selecionadas[j].horario_disc)) {
+                choque = 1;
+                break;
+            }
+        }
+        
+        if (!choque) {
+            selecionadas[num_select] = disciplinas[i];
+            num_select++;
+            
+            //marca e add no historico
+            disciplinas[i].paga = 1;
+            wcscpy(aluno->minhaGrade[*materiasPagas].id, disciplinas[i].id);
+            wcscpy(aluno->minhaGrade[*materiasPagas].nome, disciplinas[i].nome);
+            (*materiasPagas)++;
+        }
+    }
+    
+    //mostra as selecionadas
+    if (num_select > 0) {
+        wprintf(L"\033[4mPeriodo Atual: %d. Suas disciplinas no proximo periodo (%d°) serao:\033[0m\n", aluno->periodoAtual, aluno->periodoAtual + 1);
+        
+        for (int i = 0; i < num_select; i++) {
+            wprintf(L"| Nome: %-40ls | Id: %-12ls | Horario: %10ls |\n", selecionadas[i].nome, selecionadas[i].id, selecionadas[i].horario_disc);
+        }
+    } else {
+        wprintf(L"Nao foi possivel selecionar disciplinas sem choque de horario para este periodo.\n");
+    }
+}*/
 
 //vai dá a distribuição das matérias ainda não pagas de todos os períodos
 void aconselhamentoPedagogico (Disciplina obrigatorias[], int max, Aluno * aluno, int materiasPagas)
