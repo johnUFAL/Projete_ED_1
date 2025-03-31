@@ -48,78 +48,108 @@ typedef struct {
     wchar_t pre_requisitos[100];
 } Eletiva;
 
-//verficar conflitos de horarios
-/*int choqueHorario(const wchar_t *horario1, const wchar_t *horario2) {
-    //pegar dias e turnos do priemrio horario
-    int dias1[7] = {0};
-    wchar_t turno1 = L' ';
-    int aulas1[6] = {0};
+//verifica se há conflitos de horarios
+int choqueHorario(const wchar_t *horario1, const wchar_t *horario2) 
+{
+    //pega os dias e turnos do primeiro horario recebido
+    int dias1[7] = {0}; //dias de aula com os valores de cada posição do array variando de 0 a 1, não ou sim, respectivamente
+    wchar_t turno1 = L' '; //turno das aulas podendo o valor wchar variar entre [M/T]
+    int aulas1[6] = {0}; //aulas com os valores de cada posição do array variando de 0 a 1, não ou sim, respectivamente
     
-    //pegar dias e turnos do segundo horario
-    int dias2[7] = {0};
-    wchar_t turno2 = L' ';
-    int aulas2[6] = {0};
+    //pega os dias e turnos do segundo horario recebido
+    int dias2[7] = {0}; //dias de aula
+    wchar_t turno2 = L' '; //turno das aulas
+    int aulas2[6] = {0}; //aulas
     
-    //processamento do horario um
+    //->processamento do primeiro horario recebido
     int i = 0;
-    while (horario1[i] != L'\0' && !iswalpha(horario1[i])) { //verifica se esta no intervalo de letras
-        int dia = horario1[i] - L'0';
-        if (dia >= 2 && dia <= 7) { //seg ate sab
-            dias1[dia-2] = 1; //2=seg, 3=ter, 4=qua......
+
+    //exemplo de horário: 35M234
+    
+    //processamento dos dias
+    //enquanto horario[i] não tiver chegado ao fim da string e não tenha encontrado o wchar do turno [M/T]
+    while (horario1[i] != L'\0' && !iswalpha(horario1[i]))
+    { 
+        int dia = horario1[i] - L'0'; //conversão de wchar para int
+
+        if (dia >= 2 && dia <= 7) //seg até sab
+        { 
+            dias1[dia - 2] = 1; //2=seg, 3=ter, 4=qua......
+            //há aula nesse dia
         }
+
         i++;
     }
-    turno1 = horario1[i];
+
+    turno1 = horario1[i]; //turno1 recebe o valor em wchar do turno [M/T]
     i++;
-    while (horario1[i] != L'\0') {
-        int aula = horario1[i] - L'0';
-        if (aula >= 1 && aula <= 6) {
-            aulas1[aula-1] = 1;
+
+    //enquanto horario[i] não tiver chegado ao fim da string
+    while (horario1[i] != L'\0') //processamento das aulas
+    {
+        int aula = horario1[i] - L'0'; //conversão de wchar para int
+
+        if (aula >= 1 && aula <= 6) 
+        {
+            aulas1[aula - 1] = 1;
         }
+
         i++;
     }
     
-    //agora pro horario 2
+    //->agora para o segundo horario recebido
     i = 0;
-    while (horario2[i] != L'\0' && !iswalpha(horario2[i])) {
+
+    while (horario2[i] != L'\0' && !iswalpha(horario2[i])) 
+    {
         int dia = horario2[i] - L'0';
-        if (dia >= 2 && dia <= 7) {
-            dias2[dia-2] = 1;
+
+        if (dia >= 2 && dia <= 7) 
+        {
+            dias2[dia - 2] = 1;
         }
+
         i++;
     }
+
     turno2 = horario2[i];
     i++;
-    while (horario2[i] != L'\0') {
+
+    while (horario2[i] != L'\0') 
+    {
         int aula = horario2[i] - L'0';
-        if (aula >= 1 && aula <= 6) {
-            aulas2[aula-1] = 1;
+
+        if (aula >= 1 && aula <= 6) 
+        {
+            aulas2[aula - 1] = 1;
         }
+
         i++;
     }
     
-    //ver se é do msm turno
-    if (turno1 != turno2) {
-        return 0; //se diferente, sem choque
+    //vê se é do msm turno
+    if (turno1 != turno2) //condição crucial
+    {
+        return 0; //se for diferente, logo não há choque de horário
     }
     
-    //ver os dias em comum
+    //vê os dias em comum
     int comum_dia = 0;
-    for (int j = 0; j < 5; j++) {
-        if (dias1[j] && dias2[j]) {
-            comum_dia = 1;
-            break;
-        }
-    }
-    
-    if (!comum_dia) {
-        return 0; //sem dias em comum
-    }
-    
-    //aulas em dia comum
-    for (int j = 0; j < 6; j++) {
-        if (aulas1[j] && aulas2[j]) {
-            return 1; //tem choque
+
+    for (int j = 0; j < 7; j++) 
+    {
+        //verifica quais são os dias em comuns
+        if (dias1[j] && dias2[j]) //equivalente de dias1[j] == dias2[j]
+        //caso haja dias em comum rodará um loop para checar os horários
+        {
+            //aulas em dia comum
+            for (int j = 0; j < 6; j++) 
+            {
+                if (aulas1[j] && aulas2[j]) 
+                {
+                    return 1; //tem choque
+                }
+            }
         }
     }
     
@@ -177,9 +207,9 @@ void selecionarDisciplinasSemChoque(Disciplina *disciplinas, int inicio, int fim
     } else {
         wprintf(L"Nao foi possivel selecionar disciplinas sem choque de horario para este periodo.\n");
     }
-}*/
+}
 
-//vai dá a distribuição das matérias ainda não pagas de todos os períodos
+//vai entregar a distribuição das matérias ainda não pagas de todos os períodos, ou seja, aconselhar o aluno
 void aconselhamentoPedagogico (Disciplina obrigatorias[], int max, Aluno * aluno, int materiasPagas)
 {
     int turnos[8][2] = {0};
