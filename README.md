@@ -56,11 +56,3 @@ Período Atual: 3. Suas disciplinas no próximo período (4°) serão:
 | Nome: Algoritmos e Estruturas de Dados | Id: COMP123 | Horário: 24T12 |
 | Nome: Programação Orientada a Objetos  | Id: COMP456 | Horário: 35M34 |
 ```
-
-## 📜 Licença
-
-MIT License - veja o arquivo LICENSE para detalhes.
-
----
-
-Você pode copiar este texto diretamente para seu arquivo README.md no GitHub. Ele já está formatado com markdown e inclui todos os elementos importantes de documentação.
