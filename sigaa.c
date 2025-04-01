@@ -1,3 +1,4 @@
+//Erivaldo José, Leandro Marcio, Guilherme Alessander, joao Victor, Rodrigo OliveiraS
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
