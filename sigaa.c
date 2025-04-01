@@ -56,6 +56,125 @@ typedef struct {
 } Eletiva;
 
 //verifica se há conflitos de horarios
+void choqueHorario(Disciplina obrigatorias[], int indPos[], int maxPos, Aluno * aluno)
+//struct Disciplina obrigatorias[], int indPosT[], int maxPosT, Aluno * aluno
+{
+    for (int k = 0; k < maxPos - 1; ++k) //vai pegar o horário da 1° disciplina e comparar com os demais
+    {
+        //pega os dias e turnos do primeiro horario recebido
+        int dias1[7] = {0}; //dias de aula com os valores de cada posição do array variando de 0 a 1, não ou sim, respectivamente
+        wchar_t turno1 = L' '; //turno das aulas podendo o valor wchar variar entre [M/T]
+        int aulas1[6] = {0}; //aulas com os valores de cada posição do array variando de 0 a 1, não ou sim, respectivamente
+        
+        //pega os dias e turnos do segundo horario recebido
+        int dias2[7] = {0}; //dias de aula
+        wchar_t turno2 = L' '; //turno das aulas
+        int aulas2[6] = {0}; //aulas
+    
+        int choque = 0; //dirá se houve ou não choque de horário
+
+        int auxP = indPos[k]; //auxiliar principal
+        //indPos tem 10 elementos que são o máximo de matérias por semestre
+        //cada elemento desse array pode armazenar um valor inteiro entre 0 a 23, sem repetir
+        int auxS = 0; //auxiliar secundária
+
+        for (int j = k + 1; j < maxPos; ++j) //horários seguintes
+        {
+            int auxS = indPos[j];
+            
+            //->processamento do primeiro horario recebido
+            int i = 0;
+
+            //exemplo de horário: 35M234
+            
+            //processamento dos dias
+            //enquanto horario[i] não tiver chegado ao fim da string e não tenha encontrado o wchar do turno [M/T]
+            while (obrigatorias[auxP].horario_disc[i] != L'\0' && !iswalpha(obrigatorias[auxP].horario_disc[i]))
+            { 
+                int dia = obrigatorias[auxP].horario_disc[i] - L'0'; //conversão de wchar para int
+
+                if (dia >= 2 && dia <= 7) //seg até sab
+                { 
+                    dias1[dia - 2] = 1; //2=seg, 3=ter, 4=qua......
+                    //há aula nesse dia
+                }
+
+                i++;
+            }
+
+            turno1 = obrigatorias[auxP].horario_disc[i]; //turno1 recebe o valor em wchar do turno [M/T]
+            i++;
+
+            //enquanto horario[i] não tiver chegado ao fim da string
+            while (obrigatorias[auxP].horario_disc[i] != L'\0') //processamento das aulas
+            {
+                int aula = obrigatorias[auxP].horario_disc[i] - L'0'; //conversão de wchar para int
+
+                if (aula >= 1 && aula <= 6) 
+                {
+                    aulas1[aula - 1] = 1;
+                }
+
+                i++;
+            }
+            
+            //->agora para o segundo horario recebido
+            i = 0;
+
+            while (obrigatorias[auxS].horario_disc[i] != L'\0' && !iswalpha(obrigatorias[auxS].horario_disc[i])) 
+            {
+                int dia = obrigatorias[auxS].horario_disc[i] - L'0';
+
+                if (dia >= 2 && dia <= 7) 
+                {
+                    dias2[dia - 2] = 1;
+                }
+
+                i++;
+            }
+
+            turno2 = obrigatorias[auxS].horario_disc[i];
+            i++;
+
+            while (obrigatorias[auxS].horario_disc[i] != L'\0') 
+            {
+                int aula = obrigatorias[auxS].horario_disc[i] - L'0';
+
+                if (aula >= 1 && aula <= 6) 
+                {
+                    aulas2[aula - 1] = 1;
+                }
+
+                i++;
+            }
+
+            for (int j = 0; j < 7; j++) //loop para os dias
+            {
+                //verifica quais são os dias em comuns
+                if (dias1[j] && dias2[j]) //equivalente de dias1[j] == dias2[j]
+                //caso haja dias em comum rodará um loop para checar os horários
+                {
+                    //aulas em dia comum
+                    for (int j = 0; j < 6; j++)  //loop para as aulas
+                    {
+                        if (aulas1[j] && aulas2[j]) 
+                        {
+                            choque = 1; //tem choque
+
+                            wprintf(L"A disciplina %ls (horário: %ls) está tendo choque de horário com a disciplina %ls (horário: %ls)\n", obrigatorias[auxP].nome, obrigatorias[auxP].horario_disc, obrigatorias[auxS].nome, obrigatorias[auxS].horario_disc);
+                        }
+                    }
+                }
+            }    
+
+
+
+        }
+    }
+}
+
+/*
+//verifica se há conflitos de horarios
 int choqueHorario(const wchar_t *horario1, const wchar_t *horario2) //recebe as strings wchar que contém os horários
 {
     //pega os dias e turnos do primeiro horario recebido
@@ -140,9 +259,6 @@ int choqueHorario(const wchar_t *horario1, const wchar_t *horario2) //recebe as 
         return 0; //se for diferente, logo não há choque de horário
     }
     
-    //vê os dias em comum
-    int comum_dia = 0;
-
     for (int j = 0; j < 7; j++) 
     {
         //verifica quais são os dias em comuns
@@ -162,6 +278,7 @@ int choqueHorario(const wchar_t *horario1, const wchar_t *horario2) //recebe as 
     
     return 0; //sem choque aeeeee
 }
+
 
 void selecionarDisciplinasSemChoque(Disciplina *disciplinas, int inicio, int fim, int maxDisciplinas, Aluno *aluno, int *materiasPagas) 
 {
@@ -223,6 +340,7 @@ void selecionarDisciplinasSemChoque(Disciplina *disciplinas, int inicio, int fim
         wprintf(L"Nao foi possivel selecionar disciplinas sem choque de horario para este periodo.\n");
     }
 }
+*/
 
 //vai entregar a distribuição das matérias ainda não pagas de todos os períodos, ou seja, aconselhar o aluno
 void aconselhamentoPedagogico (Disciplina obrigatorias[], int max, Aluno * aluno, int materiasPagas)
@@ -354,7 +472,6 @@ void aconselhamentoPedagogico (Disciplina obrigatorias[], int max, Aluno * aluno
                 }
             }
 
-
             //wprintf(L"Depois\nmenorPeriodo: %d, menorInd: %d, IndperiodoSeguinte: %d\n", menorPeriodo, menorInd, IndperiodoSeguinte);
 
         }
@@ -480,6 +597,9 @@ void aconselhamentoPedagogico (Disciplina obrigatorias[], int max, Aluno * aluno
         if (pesoTarde > pesoManha)
         {
             wprintf(L"\033[4mPeríodo Atual: %d. Suas disciplinas no próximo período (%d°) serão a tarde. São elas: \033[0m\n", aluno->periodoAtual, aluno->periodoAtual + 1);
+            
+            //choqueHorario(obrigatorias, indPosT, maxPosT, aluno);
+            //wprintf(L"\n");
             
             for (int j = 0; j < maxPosT; ++j)
             {
@@ -678,7 +798,7 @@ void inicializarObrigatorias(Disciplina obrigatorias[], int max, FILE * arquivo)
     //M = manha, T = Tarde, antes da letra sao os dias da semana e depois as aulas
     while ((i < max) && fwscanf(arquivo, L"Periodo: %d, Nome: %69l[^,], Id: %9l[^,], Peso: %d, CH: %d, Requisito: %24l[^,], Horario: %7l[^\n]\n", &obrigatorias[i].periodo, obrigatorias[i].nome, obrigatorias[i].id, &obrigatorias[i].peso, &obrigatorias[i].carga, obrigatorias[i].pre_requisitos, obrigatorias[i].horario_disc) != EOF)
     {
-        wprintf(L"Periodo: %d, Nome: %ls, Id: %ls, Peso: %d, CH: %d, Requisito: %ls, Horario: %ls\n", obrigatorias[i].periodo, obrigatorias[i].nome, obrigatorias[i].id, obrigatorias[i].peso, obrigatorias[i].carga, obrigatorias[i].pre_requisitos, obrigatorias[i].horario_disc);
+        //wprintf(L"Periodo: %d, Nome: %ls, Id: %ls, Peso: %d, CH: %d, Requisito: %ls, Horario: %ls\n", obrigatorias[i].periodo, obrigatorias[i].nome, obrigatorias[i].id, obrigatorias[i].peso, obrigatorias[i].carga, obrigatorias[i].pre_requisitos, obrigatorias[i].horario_disc);
         
         ++i;
         
