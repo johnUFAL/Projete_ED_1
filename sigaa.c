@@ -1,4 +1,10 @@
-//Erivaldo José, Leandro Marcio, Guilherme Alessander, joao Victor, Rodrigo OliveiraS
+//INTEGRANTES
+//Erivaldo José
+//Leandro Marcio
+//Guilherme Alessander
+//João Victor 
+//Rodrigo Oliveira
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -323,13 +329,11 @@ void aconselhamentoPedagogico (Disciplina obrigatorias[], int max, Aluno * aluno
             }
         }
 
+        //o mudar recebe 1 por causa de uma situação excepcional
         int mudar = 1; //0 = não mudar, 1 = mudar
 
 
-
         //wprintf(L"Antes\nmenorPeriodo: %d, menorInd: %d, IndperiodoSeguinte: %d\n", menorPeriodo, menorInd, IndperiodoSeguinte);
-
-
 
 
         for (int j = menorInd; j < IndperiodoSeguinte; ++j) //vai do menor indice até o indice anterior ao indice que começa o próximo período
@@ -360,29 +364,22 @@ void aconselhamentoPedagogico (Disciplina obrigatorias[], int max, Aluno * aluno
             }
 
 
-
-
-
             //wprintf(L"Depois\nmenorPeriodo: %d, menorInd: %d, IndperiodoSeguinte: %d\n", menorPeriodo, menorInd, IndperiodoSeguinte);
 
-
-
         }
-
 
         int requisitos = 0; //0 = não pagos, 1 = pagos
         int manha = 0; //qtd de disciplinas no turno da manhã que podem ser escolhidas
         int tarde = 0; //qtd de disciplinas no turno da tarde que podem ser escolhidas
         int pesoManha =0; //maior peso das matérias da manhã
         int pesoTarde = 0; //maior peso das matérias da tarde
+        
 
         wchar_t letras[] = L"MT"; //letras de interesse a serem analisadas
         wchar_t * ptr; //ponteiro para a 1° ocorrência de determinada letra
 
 
-
         //wprintf(L"Peso tarde: %d\nPeso manha: %d\nTarde: %d\nManha: %d\n", pesoTarde, pesoManha, tarde, manha);
-
 
 
         for (int j = menorInd; j < IndperiodoSeguinte; ++j) //verifica todas as disciplinas não pagas no menor período
@@ -391,17 +388,16 @@ void aconselhamentoPedagogico (Disciplina obrigatorias[], int max, Aluno * aluno
             if ((wcscmp(obrigatorias[j].pre_requisitos, L"COMP555") == 0) && obrigatorias[j].paga != 1) //caso excepcional
             //Periodo: 6, Nome: Projeto e Desenvolvimento de Sistemas, Id: COMP382, Peso: 0, CH: 288, Requisito: COMP555, Horario: 26T1234
             {
-                //wprintf(L"oi\n");
-                
                 requisitos = 1; //se pressupõem que ele já pagou todas as matérias do 1° ao 5° semestre
 
                 int cont = 0;
 
-                while (obrigatorias[cont].periodo < 6)
+                while (obrigatorias[cont].periodo < 6) //loop que percorre todas as matérias até o período de uma delas ser 6, ou maior
+                //as disciplinas obrigatórias estão em ordem crescente por período e id da disciplina
                 {
                     if (obrigatorias[cont].paga != 1)
                     {
-                        requisitos = 0; //alguma matéria não foi paga
+                        requisitos = 0; //alguma matéria não foi paga dos períodos anteriores
                         break;
                     }
 
@@ -410,6 +406,8 @@ void aconselhamentoPedagogico (Disciplina obrigatorias[], int max, Aluno * aluno
             }
             else
             {
+                //->checagem dos requisitos das disciplinas que serão pagas
+                
                 wchar_t copiaID[10];
                 wchar_t * ultimaParada; //ponteiro que guarda a posição de onde a função wcstok parou
                 wchar_t * delimitadores = L"_"; //ponteiro que armazena os delimitadores da função wcstok que nesse caso é somente o underline
@@ -438,6 +436,7 @@ void aconselhamentoPedagogico (Disciplina obrigatorias[], int max, Aluno * aluno
             }
 
 
+            //letras[i] = "MT"
             for (int i = 0; letras[i] != L'\0'; ++i) //loop para quantificar a qtd de disciplinas em cada turno
             {
                 ptr = wcschr(obrigatorias[j].horario_disc, letras[i]); //ponteiro que retorna a 1° ocorrência de determinada letra
@@ -446,7 +445,7 @@ void aconselhamentoPedagogico (Disciplina obrigatorias[], int max, Aluno * aluno
                 {
                     if ((letras[i] == L'M') && (obrigatorias[j].paga != 1) && (requisitos == 1))
                     //o turno da disciplina deve ser de manhã
-                    //ele ainda não deve ter sido paga
+                    //ela ainda não deve ter sido paga
                     //e o aluno deve cumprir com todos os seus requisitos
                     {
                         manha++;
@@ -457,8 +456,8 @@ void aconselhamentoPedagogico (Disciplina obrigatorias[], int max, Aluno * aluno
                         }
                     }
                     else if ((letras[i] == L'T') && (obrigatorias[j].paga != 1) && (requisitos == 1))
-                    //o turno da disciplina deve ser de manhã
-                    //ele ainda não deve ter sido paga
+                    //o turno da disciplina deve ser de tarde
+                    //ela ainda não deve ter sido paga
                     //e o aluno deve cumprir com todos os seus requisitos
                     {
                         tarde++;
@@ -480,11 +479,11 @@ void aconselhamentoPedagogico (Disciplina obrigatorias[], int max, Aluno * aluno
 
 
 
-
         if (pesoTarde > pesoManha)
         {
             wprintf(L"\033[4mPeríodo Atual: %d. Suas disciplinas no próximo período (%d°) serão a tarde. São elas: \033[0m\n", aluno->periodoAtual, aluno->periodoAtual + 1);
         
+            //vai repetir todo o processo, pois não foi armazenado as posições das disciplinas do turno da tarde
             for (int j = menorInd; j < IndperiodoSeguinte; ++j)
             {
                 for (int i = 0; letras[i] != L'\0'; ++i) 
@@ -510,6 +509,8 @@ void aconselhamentoPedagogico (Disciplina obrigatorias[], int max, Aluno * aluno
         else if (pesoTarde < pesoManha)
         {
             wprintf(L"\033[4mPeríodo Atual: %d. Suas disciplinas no próximo período (%d°) serão de manhã. São elas: \033[0m\n", aluno->periodoAtual, aluno->periodoAtual + 1);
+            
+            //vai repetir todo o processo, pois não foi armazenado as posições das disciplinas do turno da manhã
             
             for (int j = menorInd; j < IndperiodoSeguinte; ++j)
             {
