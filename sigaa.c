@@ -613,29 +613,6 @@ void aconselhamentoPedagogico (Disciplina obrigatorias[], int max, Aluno * aluno
                 wcscpy(aluno->minhaGrade[materiasPagas].nome, obrigatorias[aux].nome);
                 materiasPagas++;
             }
-            
-            /*//vai repetir todo o processo, pois não foi armazenado as posições das disciplinas do turno da tarde
-            for (int j = menorInd; j < IndperiodoSeguinte; ++j)
-            {
-                for (int i = 0; letras[i] != L'\0'; ++i) 
-                {
-                    ptr = wcschr(obrigatorias[j].horario_disc, letras[i]); //ponteiro que retorna a 1° ocorrência de determinada letra
-
-                    if (ptr != NULL)
-                    {
-                        if ((letras[i] == L'T') && (obrigatorias[j].paga != 1)) //vai imprimir somente se a matéria for do turno da tarde e se ele ainda não foi paga
-                        {
-                            wprintf(L"|\033[4mNome: %-40ls| Id: %-12ls| Horário: %10ls\033[0m|\n", obrigatorias[j].nome, obrigatorias[j].id, obrigatorias[j].horario_disc);
-                            obrigatorias[j].paga = 1;
-
-                            //inferimos que o aluno passou nessas matérias para que possamos construir o restante do aconselhamento
-                            wcscpy(aluno->minhaGrade[materiasPagas].id, obrigatorias[j].id); 
-                            wcscpy(aluno->minhaGrade[materiasPagas].nome, obrigatorias[j].nome);
-                            materiasPagas++;
-                        }
-                    }
-                }
-            }*/
         }
         else if (pesoTarde < pesoManha)
         {
@@ -653,29 +630,6 @@ void aconselhamentoPedagogico (Disciplina obrigatorias[], int max, Aluno * aluno
                 wcscpy(aluno->minhaGrade[materiasPagas].nome, obrigatorias[aux].nome);
                 materiasPagas++;
             }
-            
-            /*//vai repetir todo o processo, pois não foi armazenado as posições das disciplinas do turno da manhã
-            for (int j = menorInd; j < IndperiodoSeguinte; ++j)
-            {
-                for (int i = 0; letras[i] != L'\0'; ++i) 
-                {
-                    ptr = wcschr(obrigatorias[j].horario_disc, letras[i]); //ponteiro que retorna a 1° ocorrência de determinada letra
-
-                    if (ptr != NULL)
-                    {
-                        if ((letras[i] == L'M') && (obrigatorias[j].paga != 1)) //vai imprimir somente se a matéria for do turno da tarde e se ele ainda não foi paga
-                        {
-                            wprintf(L"|\033[4mNome: %-40ls| Id: %-12ls| Horário: %10ls\033[0m|\n", obrigatorias[j].nome, obrigatorias[j].id, obrigatorias[j].horario_disc);
-                            obrigatorias[j].paga = 1;
-
-                            //inferimos que o aluno passou nessas matérias para que possamos construir o restante do aconselhamento
-                            wcscpy(aluno->minhaGrade[materiasPagas].id, obrigatorias[j].id); 
-                            wcscpy(aluno->minhaGrade[materiasPagas].nome, obrigatorias[j].nome);
-                            materiasPagas++;
-                        }
-                    }
-                }
-            }*/
         }
         else //agora o critério de escolhas se dará pela qtd de disciplinas
         {
@@ -695,28 +649,6 @@ void aconselhamentoPedagogico (Disciplina obrigatorias[], int max, Aluno * aluno
                     wcscpy(aluno->minhaGrade[materiasPagas].nome, obrigatorias[aux].nome);
                     materiasPagas++;
                 }
-                
-                /*for (int j = menorInd; j < IndperiodoSeguinte; ++j)
-                {
-                    for (int i = 0; letras[i] != L'\0'; ++i) 
-                    {
-                        ptr = wcschr(obrigatorias[j].horario_disc, letras[i]); //ponteiro que retorna a 1° ocorrência de determinada letra
-    
-                        if (ptr != NULL)
-                        {
-                            if ((letras[i] == L'T') && (obrigatorias[j].paga != 1)) //vai imprimir somente se a matéria for do turno da tarde e se ele ainda não foi paga
-                            {
-                                wprintf(L"|\033[4mNome: %-40ls| Id: %-12ls| Horário: %10ls\033[0m|\n", obrigatorias[j].nome, obrigatorias[j].id, obrigatorias[j].horario_disc);
-                                obrigatorias[j].paga = 1;
-    
-                                //inferimos que o aluno passou nessas matérias para que possamos construir o restante do aconselhamento
-                                wcscpy(aluno->minhaGrade[materiasPagas].id, obrigatorias[j].id); 
-                                wcscpy(aluno->minhaGrade[materiasPagas].nome, obrigatorias[j].nome);
-                                materiasPagas++;
-                            }
-                        }
-                    }
-                }*/
             }
             else //manha <= tarde
             {
@@ -734,28 +666,6 @@ void aconselhamentoPedagogico (Disciplina obrigatorias[], int max, Aluno * aluno
                         wcscpy(aluno->minhaGrade[materiasPagas].nome, obrigatorias[aux].nome);
                         materiasPagas++;
                     }
-                
-                /*for (int j = menorInd; j < IndperiodoSeguinte; ++j)
-                {
-                    for (int i = 0; letras[i] != L'\0'; ++i) 
-                    {
-                        ptr = wcschr(obrigatorias[j].horario_disc, letras[i]); //ponteiro que retorna a 1° ocorrência de determinada letra
-    
-                        if (ptr != NULL)
-                        {
-                            if ((letras[i] == L'M') && (obrigatorias[j].paga != 1)) //vai imprimir somente se a matéria for do turno da tarde e se ele ainda não foi paga
-                            {
-                                wprintf(L"|\033[4mNome: %-40ls| Id: %-12ls| Horário: %10ls\033[0m|\n", obrigatorias[j].nome, obrigatorias[j].id, obrigatorias[j].horario_disc);
-                                obrigatorias[j].paga = 1;
-    
-                                //inferimos que o aluno passou nessas matérias para que possamos construir o restante do aconselhamento
-                                wcscpy(aluno->minhaGrade[materiasPagas].id, obrigatorias[j].id); 
-                                wcscpy(aluno->minhaGrade[materiasPagas].nome, obrigatorias[j].nome);
-                                materiasPagas++;
-                            }
-                        }
-                    }
-                }*/
             }
         }
 
@@ -773,8 +683,6 @@ void aconselhamentoPedagogico (Disciplina obrigatorias[], int max, Aluno * aluno
 
         aluno->periodoAtual++;
         menorPeriodo++;
-   
-
     }
 
 
