@@ -49,7 +49,7 @@ typedef struct {
 } Eletiva;
 
 //verifica se há conflitos de horarios
-int choqueHorario(const wchar_t *horario1, const wchar_t *horario2) 
+int choqueHorario(const wchar_t *horario1, const wchar_t *horario2) //recebe as strings wchar que contém os horários
 {
     //pega os dias e turnos do primeiro horario recebido
     int dias1[7] = {0}; //dias de aula com os valores de cada posição do array variando de 0 a 1, não ou sim, respectivamente
@@ -156,14 +156,18 @@ int choqueHorario(const wchar_t *horario1, const wchar_t *horario2)
     return 0; //sem choque aeeeee
 }
 
-void selecionarDisciplinasSemChoque(Disciplina *disciplinas, int inicio, int fim, int maxDisciplinas, Aluno *aluno, int *materiasPagas) {
+void selecionarDisciplinasSemChoque(Disciplina *disciplinas, int inicio, int fim, int maxDisciplinas, Aluno *aluno, int *materiasPagas) 
+{
     Disciplina selecionadas[10]; 
     int num_select = 0;
     
-    //ordenar por peso, meio primeiro
-    for (int i = inicio; i < fim-1; i++) {
-        for (int j = i+1; j < fim; j++) {
-            if (disciplinas[j].peso > disciplinas[i].peso) {
+    //ordena por peso, maior primeiro
+    for (int i = inicio; i < fim - 1; i++) 
+    {
+        for (int j = i + 1; j < fim; j++) 
+        {
+            if (disciplinas[j].peso > disciplinas[i].peso) //troca de posição com structs
+            {
                 Disciplina temp = disciplinas[i];
                 disciplinas[i] = disciplinas[j];
                 disciplinas[j] = temp;
@@ -171,21 +175,25 @@ void selecionarDisciplinasSemChoque(Disciplina *disciplinas, int inicio, int fim
         }
     }
     
-    //pega a disc sem choque
-    for (int i = inicio; i < fim && num_select < maxDisciplinas; i++) {
-        if (disciplinas[i].paga == 1) continue;
+    //pega a disciplina sem choque
+    for (int i = inicio; i < fim && num_select < maxDisciplinas; i++) 
+    {
+        if (disciplinas[i].paga == 1) continue; //pula para a próxima iteração
         
         int choque = 0;
         
-        //ve se tem choque com as que ja tao add
-        for (int j = 0; j < num_select; j++) {
-            if (choqueHorario(disciplinas[i].horario_disc, selecionadas[j].horario_disc)) {
+        //vê se tem choque com as que já estão adicionadas
+        for (int j = 0; j < num_select; j++) 
+        {
+            if (choqueHorario(disciplinas[i].horario_disc, selecionadas[j].horario_disc)) 
+            {
                 choque = 1;
                 break;
             }
         }
         
-        if (!choque) {
+        if (!choque) 
+        {
             selecionadas[num_select] = disciplinas[i];
             num_select++;
             
