@@ -3,7 +3,7 @@
 //Leandro Marcio
 //Guilherme Alessander
 //João Victor 
-//Rodrigo Oliveira
+//nome referencia ab1: Erivaldo
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -12,6 +12,10 @@
 #include <locale.h>
 #include <wchar.h>
 #include <wctype.h>
+
+#define MAX_OBRIG 24
+#define MAX_ELETIVAS 30
+#define MAXR 4
 
 typedef struct {
     int paga; // 1 - sim, 0 - não
@@ -54,6 +58,96 @@ typedef struct {
     wchar_t horario_ele[8];
     wchar_t pre_requisitos[100];
 } Eletiva;
+
+//função para começarmos inicializando as eletivas. 
+void inicializarEletivas(Eletiva eletivas[], int *quant, FILE *arquivo) {
+    int i = 0;
+    while (fwscanf(arquivo, L"Nome: %59l[^,], Id: %9l[^,], CH: %d, Requisito: %99l[^,], Horario: %7l[^\n]\n",
+        eletivas[i].nome, eletivas[i].id, &eletivas[i].carga,
+        eletivas[i].pre_requisitos, eletivas[i].horario_ele) != EOF) {
+        ++i;
+    }
+    *quant = i;
+}
+
+//aqui verificar se a disciplina obrigatoria e a eletiva estão tendo choque de horario 
+
+int temChoqueHorarioComObrigatoria(Disciplina d, Eletiva e) {
+    if (wcscmp(e.horario_ele, L"NULL") == 0 || wcscmp(d.horario_disc, L"NULL") == 0)
+        return 0;
+
+    int diasD[7] = {0}, aulasD[6] = {0};
+    int diasE[7] = {0}, aulasE[6] = {0};
+    wchar_t turnoD = L' ', turnoE = L' ';
+    int i = 0;
+
+    // Processa dias e turno da Disciplina d
+    while (d.horario_disc[i] && !iswalpha(d.horario_disc[i])) {
+        int dia_idx = d.horario_disc[i] - L'2';
+        if (dia_idx >= 0 && dia_idx < 7)
+            diasD[dia_idx] = 1;
+        else
+            wprintf(L"WARNING: Dia inválido na disciplina: %lc (índice %d)\n", d.horario_disc[i], dia_idx);
+        i++;
+    }
+    turnoD = d.horario_disc[i++];
+
+    while (d.horario_disc[i]) {
+        int aula_idx = d.horario_disc[i] - L'1';
+        if (aula_idx >= 0 && aula_idx < 6)
+            aulasD[aula_idx] = 1;
+        else
+            wprintf(L"WARNING: Aula inválida na disciplina: %lc (índice %d)\n", d.horario_disc[i], aula_idx);
+        i++;
+    }
+
+    i = 0;
+
+    // Processa dias e turno da Eletiva e
+    while (e.horario_ele[i] && !iswalpha(e.horario_ele[i])) {
+        int dia_idx = e.horario_ele[i] - L'2';
+        if (dia_idx >= 0 && dia_idx < 7)
+            diasE[dia_idx] = 1;
+        else
+            wprintf(L"WARNING: Dia inválido na eletiva: %lc (índice %d)\n", e.horario_ele[i], dia_idx);
+        i++;
+    }
+    turnoE = e.horario_ele[i++];
+
+    while (e.horario_ele[i]) {
+        int aula_idx = e.horario_ele[i] - L'1';
+        if (aula_idx >= 0 && aula_idx < 6)
+            aulasE[aula_idx] = 1;
+        else
+            wprintf(L"WARNING: Aula inválida na eletiva: %lc (índice %d)\n", e.horario_ele[i], aula_idx);
+        i++;
+    }
+
+
+    return 0;
+}
+
+
+//verificar se o aluno pode adicionar a eletiva a sua grade
+//note que vai levar em conta também o choque de horario que nao pode 
+int podeAdicionarEletiva(Eletiva e, Aluno *aluno, Disciplina obrigatorias[], int qtdOb) {
+    for (int i = 0; i < 29; i++)
+        if (wcscmp(aluno->minhaGrade[i].id, e.id) == 0) return 0;
+    if (wcscmp(e.pre_requisitos, L"Nenhum") != 0) {
+        int achou = 0;
+        for (int i = 0; i < 29; i++)
+            if (wcscmp(aluno->minhaGrade[i].id, e.pre_requisitos) == 0) {
+                achou = 1;
+                break;
+            }
+        if (!achou) return 0;
+    }
+    for (int i = 0; i < qtdOb; i++)
+        if (obrigatorias[i].paga && temChoqueHorarioComObrigatoria(obrigatorias[i], e))
+            return 0;
+    return 1;
+}
+
 
 //verifica se há conflitos de horarios
 void choqueHorario(Disciplina obrigatorias[], int indPos[], int maxPos, Aluno * aluno)
@@ -932,101 +1026,67 @@ void name_process(Aluno aluno, int resto[])
     return;
 }
 
-#define MAX_OBRIG 24 //n° max de matérias obrigatórias fora as das ênfases
-#define MAXR 4 //n° max de restos
 
 int main() 
 {
    setlocale(LC_ALL, "");
+    fwide(stdout, 1);
 
-   fwide(stdout, 1); //força stdout a operar no modo wide-character, reduzindo problemas com wprintf
+    Aluno aluno = {.nome = L"Erivaldo Jose Silva Santos"};
+    Disciplina obrigatorias[MAX_OBRIG] = {0};
+    int resto[MAXR], materiasPagas = 0;
+    FILE *disciplinasObrigatorias = fopen("disciplinas.txt", "r");
+    FILE *historico = fopen("entrada.txt", "r");
+    if (!disciplinasObrigatorias || !historico) {
+        wprintf(L"Erro ao abrir arquivo!"); return 1;
+    }
 
-   //structs
-   Aluno aluno = {.nome = L"Erivaldo Jose Silva Santos"};
-   Disciplina obrigatorias[MAX_OBRIG] = {0}; //array de structs que irá conter as matérias obrigatórias, 24 obrigatórias fora as da ênfases
-   //ints
-   int resto[MAXR]; //guardará o resto das divisões das particões do nome
-   int materiasPagas = 0; //guardará um indice de controle sobre as disciplinas pagas
-   //ponteiros FILE
-   FILE * disciplinasObrigatorias;
-   FILE * historico;
-   //atribuindo o endereço dos arquivos externos aos ponteiros FILE
-   disciplinasObrigatorias = fopen("obrigatorias.txt", "r, ccs=UTF-8"); //abre no formato Unicode
-   historico = fopen("entrada.txt", "r, ccs=UTF-8");
+    inicializarObrigatorias(obrigatorias, MAX_OBRIG, disciplinasObrigatorias);
+    materiasPagas = inicializarMateriasPagas(&aluno, historico);
 
-   if (disciplinasObrigatorias == NULL || historico == NULL) //checagem para caso tenha havido erro na abertura de um dos arquivos
-   {
-        wprintf(L"Erro ao abrir o arquivo externo!\n");
-        return 1;
-   }
+    for (int i = 0; i < materiasPagas; ++i)
+        for (int j = 0; j < MAX_OBRIG; ++j)
+            if (wcscmp(aluno.minhaGrade[i].id, obrigatorias[j].id) == 0)
+                obrigatorias[j].paga = 1;
 
-   //funções para passar os dados dos arquivos externos para as structs
-   inicializarObrigatorias(obrigatorias, MAX_OBRIG, disciplinasObrigatorias); //irá inserir todas as disciplinas obrigatórias do arquivo externo para a struct
-   materiasPagas = inicializarMateriasPagas(&aluno, historico); //função para receber o histórico do usuário e em seguida no array obrigatorias irá indicar quais matérias já foram pagas
+    name_process(aluno, resto);
+    suaSituacao(resto, &aluno);
+    aconselhamentoPedagogico(obrigatorias, MAX_OBRIG, &aluno, materiasPagas);
 
-   if (materiasPagas == -1) //prevenção de erros para caso a função tenha lido uma qtd de linhas não esperadas
-   {
-        wprintf(L"Erro na leitura da entrada\n");
-   }
+    FILE *arquivoEletivas = fopen("eletivas.txt", "r");
+    if (!arquivoEletivas) {
+        wprintf(L"Erro ao abrir eletivas.txt\n"); return 1;
+    }
 
-   wprintf(L"==========================MATÉRIAS PAGAS===========================\n");
+    Eletiva eletivas[MAX_ELETIVAS] = {0};
+    int totalEletivas = 0;
+    inicializarEletivas(eletivas, &totalEletivas, arquivoEletivas);
 
-   //loop para informar no array obrigatorias quais materias ele já pagou
-   for (int i = 0; i < materiasPagas; ++i) //vai comparando até achar a matéria correspondente
-   {
-        //o loop externo roda a struct aluno
-        //e a interna roda a struct obrigatorias    
+    wprintf(L"\n=======================SUGESTÃO DE ELETIVAS========================\n");
 
-        for (int j = 0; j < MAX_OBRIG; ++j) //vai analisar todas as matérias obrigatórias
-        {
-            if (wcscmp(aluno.minhaGrade[i].id, obrigatorias[j].id) == 0) //caso haja um correspondente entre a que ele pagou que consta no histórico
-            //e a da struct obrigatorias 
-            {
-                wprintf(L"%ls\n", aluno.minhaGrade[i].nome);
-                
-                obrigatorias[j].paga = 1; //o aluno já pagou essa matéria
-                break;
+    int adicionadas = 0;
+    for (int i = 0; i < totalEletivas; i++) {
+        if (podeAdicionarEletiva(eletivas[i], &aluno, obrigatorias, MAX_OBRIG)) {
+            if (wcschr(eletivas[i].horario_ele, aluno.turno_disciplina) != NULL) {
+                wprintf(L"|\033[4mNome: %-40ls| Id: %-12ls| Horário: %10ls\033[0m|\n",
+                    eletivas[i].nome, eletivas[i].id, eletivas[i].horario_ele);
+
+                wcscpy(aluno.minhaGrade[materiasPagas].id, eletivas[i].id);
+                wcscpy(aluno.minhaGrade[materiasPagas].nome, eletivas[i].nome);
+                materiasPagas++;
+                adicionadas++;
+
+                if (adicionadas >= 2) break;
             }
         }
-   }
+    }
 
-   wprintf(L"===================================================================\n");
+    if (adicionadas == 0)
+        wprintf(L"Nenhuma eletiva disponível compatível.\n");
 
-   wprintf(L"Digite o nome modelo completo a seguir: %ls\n", aluno.nome);
-
-   /*while (1) //loop para evitar erros na inserção do nome modelo
-   {
-       wprintf(L"Digite o nome modelo completo a seguir: ");
-       fgetws(aluno.nome, sizeof(aluno.nome) / sizeof(wchar_t), stdin);
+    fclose(disciplinasObrigatorias);
+    fclose(historico);
+    fclose(arquivoEletivas);
     
-       wchar_t * ptr = wcschr(aluno.nome, L'\n'); //ponteiro wchar_t para a 1° aparição do '\n' que será retornado pela função wcschar
-    
-       if (ptr) //caso ptr for != de NULL quer dizer que ele encontrou a última posição do '\n'
-       {
-            *ptr = L'\0'; //substituindo o '\n' por '\0'
-       }
-    
-       //validacao do nome 
-       if (!validation_string(aluno)) 
-       {
-           wprintf(L"Existe caracteres não alfabéticos no seu nome! Vamos recomeçar!\n");
-       }
-       else
-       {
-            break;
-       }
-   }*/
-   
-   name_process(aluno, resto); //decomposicao do nome, soma e divisão para obtenção do seu resto que nos ajudará no conhecimento das condições do projeto
-
-   suaSituacao(resto, &aluno); //será passado o endereço da variável aluno para que seu valor seja integralmente alterado
-
-   aconselhamentoPedagogico(obrigatorias, MAX_OBRIG, &aluno, materiasPagas); //vai dá a distribuição das matérias ainda não pagas de todos os períodos
-   
-   
-   //fechamento dos ponteiros
-   fclose(disciplinasObrigatorias); 
-   fclose(historico);
-
    return 0;
 }
