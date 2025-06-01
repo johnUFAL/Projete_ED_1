@@ -1035,7 +1035,7 @@ int main()
     Aluno aluno = {.nome = L"Erivaldo Jose Silva Santos"};
     Disciplina obrigatorias[MAX_OBRIG] = {0};
     int resto[MAXR], materiasPagas = 0;
-    FILE *disciplinasObrigatorias = fopen("Obrigatorias.txt", "r");
+    FILE *disciplinasObrigatorias = fopen("obrigatorias.txt", "r");
     FILE *historico = fopen("entrada.txt", "r");
     if (!disciplinasObrigatorias || !historico) {
         wprintf(L"Erro ao abrir arquivo!"); return 1;
