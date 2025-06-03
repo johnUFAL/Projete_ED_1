@@ -1,0 +1,6 @@
+Nome: Leandro Marcio Elias da Silva, Periodo: 2
+Id: COMP359, Nome: Programacao 1, Nota: 8.1
+Id: COMP360, Nome: Logica para Computacao, Nota: 8.8
+Id: COMP361, Nome: Computacao Sociedade e Etica, Nota: 9.5
+Id: COMP362, Nome: Matematica Discreta, Nota: 8.6
+Id: COMP363, Nome: Calculo Diferencial e Integral, Nota: 7.25
