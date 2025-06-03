@@ -1,58 +1,65 @@
-# Aconselhamento Pedagógico - Ciência da Computação UFAL
+# Aconselhamento Pedagógico para Alunos de Ciência da Computação - UFAL
 
-Sistema de recomendação de disciplinas para alunos do curso de Ciência da Computação da UFAL, baseado no PPC 2019.
+Este projeto foi desenvolvido como parte da disciplina de Estrutura de Dados e tem como objetivo gerar um aconselhamento pedagógico personalizado para alunos do curso de Ciência da Computação do Instituto de Computação da UFAL, seguindo as diretrizes do PPC2019.
 
-## 📋 Descrição
+## Integrantes do Grupo
+- Erivaldo José
+- Leandro Marcio
+- Guilherme Alessander
+- João Victor
 
-Este projeto gera um plano de disciplinas para os próximos períodos letivos, considerando:
+## Funcionalidades
+O sistema oferece as seguintes funcionalidades:
 
-✅ Pré-requisitos das matérias  
-⏰ Conflitos de horário  
-📚 Limite máximo de disciplinas por semestre  
-🎓 Tempo desejado para conclusão do curso  
-🔍 Ênfase escolhida  
-📅 Critérios de seleção de disciplinas  
+1. **Análise Personalizada**:
+   - Calcula o limite máximo de disciplinas por semestre com base no nome do aluno
+   - Determina o tempo ideal para conclusão do curso
+   - Define critérios para escolha de ênfase
+   - Estabelece orientações para seleção de disciplinas
 
-## 🚀 Como usar
+2. **Verificação de Requisitos**:
+   - Impede matrícula em disciplinas sem pré-requisitos
+   - Detecta choques de horário entre disciplinas
+   - Garante matrícula em pelo menos 1 disciplina
 
-1. Clone o repositório
-2. Compile com `gcc main.c -o aconselhamento`
-3. Execute com `./aconselhamento`
+3. **Aconselhamento Inteligente**:
+   - Sugere disciplinas obrigatórias por período
+   - Oferece recomendações de eletivas compatíveis
+   - Considera o histórico acadêmico do aluno
 
-## 📂 Estrutura de arquivos
+## Como Executar
+1. Certifique-se de ter os arquivos de entrada no mesmo diretório do executável:
+   - `obrigatorias.txt` - Lista de disciplinas obrigatórias
+   - `eletivas.txt` - Lista de disciplinas eletivas
+   - `entrada.txt` - Histórico do aluno
 
-```
-.
-├── main.c                 # Código principal
-├── obrigatorias.txt       # Lista de disciplinas obrigatórias
-├── entrada.txt            # Histórico do aluno
-└── README.md              # Este arquivo
-```
+2. Compile e execute o programa:
+   ```bash
+   gcc main.c -o aconselhamento
+   ./aconselhamento
+   ```
 
-## 🔧 Requisitos
+## Estrutura do Código
+O projeto está organizado nas seguintes estruturas principais:
 
-- Compilador C (GCC recomendado)
-- Sistema com suporte a UTF-8
-- Arquivos de entrada no formato especificado
+- `Disciplina`: Armazena informações sobre disciplinas obrigatórias
+- `Eletiva`: Armazena informações sobre disciplinas eletivas
+- `MateriasPagas`: Registra as disciplinas já cursadas pelo aluno
+- `Aluno`: Contém todas as informações do aluno e suas preferências
 
-## 📊 Funcionamento
+As principais funções incluem:
+- `aconselhamentoPedagogico()` - Gera o plano de estudos
+- `choqueHorario()` - Verifica conflitos de horário
+- `podeAdicionarEletiva()` - Valida se uma eletiva pode ser cursada
+- `inicializarObrigatorias()` - Carrega as disciplinas obrigatórias
+- `inicializarEletivas()` - Carrega as disciplinas eletivas
 
-O sistema calcula automaticamente os critérios baseados no nome do aluno, usando:
+## Critérios de Seleção
+O sistema utiliza um algoritmo baseado no nome do aluno (em ordem alfabética) para determinar:
+1. Limite máximo de disciplinas por semestre
+2. Tempo ideal para conclusão do curso
+3. Critério para escolha de ênfase
+4. Orientação para seleção de disciplinas
 
-1. Conversão de letras para valores numéricos
-2. Soma dos valores de cada parte do nome
-3. Resto da divisão por 3 para cada critério
-
-## 📝 Exemplo de saída
-
-```
-============================INFORMAÇÕES============================
-1° periodo -> Matérias Manhã: 2, Matérias Tarde: 1
-2° periodo -> Matérias Manhã: 3, Matérias Tarde: 2
-...
-====================================================================
-
-Período Atual: 3. Suas disciplinas no próximo período (4°) serão:
-| Nome: Algoritmos e Estruturas de Dados | Id: COMP123 | Horário: 24T12 |
-| Nome: Programação Orientada a Objetos  | Id: COMP456 | Horário: 35M34 |
-```
+## Licença
+Este projeto é destinado exclusivamente para fins acadêmicos.
