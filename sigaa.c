@@ -122,10 +122,21 @@ int temChoqueHorarioComObrigatoria(Disciplina d, Eletiva e) {
         i++;
     }
 
+    // Verifica se há choque de horário
+    if (turnoD == turnoE) {
+        for (int d = 0; d < 7; d++) {
+            if (diasD[d] && diasE[d]) {
+                for (int a = 0; a < 6; a++) {
+                    if (aulasD[a] && aulasE[a]) {
+                        return 1; // Há choque de horário
+                    }
+                }
+            }
+        }
+    }
 
-    return 0;
+    return 0; // Não há choque
 }
-
 //verificar se o aluno pode adicionar a eletiva a sua grade
 //note que vai levar em conta também o choque de horario que nao pode 
 int podeAdicionarEletiva(Eletiva e, Aluno *aluno, Disciplina obrigatorias[], int qtdOb) {
