@@ -1,5 +1,8 @@
 # Aconselhamento Pedagógico para Alunos de Ciência da Computação - UFAL
 
+
+LINK PARA O PROJETO 2, CONTINUAÇÃO: https://github.com/johnUFAL/Projeto_ED_2.git
+
 Este projeto foi desenvolvido como parte da disciplina de Estrutura de Dados e tem como objetivo gerar um aconselhamento pedagógico personalizado para alunos do curso de Ciência da Computação do Instituto de Computação da UFAL, seguindo as diretrizes do PPC2019.
 
 ## Integrantes do Grupo
